@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  SignUpViewController.swift
 //  The Umpire
 //
 //  Created by Branson Boggia on 12/1/16.
@@ -10,14 +10,17 @@ import UIKit
 import Firebase
 import FirebaseAuth
 
-class ViewController: UIViewController {
-    
+class SignUpViewController: UIViewController {
+
     let userStore = LocalUsernameSave()
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
-    @IBAction func logInButton(_ sender: Any) {
-        if self.emailField.text == "" || self.passwordField.text == "" {
+    @IBOutlet weak var reTypePasswordField: UITextField!
+    @IBOutlet weak var cityField: UITextField!
+    @IBAction func createAccountButton(_ sender: Any) {
+        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" || self.passwordField.text != self.reTypePasswordField.text {
+            
             let alertController = UIAlertController(title: "Oops! 😰", message: "One of the text fields is empty!", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -25,17 +28,16 @@ class ViewController: UIViewController {
             
             self.present(alertController, animated: true, completion: nil)
         } else {
-            FIRAuth.auth()?.signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
-                (user, error) in
-                
+            FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
+    //MAKE SURE TO ADD AFTER ACCOUNT CREATED TRIGGER SEGUE*****
                 if error == nil {
                     
-                    self.userStore.email == user!.email
-                    self.emailField.text == ""
-                    self.passwordField.text == ""
+                    self.userStore.city = self.cityField.text
+                    self.emailField.text = ""
+                    self.passwordField.text = ""
                     
                 } else {
-                    
+                
                     let alertController = UIAlertController(title: "Oops! 😰", message: error?.localizedDescription, preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -43,24 +45,32 @@ class ViewController: UIViewController {
                     
                     self.present(alertController, animated: true, completion: nil)
                 }
-                
             })
         }
     }
-    @IBOutlet weak var signUpButton: UIButton!
     
+    var username: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
+
+        // Do any additional setup after loading the view.
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
 
+    /*
+    // MARK: - Navigation
+
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
 }
-
