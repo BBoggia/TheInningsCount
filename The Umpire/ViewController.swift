@@ -18,7 +18,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var passwordField: UITextField!
     @IBAction func logInButton(_ sender: Any) {
         if self.emailField.text == "" || self.passwordField.text == "" {
-            let alertController = UIAlertController(title: "Oops! 😰", message: "One of the text fields is empty!", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
@@ -30,13 +30,15 @@ class ViewController: UIViewController {
                 
                 if error == nil {
                     
-                    self.userStore.email == user!.email
-                    self.emailField.text == ""
-                    self.passwordField.text == ""
+                    self.userStore.email = user!.email
+                    self.emailField.text = ""
+                    self.passwordField.text = ""
+                    
+                    self.performSegue(withIdentifier: "toSport", sender: nil)
                     
                 } else {
                     
-                    let alertController = UIAlertController(title: "Oops! 😰", message: error?.localizedDescription, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)

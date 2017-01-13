@@ -19,14 +19,23 @@ class SignUpViewController: UIViewController {
     @IBOutlet weak var reTypePasswordField: UITextField!
     @IBOutlet weak var cityField: UITextField!
     @IBAction func createAccountButton(_ sender: Any) {
-        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" || self.passwordField.text != self.reTypePasswordField.text {
+        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" {
             
-            let alertController = UIAlertController(title: "Oops! 😰", message: "One of the text fields is empty!", preferredStyle: .alert)
+            let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
             
             self.present(alertController, animated: true, completion: nil)
+        } else if self.passwordField.text != self.reTypePasswordField.text {
+        
+            let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
         } else {
             FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
     //MAKE SURE TO ADD AFTER ACCOUNT CREATED TRIGGER SEGUE*****
@@ -38,7 +47,7 @@ class SignUpViewController: UIViewController {
                     
                 } else {
                 
-                    let alertController = UIAlertController(title: "Oops! 😰", message: error?.localizedDescription, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)

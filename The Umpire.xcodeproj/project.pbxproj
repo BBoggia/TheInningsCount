@@ -20,6 +20,10 @@
 		DBEBF7C21DF0BAFD003CF098 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */; };
 		DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7C31DF0D239003CF098 /* SignUpViewController.swift */; };
 		DBEBF7C61DF11FE6003CF098 /* LocalUsernameSave.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7C51DF11FE6003CF098 /* LocalUsernameSave.swift */; };
+		DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */; };
+		DBFD3ED11E2854CC0024DD6D /* b1012DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */; };
+		DBFD3ED31E2854F40024DD6D /* s810DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */; };
+		DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +68,10 @@
 		DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBEBF7C31DF0D239003CF098 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DBEBF7C51DF11FE6003CF098 /* LocalUsernameSave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocalUsernameSave.swift; sourceTree = "<group>"; };
+		DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b810DataEntryViewController.swift; sourceTree = "<group>"; };
+		DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b1012DataEntryViewController.swift; sourceTree = "<group>"; };
+		DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s810DataEntryViewController.swift; sourceTree = "<group>"; };
+		DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s1012DataEntryViewController.swift; sourceTree = "<group>"; };
 		F8C6D987970F5A7355BF862E /* Pods-The Umpire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.release.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,6 +160,10 @@
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
 				DBEBF79F1DF0BAC0003CF098 /* Info.plist */,
 				DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */,
+				DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */,
+				DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */,
+				DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */,
+				DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */,
 			);
 			path = "The Umpire";
 			sourceTree = "<group>";
@@ -246,7 +258,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "PineTree Studios";
 				TargetAttributes = {
 					DBEBF78F1DF0BAC0003CF098 = {
@@ -461,7 +473,11 @@
 			files = (
 				DBEBF7C61DF11FE6003CF098 /* LocalUsernameSave.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
+				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
+				DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */,
 				DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */,
+				DBFD3ED31E2854F40024DD6D /* s810DataEntryViewController.swift in Sources */,
+				DBFD3ED11E2854CC0024DD6D /* b1012DataEntryViewController.swift in Sources */,
 				DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -535,6 +551,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -585,6 +602,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_SUSPICIOUS_MOVES = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
