@@ -9,59 +9,33 @@
 import UIKit
 import Firebase
 import FirebaseAuth
+import FirebaseDatabase
 
 class SignUpViewController: UIViewController {
-
-    let userStore = LocalUsernameSave()
+    
+    let ref = FIRDatabase.database()
+    let ref2 = FIRDatabase.database().reference().child("User-Team")
+    let loginRef = ViewController()
+    
+    var userCity: String!
+    var currentUser: Any!
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var reTypePasswordField: UITextField!
     @IBOutlet weak var cityField: UITextField!
     @IBAction func createAccountButton(_ sender: Any) {
-        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" {
-            
-            let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-        } else if self.passwordField.text != self.reTypePasswordField.text {
-        
-            let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-            
-        } else {
-            FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
-    //MAKE SURE TO ADD AFTER ACCOUNT CREATED TRIGGER SEGUE*****
-                if error == nil {
-                    
-                    self.userStore.city = self.cityField.text
-                    self.emailField.text = ""
-                    self.passwordField.text = ""
-                    
-                } else {
-                
-                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
-                    
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    
-                    self.present(alertController, animated: true, completion: nil)
-                }
-            })
-        }
+        createAccount()
+        autoSignIn()
     }
-    
-    var username: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        while FIRAuth.auth()?.currentUser != nil {
+            saveUID()
+            autoLoginSegue()
+        }
 
         // Do any additional setup after loading the view.
     }
@@ -71,15 +45,73 @@ class SignUpViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func createAccount() {
+        
+        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" {
+            
+            let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+        } else if self.passwordField.text != self.reTypePasswordField.text {
+            
+            let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
+            
+            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(defaultAction)
+            
+            self.present(alertController, animated: true, completion: nil)
+            
+        } else {
+            FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
+                if error == nil {
+                    
+                    self.saveUID()
+                    self.autoLoginSegue()
+                    
+                } else {
+                    
+                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                    
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+                    
+                    self.present(alertController, animated: true, completion: nil)
+                }
+            })
+        }
+        
     }
-    */
+    
+    func autoSignIn() {
+        FIRAuth.auth()?.signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
+            (user, error) in
+            
+            if error == nil {
+                
+            }
+        })
+    }
+    
+    func saveUID() {
+        
+        let user = FIRAuth.auth()?.currentUser
+        let userUID = user?.uid
+        
+        self.userCity = self.cityField.text
+        ref2.child("/\(userUID!)").setValue(userCity)
+        
+        print(userUID!)
+    }
+    
+    func autoLoginSegue() {
+        
+        self.emailField.text = ""
+        self.passwordField.text = ""
+        
+        self.performSegue(withIdentifier: "signupWork", sender: nil)
+    }
 
 }

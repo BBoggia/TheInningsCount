@@ -12,7 +12,9 @@ import FirebaseAuth
 
 class ViewController: UIViewController {
     
-    let userStore = LocalUsernameSave()
+    let user = FIRAuth.auth()?.currentUser
+    
+    var userUID: String!
     
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -30,7 +32,12 @@ class ViewController: UIViewController {
                 
                 if error == nil {
                     
-                    self.userStore.email = user!.email
+                    let defaults = UserDefaults.standard
+                    
+                    defaults.setValue(user?.uid, forKey: "uid")
+                    
+                    self.userUID = user?.uid
+                    
                     self.emailField.text = ""
                     self.passwordField.text = ""
                     
@@ -55,6 +62,12 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let firebaseAuth = FIRAuth.auth()
+        do {
+            try firebaseAuth?.signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
         
     }
 
@@ -62,7 +75,6 @@ class ViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
 
 }
 
