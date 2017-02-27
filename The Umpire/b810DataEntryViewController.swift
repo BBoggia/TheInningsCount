@@ -45,7 +45,7 @@ class b810DataEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func configureData() {
+    /*func configureData() {
         
         let playerRef = ref.child(teamName).child(playerNumberTextField.text!)
         
@@ -60,7 +60,7 @@ class b810DataEntryViewController: UIViewController {
         }) { (error) in
             print(error.localizedDescription)
         }
-    }
+    }*/
     
     func sendData() {
         mainRef.reference().child("User-Team/").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -74,7 +74,7 @@ class b810DataEntryViewController: UIViewController {
         let teamName = self.teamName
         let playerRef = ref.child("\(teamName)/\(playerNumberTextField.text!)")
         
-        playerRef.setValue("Date: \(self.timeStamp) Innings Pitched: \(pitchCountTextField.text!)")
+        playerRef.child("\(self.timeStamp)").setValue("\(pitchCountTextField.text!)")
     }
 
 }
