@@ -21,7 +21,7 @@ class Age_TeamDataSelectViewController: UIViewController, UIPickerViewDelegate, 
         self.picker.dataSource = self
         
         pickerData = [["8-10 Baseball", "10-12 Baseball", "8-10 Softball", "10-12 Softball"],
-                      ["Girard", "Other Schools"]]
+                      ["Girard", "Liberty", "McDonald", "Niles", "Hubbard", "Mineral Ridge", "Lordstown", "LaBrea", "Brookfield", "Lakeview", "Mathews (girls only)", "Howland (girls only)"]]
 
         // Do any additional setup after loading the view.
     }

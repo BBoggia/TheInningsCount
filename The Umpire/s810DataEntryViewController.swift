@@ -18,14 +18,14 @@ class s810DataEntryViewController: UIViewController {
     let user = FIRAuth.auth()?.currentUser
     var userUID = FIRAuth.auth()?.currentUser?.uid
     var teamName = "team"
-    
+    var timeStamp = ""
     
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
     
     @IBAction func submit(_ sender: Any) {
         
-        configureData()
+        //configureData()
         sendData()
     }
     
@@ -35,6 +35,8 @@ class s810DataEntryViewController: UIViewController {
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.value as! String!
         })
+        
+        timeStamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .short)
     }
     
     override func didReceiveMemoryWarning() {
@@ -68,13 +70,10 @@ class s810DataEntryViewController: UIViewController {
             print(error.localizedDescription)
         }
         
-        //let team = mainRef.reference().child("User-Team")
-        
         let teamName = self.teamName
-        
         let playerRef = ref.child("\(teamName)/\(playerNumberTextField.text!)")
         
-        playerRef.setValue(Int(pitchCountTextField.text!)! + currentData)
+        playerRef.setValue("Date: \(self.timeStamp) Innings Pitched: \(pitchCountTextField.text!)")
     }
     
 }
