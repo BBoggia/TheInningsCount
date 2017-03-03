@@ -14,26 +14,33 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
 
     @IBOutlet weak var ageListTable: UITableView!
     
-    let ref = FIRDatabase.database().reference().child("Database")
-    var ageList: Array<String> = []
+    let ref = FIRDatabase.database().reference()
+    var ageList = [String]()
+    var databaseHandle: FIRDatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.observe(.value, with: {
-            snapshot in
-            var ageGroups = [String]()
-            for ageList in snapshot.children {
-                ageGroups.append((ageList as AnyObject).key)
+        self.ageListTable.delegate = self
+        self.ageListTable.dataSource = self
+        
+        databaseHandle = ref.child("Database").observe(.value, with: { (snapshot) in
+        
+            let list = snapshot.value as? String
+            
+            if let actualList = list {
+                self.ageList.append(actualList)
+                self.ageListTable.reloadData()
             }
-            print(ageGroups)
         })
+        print(ageList)
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+
     
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -50,11 +57,23 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath as IndexPath) 
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
         
-        cell.textLabel?.text = ageList[indexPath.row]
+        cell?.textLabel?.text = ageList[indexPath.row]
         
-        return cell
+        return cell!
     }
 
+}
+
+class UserCell: UITableViewCell {
+    
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
 }
