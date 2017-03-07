@@ -16,24 +16,25 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     let ref = FIRDatabase.database().reference()
     var ageList = [String]()
-    var databaseHandle: FIRDatabaseHandle?
+    //var databaseHandle: FIRDatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.ageListTable.delegate = self
-        self.ageListTable.dataSource = self
-        
-        databaseHandle = ref.child("Database").observe(.value, with: { (snapshot) in
-        
-            let list = snapshot.value as? String
+        ref.child("Database").observeSingleEvent(of: .value, with: { (snapshot) in
             
-            if let actualList = list {
-                self.ageList.append(actualList)
-                self.ageListTable.reloadData()
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                self.ageList.append(snap.key)
+                print(self.ageList)
+                print(snap.key)
             }
         })
-        print(ageList)
+        
+        //print(ageList)
+        
+        self.ageListTable.delegate = self
+        self.ageListTable.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,23 +58,11 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell")
+        let cell = ageListTable.dequeueReusableCell(withIdentifier: "cell")
         
         cell?.textLabel?.text = ageList[indexPath.row]
         
         return cell!
     }
 
-}
-
-class UserCell: UITableViewCell {
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
 }
