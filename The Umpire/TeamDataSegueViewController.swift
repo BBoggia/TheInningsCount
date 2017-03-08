@@ -16,6 +16,7 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     let ref = FIRDatabase.database().reference()
     var ageList = [String]()
+    var ageToPass: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,6 +64,25 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         cell?.textLabel?.text = ageList[indexPath.row]
         
         return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let indexPath = ageListTable.indexPathForSelectedRow
+        let currentCell = ageListTable.cellForRow(at: indexPath!) as UITableViewCell!
+        
+        ageToPass = currentCell?.textLabel?.text
+        
+        performSegue(withIdentifier: "toTeamSelect", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toTeamSelect" {
+            
+            var viewController = segue.destination as! TeamSelectViewController
+            
+            TeamSelectViewController.team = ageToPass
+        }
     }
 
 }

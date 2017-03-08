@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2C4AFA7746AE3CA7E9DB8F80 /* Pods_The_UmpireTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */; };
-		5E43E73E1E69D8AD002A3C8F /* dataTemplate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E43E73D1E69D8AD002A3C8F /* dataTemplate.swift */; };
+		5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2667151E70886E008D59AF /* TeamSelectViewController.swift */; };
 		5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */; };
 		9D841D7BFC9F785DA7BE0498 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */; };
 		AE84E697B2226C0E3A93D0F6 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */; };
@@ -48,7 +48,7 @@
 /* Begin PBXFileReference section */
 		2D7CFC3D96BA8F7D6F665565 /* Pods-The UmpireUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		4AA4B279A195069BF78E312A /* Pods-The UmpireUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.release.xcconfig"; sourceTree = "<group>"; };
-		5E43E73D1E69D8AD002A3C8F /* dataTemplate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = dataTemplate.swift; sourceTree = "<group>"; };
+		5E2667151E70886E008D59AF /* TeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamSelectViewController.swift; sourceTree = "<group>"; };
 		5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamDataSegueViewController.swift; sourceTree = "<group>"; };
 		63E0EA1861921629237BDE4F /* Pods-The Umpire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.debug.xcconfig"; sourceTree = "<group>"; };
 		9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Umpire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -164,7 +164,7 @@
 				DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */,
 				DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */,
 				5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */,
-				5E43E73D1E69D8AD002A3C8F /* dataTemplate.swift */,
+				5E2667151E70886E008D59AF /* TeamSelectViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
@@ -478,8 +478,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
-				5E43E73E1E69D8AD002A3C8F /* dataTemplate.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
+				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */,
 				5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */,
 				DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */,
