@@ -16,22 +16,11 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     let ref = FIRDatabase.database().reference()
     var ageList = [String]()
-    //var databaseHandle: FIRDatabaseHandle?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.child("Database").observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
-                self.ageList.append(snap.key)
-                print(self.ageList)
-                print(snap.key)
-            }
-        })
-        
-        //print(ageList)
+        dataObserver()
         
         self.ageListTable.delegate = self
         self.ageListTable.dataSource = self
@@ -42,7 +31,18 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         // Dispose of any resources that can be recreated.
     }
 
-    
+    func dataObserver() {
+        ref.child("Database").observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                self.ageList.append(snap.key)
+                print(self.ageList)
+                print(snap.key)
+                self.ageListTable.reloadData()
+            }
+        })
+    }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Potentially incomplete method implementation.
