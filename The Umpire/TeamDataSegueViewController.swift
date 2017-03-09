@@ -79,9 +79,9 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toTeamSelect" {
             
-            var viewController = segue.destination as! TeamSelectViewController
+            let viewController = segue.destination as! TeamSelectViewController
             
-            TeamSelectViewController.team = ageToPass
+            viewController.age = ageToPass
         }
     }
 

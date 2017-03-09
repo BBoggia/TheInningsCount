@@ -26,7 +26,6 @@ class b810DataEntryViewController: UIViewController {
     
     @IBAction func submit(_ sender: Any) {
         
-        //configureData()
         sendData()
     }
     
@@ -45,23 +44,6 @@ class b810DataEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*func configureData() {
-        
-        let playerRef = ref.child(teamName).child(playerNumberTextField.text!)
-        
-        playerRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            self.currentData = (snapshot.value as? Int)!
-            
-            let newData = self.currentData + (Int(self.pitchCountTextField.text!))!
-            
-            self.currentData = newData
-            
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-    }*/
-    
     func sendData() {
         mainRef.reference().child("User-Team/").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -71,10 +53,9 @@ class b810DataEntryViewController: UIViewController {
             print(error.localizedDescription)
         }
 
-        let teamName = self.teamName
-        let playerRef = ref.child("\(teamName)/\(playerNumberTextField.text!)")
+        let dataRef = ref.child(teamName)
         
-        playerRef.child("\(self.timeStamp)").setValue("\(pitchCountTextField.text!)")
+        dataRef.child("\(timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
     }
 
 }
