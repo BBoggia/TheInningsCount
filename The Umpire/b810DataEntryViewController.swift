@@ -53,9 +53,9 @@ class b810DataEntryViewController: UIViewController {
             print(error.localizedDescription)
         }
 
-        let dataRef = ref.child(teamName)
+        //let dataRef = ref.child(teamName)
         
-        dataRef.child("\(timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
+        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
     }
 
 }
