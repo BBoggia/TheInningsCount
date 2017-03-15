@@ -8,15 +8,19 @@
 
 import UIKit
 import Firebase
+import FirebaseAuth
 import FirebaseDatabase
 
-class b1012DataEntryViewController: UIViewController {
+class b1012DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database().reference().child("Database/baseball1012/")
     let mainRef = FIRDatabase.database()
     var currentData = 0
     let user = FIRAuth.auth()?.currentUser
     var userUID = FIRAuth.auth()?.currentUser?.uid
+    let dateFormatter = DateFormatter()
+    var currentDate = Date()
+    
     var teamName = "team"
     var timeStamp = ""
     
@@ -25,18 +29,22 @@ class b1012DataEntryViewController: UIViewController {
     
     @IBAction func submit(_ sender: Any) {
         
-        //configureData()
         sendData()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        playerNumberTextField.delegate = self
+        pitchCountTextField.delegate = self
+        
         let teamNameRef = mainRef.reference().child("User-Team/\(userUID!)")
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.value as! String!
         })
         
-        timeStamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .short)
+        dateFormatter.dateFormat = "MM-dd-yy hh:mm:ss a"
+        timeStamp = dateFormatter.string(from: currentDate)
     }
     
     override func didReceiveMemoryWarning() {
@@ -44,36 +52,9 @@ class b1012DataEntryViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    /*func configureData() {
-     
-     let playerRef = ref.child(teamName).child(playerNumberTextField.text!)
-     
-     playerRef.observeSingleEvent(of: .value, with: { (snapshot) in
-     
-     self.currentData = (snapshot.value as? Int)!
-     
-     let newData = self.currentData + (Int(self.pitchCountTextField.text!))!
-     
-     self.currentData = newData
-     
-     }) { (error) in
-     print(error.localizedDescription)
-     }
-     }*/
-    
     func sendData() {
-        mainRef.reference().child("User-Team/").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            self.teamName = snapshot.value as! String!
-            
-        }) { (error) in
-            print(error.localizedDescription)
-        }
         
-        let teamName = self.teamName
-        let playerRef = ref.child("\(teamName)/\(playerNumberTextField.text!)")
-        
-        playerRef.child("\(self.timeStamp)").setValue("\(pitchCountTextField.text!)")
+        FIRDatabase.database().reference().child("Database").child("baseball1012").child(teamName).child("\(self.timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
     }
     
 }

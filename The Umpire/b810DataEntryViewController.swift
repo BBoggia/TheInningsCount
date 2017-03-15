@@ -11,13 +11,16 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class b810DataEntryViewController: UIViewController {
+class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database().reference().child("Database/baseball810/")
     let mainRef = FIRDatabase.database()
     var currentData = 0
     let user = FIRAuth.auth()?.currentUser
     var userUID = FIRAuth.auth()?.currentUser?.uid
+    let dateFormatter = DateFormatter()
+    var currentDate = Date()
+    
     var teamName = "team"
     var timeStamp = ""
     
@@ -31,12 +34,17 @@ class b810DataEntryViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        playerNumberTextField.delegate = self
+        pitchCountTextField.delegate = self
+        
         let teamNameRef = mainRef.reference().child("User-Team/\(userUID!)")
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.value as! String!
         })
         
-        timeStamp = DateFormatter.localizedString(from: NSDate() as Date, dateStyle: .short, timeStyle: .short)
+        dateFormatter.dateFormat = "MM-dd-yy hh:mm:ss a"
+        timeStamp = dateFormatter.string(from: currentDate)
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,17 +53,8 @@ class b810DataEntryViewController: UIViewController {
     }
     
     func sendData() {
-        mainRef.reference().child("User-Team/").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            self.teamName = snapshot.value as! String!
-            
-        }) { (error) in
-            print(error.localizedDescription)
-        }
-
-        //let dataRef = ref.child(teamName)
         
-        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
+        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(self.timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
     }
 
 }

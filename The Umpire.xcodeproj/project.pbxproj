@@ -647,6 +647,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -661,6 +662,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";

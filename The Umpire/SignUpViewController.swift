@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database()
     let ref2 = FIRDatabase.database().reference().child("User-Team")
@@ -37,7 +37,11 @@ class SignUpViewController: UIViewController {
             autoLoginSegue()
         }
 
-        // Do any additional setup after loading the view.
+        emailField.delegate = self
+        passwordField.delegate = self
+        reTypePasswordField.delegate = self
+        cityField.delegate = self
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -112,6 +116,11 @@ class SignUpViewController: UIViewController {
         self.passwordField.text = ""
         
         self.performSegue(withIdentifier: "signupWork", sender: nil)
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true);
+        return false;
     }
 
 }
