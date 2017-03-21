@@ -1,8 +1,8 @@
 //
-//  s810DataEntryViewController.swift
+//  b1314DataEntryControllerViewController.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 1/12/17.
+//  Created by Branson Boggia on 3/20/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
 
@@ -11,9 +11,9 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class s810DataEntryViewController: UIViewController, UITextFieldDelegate {
+class b1314DataEntryViewController: UIViewController, UITextFieldDelegate {
     
-    let ref = FIRDatabase.database().reference().child("Database/softball810/")
+    let ref = FIRDatabase.database().reference().child("Database/baseball1314/")
     let mainRef = FIRDatabase.database()
     var currentData = 0
     let user = FIRAuth.auth()?.currentUser
@@ -29,7 +29,6 @@ class s810DataEntryViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var pitchCountTextField: UITextField!
     
     @IBAction func submit(_ sender: Any) {
-        
         sendData()
     }
     
@@ -55,8 +54,7 @@ class s810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        FIRDatabase.database().reference().child("Database").child("softball810").child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings Pitched: \(pitchCountTextField.text!)")
+        FIRDatabase.database().reference().child("Database").child("baseball1314").child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings Pitched: \(pitchCountTextField.text!)")
     }
     
 }
-

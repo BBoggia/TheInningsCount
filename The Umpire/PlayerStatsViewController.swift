@@ -64,8 +64,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = playerDataTable.dequeueReusableCell(withIdentifier: "cell")
         
-        cell?.textLabel?.text = dateList[indexPath.row]
-        cell?.detailTextLabel?.text = playerStatsList[indexPath.row]
+        cell?.textLabel?.text = playerStatsList[indexPath.row]
         
         return cell!
     }

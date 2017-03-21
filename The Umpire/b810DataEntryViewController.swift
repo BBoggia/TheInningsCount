@@ -22,7 +22,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     var currentDate = Date()
     
     var teamName = "team"
-    var timeStamp = ""
+    var userDate = ""
+    var databaseDate = ""
     
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
@@ -43,8 +44,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
             self.teamName = snapshot.value as! String!
         })
         
-        dateFormatter.dateFormat = "MM-dd-yy hh:mm:ss a"
-        timeStamp = dateFormatter.string(from: currentDate)
+        userDate = NSDate().userSafeDate
+        databaseDate = NSDate().datebaseSafeDate
     }
 
     override func didReceiveMemoryWarning() {
@@ -54,7 +55,27 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(self.timeStamp)").setValue("Player Number: \(playerNumberTextField.text!) Innings Pitched: \(pitchCountTextField.text!)")
+        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings Pitched: \(pitchCountTextField.text!)")
     }
 
+}
+
+extension DateFormatter {
+    convenience init(dateFormat: String) {
+        self.init()
+        self.dateFormat =  dateFormat
+    }
+}
+
+extension NSDate {
+    struct dates {
+        static let userSafeDate = DateFormatter(dateFormat: "MM-dd-yy hh:mm a")
+        static let databaseSafeDate = DateFormatter(dateFormat: "MM-dd-yy hh:mm:SSS a")
+    }
+    var userSafeDate: String {
+        return dates.userSafeDate.string(from: self as Date)
+    }
+    var datebaseSafeDate: String {
+        return dates.databaseSafeDate.string(from: self as Date)
+    }
 }

@@ -14,6 +14,8 @@
 		9D841D7BFC9F785DA7BE0498 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */; };
 		AE84E697B2226C0E3A93D0F6 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */; };
 		DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */; };
+		DB95F9291E80B41D0025569F /* b1314DataEntryControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */; };
+		DB95F92B1E80B4A90025569F /* s1314DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */; };
 		DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */; };
 		DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7951DF0BAC0003CF098 /* ViewController.swift */; };
 		DBEBF7991DF0BAC0003CF098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBEBF7971DF0BAC0003CF098 /* Main.storyboard */; };
@@ -59,6 +61,8 @@
 		B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Age-TeamDataSelectViewController.swift"; sourceTree = "<group>"; };
+		DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b1314DataEntryControllerViewController.swift; sourceTree = "<group>"; };
+		DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s1314DataEntryViewController.swift; sourceTree = "<group>"; };
 		DBEBF7901DF0BAC0003CF098 /* The Umpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Umpire.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBEBF7951DF0BAC0003CF098 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -163,8 +167,10 @@
 				DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */,
 				DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */,
 				DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */,
+				DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */,
 				DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */,
 				DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */,
+				DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */,
 				5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */,
 				5E2667151E70886E008D59AF /* TeamSelectViewController.swift */,
 				5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */,
@@ -480,12 +486,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DB95F9291E80B41D0025569F /* b1314DataEntryControllerViewController.swift in Sources */,
 				5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */,
 				5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */,
+				DB95F92B1E80B4A90025569F /* s1314DataEntryViewController.swift in Sources */,
 				DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */,
 				DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */,
 				DBFD3ED31E2854F40024DD6D /* s810DataEntryViewController.swift in Sources */,
