@@ -14,7 +14,7 @@ import FirebaseDatabase
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database()
-    let ref2 = FIRDatabase.database().reference().child("User-Team")
+    let ref2 = FIRDatabase.database().reference().child("User-Team").child("Coach")
     let loginRef = ViewController()
     
     var userCity: String!
@@ -51,7 +51,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func createAccount() {
         
-        if self.emailField.text == "" || self.passwordField.text == "" || self.reTypePasswordField.text == "" || self.cityField.text == "" {
+        if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.cityField.text?.isEmpty)! {
             
             let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
             
