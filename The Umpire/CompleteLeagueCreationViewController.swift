@@ -20,7 +20,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     var leagueName: String!
     var email: String!
     var password: String!
-    var teams = ["test", "test1"]
+    var teams = [String]()
     var adminTeam: String!
     var changedData: String!
     
@@ -32,23 +32,18 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     @IBAction func changeEmail(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new email you want to use.", editedField: emailDisplay)
-        email = changedData
-        emailDisplay.text = email
     }
     @IBAction func changePassword(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new password you want to use.", editedField: passwordDisplay)
-        password = changedData
-        passwordDisplay.text = password
     }
     @IBAction func changeLeagueName(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new league name you want to use.", editedField: leagueNameDisplay)
-        leagueName = changedData
-        leagueNameDisplay.text = leagueName
     }
     @IBAction func adminTeam(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new name of your team.", editedField: adminsTeam)
-        adminTeam = changedData
-        adminsTeam.text = adminTeam
+    }
+    @IBAction func confirm(_ sender: Any) {
+        
     }
     
     override func viewDidLoad() {
@@ -56,7 +51,6 @@ class CompleteLeagueCreationViewController: UIViewController {
         emailDisplay.text = email
         passwordDisplay.text = password
         leagueNameDisplay.text = leagueName
-        teams.removeAll()
         teamsDisplay.text = teams.joined(separator: ", ")
         adminsTeam.text = adminTeam
     }
@@ -76,7 +70,7 @@ class CompleteLeagueCreationViewController: UIViewController {
                 
             } else {
                 
-                self.displayMyAlertMessage(title: "Oops!", userMessage: (error?.localizedDescription)!, editedField: self.emailDisplay)
+                self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
             }
         })
     }
@@ -105,6 +99,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
                 self.changedData = myAlert.textFields![0].text
+                editedField.text = self.changedData
             }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -112,7 +107,21 @@ class CompleteLeagueCreationViewController: UIViewController {
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
         
+        self.present(myAlert, animated: true, completion: nil)
         
+    }
+    
+    func displayMyAlertMessageAlternate(title:String, userMessage:String)
+    {
+        
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default, handler: nil)
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
         
         self.present(myAlert, animated: true, completion: nil)
         
