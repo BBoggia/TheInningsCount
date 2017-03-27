@@ -16,7 +16,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     var leagueName: String!
     var email: String!
     var password: String!
-    var adminsTeam: String!
+    var adminsTeam = ""
     var textLabelTeams = ["test", "test"]
     @IBOutlet weak var teamDisplay: UILabel!
     
@@ -41,7 +41,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createTeams(_ sender: Any) {
-        adminsTeam = adminTeam.text
+        adminsTeam = adminTeam.text!
         
         performSegue(withIdentifier: "fromTC", sender: nil)
     }

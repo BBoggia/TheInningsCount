@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 class CompleteLeagueCreationViewController: UIViewController {
 
-    let ref = FIRDatabase.database()
+    let ref = FIRDatabase.database().reference()
     let ref2 = FIRDatabase.database().reference().child("User-Team").child("Admin")
     let loginRef = ViewController()
     
@@ -21,7 +21,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     var email: String!
     var password: String!
     var teams = [String]()
-    var adminTeam: String!
+    var adminTeam = ""
     var changedData: String!
     
     @IBOutlet weak var emailDisplay: UILabel!
@@ -53,6 +53,10 @@ class CompleteLeagueCreationViewController: UIViewController {
         leagueNameDisplay.text = leagueName
         teamsDisplay.text = teams.joined(separator: ", ")
         adminsTeam.text = adminTeam
+        
+        while FIRAuth.auth()?.currentUser != nil {
+            saveUID()
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,11 +66,12 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     func createAccount() {
         
-        FIRAuth.auth()?.createUser(withEmail: email, password: password, completion: { (user, error) in
+        FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
             if error == nil {
                 
-                self.saveUID()
-                //self.autoLoginSegue()
+                for team in self.teams {
+                    self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(team)
+                }
                 
             } else {
                 
@@ -80,7 +85,11 @@ class CompleteLeagueCreationViewController: UIViewController {
         let user = FIRAuth.auth()?.currentUser
         let userUID = user?.uid
         
-        ref2.child("/\(userUID!)").setValue(adminTeam)
+        if adminTeam == "" && adminsTeam.text == "" {
+            ref2.child("/\(userUID!)").setValue("N/A")
+        } else {
+            ref2.child("/\(userUID!)").setValue(adminTeam)
+        }
         
         print(userUID!)
     }
