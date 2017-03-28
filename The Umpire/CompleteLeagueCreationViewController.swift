@@ -24,6 +24,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     var adminTeam = ""
     var changedData: String!
     var ageGroups = [String]()
+    var randomGenNum: String!
     
     @IBOutlet weak var emailDisplay: UILabel!
     @IBOutlet weak var passwordDisplay: UILabel!
@@ -46,6 +47,26 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     @IBAction func confirm(_ sender: Any) {
         createAccount()
+        autoSignIn()
+        randomString()
+        
+        let myAlert = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
+        action in
+            
+        }
+        myAlert.addAction(okAction)
+        self.present(myAlert, animated: true, completion: nil)
+        
+        while FIRAuth.auth()?.currentUser != nil {
+            for item in self.teams {
+                for item2 in self.ageGroups {
+                    self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+                }
+            }
+        }
+        
+        self.performSegue(withIdentifier: "fromCL", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -70,18 +91,12 @@ class CompleteLeagueCreationViewController: UIViewController {
         
         FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
             if error == nil {
-                
+                self.autoSignIn()
+                self.saveUID()
             } else {
-                
                 self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
             }
         })
-        
-        for item in self.teams {
-            for item2 in self.ageGroups {
-                self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
-            }
-        }
     }
     
     func saveUID() {
@@ -96,6 +111,30 @@ class CompleteLeagueCreationViewController: UIViewController {
         }
         
         print(userUID!)
+    }
+    
+    func autoSignIn() {
+        FIRAuth.auth()?.signIn(withEmail: self.emailDisplay.text!, password: self.passwordDisplay.text!, completion: {
+            (user, error) in
+            if error == nil {
+            }
+        })
+    }
+    
+    func randomString() {
+        
+        let letters : NSString = "0123456789"
+        let len = UInt32(letters.length)
+        
+        var randomString = ""
+        
+        for _ in 0 ..< 5 {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+        
+        self.randomGenNum = randomString
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
