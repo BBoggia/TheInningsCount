@@ -1,8 +1,8 @@
 //
-//  TeamNameViewController.swift
+//  TeamAgeGroupCreatorViewController.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 3/25/17.
+//  Created by Branson Boggia on 3/27/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
 
@@ -11,48 +11,45 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class TeamNameViewController: UIViewController, UITextFieldDelegate {
+class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     
     var leagueName: String!
     var email: String!
     var password: String!
-    var adminsTeam = ""
-    var textLabelTeams = ["test", "test"]
-    @IBOutlet weak var teamDisplay: UILabel!
+    var adminTeam = ""
+    var textLabelGroups = [""]
+    var teams = [String]()
     
-    @IBOutlet weak var teamName: UITextField!
-    @IBOutlet weak var adminTeam: UITextField!
+    @IBOutlet weak var groupDisplay: UILabel!
+    @IBOutlet weak var groupTextField: UITextField!
     
-    @IBAction func addTeam(_ sender: Any) {
-        textLabelTeams.append(teamName.text!)
-        teamDisplay.text = textLabelTeams.joined(separator: ", ")
-        teamName.text?.removeAll()
+    @IBAction func addGroup(_ sender: Any) {
+        textLabelGroups.append(groupTextField.text!)
+        groupDisplay.text = textLabelGroups.joined(separator: ", ")
+        groupTextField.text?.removeAll()
     }
     
-    @IBAction func removeTeam(_ sender: Any) {
-        if textLabelTeams.count < 1 {
+    @IBAction func removeGroup(_ sender: Any) {
+        if textLabelGroups.count < 1 {
             
             displayMyAlertMessage(title: "Oops!", userMessage: "There are no more teams in the list.")
             
         } else {
-            textLabelTeams.removeLast()
-            teamDisplay.text = textLabelTeams.joined(separator: ", ")
+            textLabelGroups.removeLast()
+            groupDisplay.text = textLabelGroups.joined(separator: ", ")
         }
     }
     
-    @IBAction func createTeams(_ sender: Any) {
-        adminsTeam = adminTeam.text!
-        
-        performSegue(withIdentifier: "fromTC", sender: nil)
+    @IBAction func createGroups(_ sender: Any) {
+        performSegue(withIdentifier: "fromAC", sender: nil)
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.teamName.delegate = self
-        self.adminTeam.delegate = self
+        self.groupTextField.delegate = self
         
-        textLabelTeams.removeAll()
+        textLabelGroups.removeAll()
         
     }
     
@@ -67,15 +64,16 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "fromTC" {
-            var completeVC: TeamAgeGroupCreatorViewController
+        if segue.identifier == "fromAC" {
+            var completeVC: CompleteLeagueCreationViewController
             
-            completeVC = segue.destination as! TeamAgeGroupCreatorViewController
+            completeVC = segue.destination as! CompleteLeagueCreationViewController
             completeVC.leagueName = leagueName as String
             completeVC.email = email as String
             completeVC.password = password as String
-            completeVC.teams = textLabelTeams as Array
-            completeVC.adminTeam = adminsTeam as String
+            completeVC.teams = teams as Array
+            completeVC.adminTeam = adminTeam as String
+            completeVC.ageGroups = textLabelGroups as Array
         }
     }
     

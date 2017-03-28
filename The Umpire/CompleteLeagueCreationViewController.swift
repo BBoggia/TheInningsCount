@@ -23,12 +23,14 @@ class CompleteLeagueCreationViewController: UIViewController {
     var teams = [String]()
     var adminTeam = ""
     var changedData: String!
+    var ageGroups = [String]()
     
     @IBOutlet weak var emailDisplay: UILabel!
     @IBOutlet weak var passwordDisplay: UILabel!
     @IBOutlet weak var leagueNameDisplay: UILabel!
-    @IBOutlet weak var teamsDisplay: UILabel! //THIS IS BROKE
+    @IBOutlet weak var teamsDisplay: UILabel!
     @IBOutlet weak var adminsTeam: UILabel!
+    @IBOutlet weak var leagueAges: UILabel!
     
     @IBAction func changeEmail(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new email you want to use.", editedField: emailDisplay)
@@ -43,7 +45,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new name of your team.", editedField: adminsTeam)
     }
     @IBAction func confirm(_ sender: Any) {
-        
+        createAccount()
     }
     
     override func viewDidLoad() {
@@ -53,6 +55,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         leagueNameDisplay.text = leagueName
         teamsDisplay.text = teams.joined(separator: ", ")
         adminsTeam.text = adminTeam
+        leagueAges.text = ageGroups.joined(separator: ", ")
         
         while FIRAuth.auth()?.currentUser != nil {
             saveUID()
@@ -61,7 +64,6 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func createAccount() {
@@ -69,15 +71,17 @@ class CompleteLeagueCreationViewController: UIViewController {
         FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
             if error == nil {
                 
-                for team in self.teams {
-                    self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(team)
-                }
-                
             } else {
                 
                 self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
             }
         })
+        
+        for item in self.teams {
+            for item2 in self.ageGroups {
+                self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+            }
+        }
     }
     
     func saveUID() {
