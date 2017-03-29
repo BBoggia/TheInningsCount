@@ -64,6 +64,8 @@ class CompleteLeagueCreationViewController: UIViewController {
                     self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
                 }
             }
+            
+            self.ref.child("LeagueCodes").child(leagueNameDisplay.text!).setValue(randomGenNum!)
         }
         
         self.performSegue(withIdentifier: "fromCL", sender: nil)
