@@ -46,9 +46,9 @@ class CompleteLeagueCreationViewController: UIViewController {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new name of your team.", editedField: adminsTeam)
     }
     @IBAction func confirm(_ sender: Any) {
+        randomString()
         createAccount()
         autoSignIn()
-        randomString()
         
         let myAlert = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
@@ -57,18 +57,9 @@ class CompleteLeagueCreationViewController: UIViewController {
         }
         myAlert.addAction(okAction)
         self.present(myAlert, animated: true, completion: nil)
-        
-        while FIRAuth.auth()?.currentUser != nil {
-            for item in self.teams {
-                for item2 in self.ageGroups {
-                    self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
-                }
-            }
-            
-            self.ref.child("LeagueCodes").child(leagueNameDisplay.text!).setValue(randomGenNum!)
-        }
-        
         self.performSegue(withIdentifier: "fromCL", sender: nil)
+        
+        performSegue(withIdentifier: "fromCL", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -80,9 +71,6 @@ class CompleteLeagueCreationViewController: UIViewController {
         adminsTeam.text = adminTeam
         leagueAges.text = ageGroups.joined(separator: ", ")
         
-        while FIRAuth.auth()?.currentUser != nil {
-            saveUID()
-        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -95,6 +83,13 @@ class CompleteLeagueCreationViewController: UIViewController {
             if error == nil {
                 self.autoSignIn()
                 self.saveUID()
+            
+                for item in self.teams {
+                    for item2 in self.ageGroups {
+                        self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+                    }
+                }
+                self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
             } else {
                 self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
             }
