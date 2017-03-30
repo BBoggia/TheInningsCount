@@ -33,7 +33,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         while FIRAuth.auth()?.currentUser != nil {
-            saveUID()
             autoLoginSegue()
         }
 
@@ -72,7 +71,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                 if error == nil {
                     
-                    self.saveUID()
                     self.autoLoginSegue()
                     
                 } else {
@@ -97,17 +95,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 
             }
         })
-    }
-    
-    func saveUID() {
-        
-        let user = FIRAuth.auth()?.currentUser
-        let userUID = user?.uid
-        
-        self.userCity = self.cityField.text
-        ref2.child("/\(userUID!)").setValue(userCity)
-        
-        print(userUID!)
     }
     
     func autoLoginSegue() {

@@ -89,6 +89,9 @@ class CompleteLeagueCreationViewController: UIViewController {
                         self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
                     }
                 }
+                for team in self.teams {
+                    self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).setValue("team")
+                }
                 self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
             } else {
                 self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)

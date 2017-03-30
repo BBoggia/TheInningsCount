@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -24,10 +25,10 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        dataObserver()
+        
         teamTableView.delegate = self
         teamTableView.dataSource = self
-        
-        dataObserver()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,9 +41,25 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             self.leagueName = snapshot.value as! String!
         })
         
-        ref.child("LeagueDatabase").child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
-            
+        ref.child("LeagueTeamLists").child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                self.teamList.append(snap.key)
+                print(self.teamList)
+                print(snap.key)
+                self.teamTableView.reloadData()
+            }
         })
+    }
+    
+    func saveUID() {
+        
+        let user = FIRAuth.auth()?.currentUser
+        let userUID = user?.uid
+        
+        ref.child("User-Team").child("Coach").child("/\(userUID!)").setValue(self.selectedTeam)
+        
+        print(userUID!)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -72,6 +89,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
         
         selectedTeam = currentCell?.textLabel?.text
+        
+        saveUID()
         
         performSegue(withIdentifier: "toTeamSelect", sender: nil)
     }

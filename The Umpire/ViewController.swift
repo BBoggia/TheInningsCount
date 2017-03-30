@@ -41,7 +41,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     self.emailField.text = ""
                     self.passwordField.text = ""
                     
-                    self.performSegue(withIdentifier: "toSport", sender: nil)
+                    self.performSegue(withIdentifier: "toMC", sender: nil)
                     
                 } else {
                     
