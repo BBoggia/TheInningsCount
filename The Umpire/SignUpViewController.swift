@@ -14,7 +14,7 @@ import FirebaseDatabase
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database()
-    let ref2 = FIRDatabase.database().reference().child("User-Team").child("Coach")
+    let ref2 = FIRDatabase.database().reference().child("User Data")
     let loginRef = ViewController()
     
     var userCity: String!
@@ -23,7 +23,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var reTypePasswordField: UITextField!
-    @IBOutlet weak var cityField: UITextField!
+    @IBOutlet weak var leagueCodeField: UITextField!
     @IBAction func createAccountButton(_ sender: Any) {
         createAccount()
         autoSignIn()
@@ -32,14 +32,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        while FIRAuth.auth()?.currentUser != nil {
-            autoLoginSegue()
-        }
+        /*while FIRAuth.auth()?.currentUser != nil {
+            self.performSegue(withIdentifier: "toTeamPick", sender: nil)
+        }*/
 
         emailField.delegate = self
         passwordField.delegate = self
         reTypePasswordField.delegate = self
-        cityField.delegate = self
+        leagueCodeField.delegate = self
         
     }
 
@@ -50,7 +50,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func createAccount() {
         
-        if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.cityField.text?.isEmpty)! {
+        if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
             
             let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
             
@@ -71,7 +71,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                 if error == nil {
                     
-                    self.autoLoginSegue()
+                    self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
                     
                 } else {
                     
@@ -97,17 +97,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         })
     }
     
-    func autoLoginSegue() {
-        
-        self.emailField.text = ""
-        self.passwordField.text = ""
-        
-        self.performSegue(withIdentifier: "signupWork", sender: nil)
-    }
-    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "toTeamSelect" {
+            
+            let vC = segue.destination as! SignupTeamSelectViewController
+            
+            vC.randomNum = leagueCodeField.text!
+        }
     }
 
 }

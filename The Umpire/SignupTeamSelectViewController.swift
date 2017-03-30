@@ -21,6 +21,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var leagueName: String!
     
     let ref = FIRDatabase.database().reference()
+    let ref2 = FIRDatabase.database().reference().child("User Data")
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,10 +39,13 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     }
     
     func dataObserver() {
-        ref.child(randomNum).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueCodes").child(randomNum).observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String!
+            self.populateView()
         })
-        
+    }
+    
+    func populateView() {
         ref.child("LeagueTeamLists").child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
@@ -57,7 +62,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let user = FIRAuth.auth()?.currentUser
         let userUID = user?.uid
         
-        ref.child("User-Team").child("Coach").child("/\(userUID!)").setValue(self.selectedTeam)
+        ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)
+        ref2.child("/\(userUID!)").child("League").setValue(leagueName)
         
         print(userUID!)
     }

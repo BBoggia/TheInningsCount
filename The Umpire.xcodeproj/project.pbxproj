@@ -19,8 +19,7 @@
 		DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */; };
 		DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */; };
 		DB34DE211E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */; };
-		DB95F9291E80B41D0025569F /* b1314DataEntryControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */; };
-		DB95F92B1E80B4A90025569F /* s1314DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */; };
+		DB34DE231E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */; };
 		DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */; };
 		DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7951DF0BAC0003CF098 /* ViewController.swift */; };
 		DBEBF7991DF0BAC0003CF098 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DBEBF7971DF0BAC0003CF098 /* Main.storyboard */; };
@@ -31,9 +30,6 @@
 		DBEBF7C21DF0BAFD003CF098 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */; };
 		DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7C31DF0D239003CF098 /* SignUpViewController.swift */; };
 		DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */; };
-		DBFD3ED11E2854CC0024DD6D /* b1012DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */; };
-		DBFD3ED31E2854F40024DD6D /* s810DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */; };
-		DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,8 +67,7 @@
 		DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteLeagueCreationViewController.swift; sourceTree = "<group>"; };
 		DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Age-TeamDataSelectViewController.swift"; sourceTree = "<group>"; };
 		DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamAgeGroupCreatorViewController.swift; sourceTree = "<group>"; };
-		DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b1314DataEntryControllerViewController.swift; sourceTree = "<group>"; };
-		DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s1314DataEntryViewController.swift; sourceTree = "<group>"; };
+		DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularTeamSelectViewController.swift; sourceTree = "<group>"; };
 		DBEBF7901DF0BAC0003CF098 /* The Umpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Umpire.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DBEBF7951DF0BAC0003CF098 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -89,9 +84,6 @@
 		DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBEBF7C31DF0D239003CF098 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b810DataEntryViewController.swift; sourceTree = "<group>"; };
-		DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b1012DataEntryViewController.swift; sourceTree = "<group>"; };
-		DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s810DataEntryViewController.swift; sourceTree = "<group>"; };
-		DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = s1012DataEntryViewController.swift; sourceTree = "<group>"; };
 		F8C6D987970F5A7355BF862E /* Pods-The Umpire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.release.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -178,22 +170,18 @@
 				DB0BF1711E86FAB400F5084D /* TeamNameViewController.swift */,
 				DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */,
 				DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */,
-				DBFD3ED01E2854CC0024DD6D /* b1012DataEntryViewController.swift */,
-				DB95F9281E80B41D0025569F /* b1314DataEntryControllerViewController.swift */,
-				DBFD3ED21E2854F40024DD6D /* s810DataEntryViewController.swift */,
-				DBFD3ED41E2855200024DD6D /* s1012DataEntryViewController.swift */,
-				DB95F92A1E80B4A90025569F /* s1314DataEntryViewController.swift */,
 				5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */,
 				5E2667151E70886E008D59AF /* TeamSelectViewController.swift */,
 				5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */,
 				DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */,
 				DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */,
+				5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */,
+				DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
 				DBEBF79F1DF0BAC0003CF098 /* Info.plist */,
 				DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */,
-				5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */,
 			);
 			path = "The Umpire";
 			sourceTree = "<group>";
@@ -501,23 +489,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DB95F9291E80B41D0025569F /* b1314DataEntryControllerViewController.swift in Sources */,
 				5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */,
 				DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */,
-				DBFD3ED51E2855200024DD6D /* s1012DataEntryViewController.swift in Sources */,
 				5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */,
 				DB34DE211E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift in Sources */,
+				DB34DE231E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift in Sources */,
 				DB0BF1721E86FAB400F5084D /* TeamNameViewController.swift in Sources */,
-				DB95F92B1E80B4A90025569F /* s1314DataEntryViewController.swift in Sources */,
 				DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */,
 				DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */,
 				DB0BF1701E86FA9F00F5084D /* LeagueCreationViewController.swift in Sources */,
-				DBFD3ED31E2854F40024DD6D /* s810DataEntryViewController.swift in Sources */,
-				DBFD3ED11E2854CC0024DD6D /* b1012DataEntryViewController.swift in Sources */,
 				DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

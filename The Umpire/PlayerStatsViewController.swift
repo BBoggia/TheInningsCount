@@ -9,21 +9,27 @@
 import UIKit
 import Firebase
 import FirebaseDatabase
+import FirebaseAuth
 
 class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var playerDataTable: UITableView!
     
     let ref = FIRDatabase.database().reference()
-    var dateList = [String]()
+    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     var playerStatsList = [String]()
     var age: String!
-    var playerData: String!
+    var league: String!
+    var team: String!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataObserver()
+        ref.child("User Data").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.value as! String!
+            self.dataObserver()
+        })
         
         self.playerDataTable.delegate = self
         self.playerDataTable.dataSource = self
@@ -35,16 +41,14 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func dataObserver() {
-        ref.child("Database").child(age).child(playerData).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueDatabase").child(league).child(age).child(team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.dateList.append(snap.key)
                 self.playerStatsList.append(snap.value as! String)
-                print(self.dateList)
-                print(self.playerStatsList)
                 self.playerDataTable.reloadData()
             }
+            print(self.playerStatsList)
         })
     }
     
@@ -57,7 +61,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return dateList.count
+        return playerStatsList.count
     }
     
     

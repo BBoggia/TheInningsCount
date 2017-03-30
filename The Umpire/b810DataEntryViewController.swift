@@ -13,24 +13,27 @@ import FirebaseDatabase
 
 class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
-    let ref = FIRDatabase.database().reference().child("Database/baseball810/")
+    let ref = FIRDatabase.database().reference()
     let mainRef = FIRDatabase.database()
-    var currentData = 0
     let user = FIRAuth.auth()?.currentUser
-    var userUID = FIRAuth.auth()?.currentUser?.uid
+    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     let dateFormatter = DateFormatter()
     var currentDate = Date()
     
-    var teamName = "team"
+    var teamName:String!
+    var leagueName:String!
     var userDate = ""
     var databaseDate = ""
+    var age:String!
     
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
+    @IBOutlet weak var titleField: UILabel!
     
     @IBAction func submit(_ sender: Any) {
         
         sendData()
+        self.view.endEditing(true)
     }
     
     override func viewDidLoad() {
@@ -39,10 +42,16 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         playerNumberTextField.delegate = self
         pitchCountTextField.delegate = self
         
-        let teamNameRef = mainRef.reference().child("User-Team/\(userUID!)")
+        let teamNameRef = mainRef.reference().child("User Data").child(userUID!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            self.teamName = snapshot.value as! String!
+            self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
+            self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
+            
         })
+        
+        titleField.text = age!
+        
+        self.navigationController?.title = leagueName
         
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
@@ -55,7 +64,12 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        FIRDatabase.database().reference().child("Database").child("baseball810").child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings Pitched: \(pitchCountTextField.text!)")
+        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        self.view.endEditing(true);
+        return false;
     }
 
 }

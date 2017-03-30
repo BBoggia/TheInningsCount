@@ -14,7 +14,7 @@ import FirebaseDatabase
 class CompleteLeagueCreationViewController: UIViewController {
 
     let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("User-Team").child("Admin")
+    let ref2 = FIRDatabase.database().reference().child("User Data")
     let loginRef = ViewController()
     
     var leagueName: String!
@@ -47,17 +47,9 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     @IBAction func confirm(_ sender: Any) {
         randomString()
+        checkRandomString()
         createAccount()
         autoSignIn()
-        
-        let myAlert = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
-        action in
-            
-        }
-        myAlert.addAction(okAction)
-        self.present(myAlert, animated: true, completion: nil)
-        self.performSegue(withIdentifier: "fromCL", sender: nil)
         
         performSegue(withIdentifier: "fromCL", sender: nil)
     }
@@ -79,24 +71,30 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     func createAccount() {
         
-        FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
-            if error == nil {
-                self.autoSignIn()
-                self.saveUID()
-            
-                for item in self.teams {
-                    for item2 in self.ageGroups {
-                        self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+        if teams.contains(adminsTeam.text!) {
+            FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
+                if error == nil {
+                    self.autoSignIn()
+                    self.saveUID()
+                    
+                    for item in self.teams {
+                        for item2 in self.ageGroups {
+                            self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+                        }
                     }
+                    for team in self.teams {
+                        self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).setValue("team")
+                    }
+                    self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
+                    
+                    self.performSegue(withIdentifier: "fromCL", sender: nil)
+                } else {
+                    self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
                 }
-                for team in self.teams {
-                    self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).setValue("team")
-                }
-                self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
-            } else {
-                self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
-            }
-        })
+            })
+        } else {
+            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your team doesen't match any of the league teams you created.")
+        }
     }
     
     func saveUID() {
@@ -105,9 +103,11 @@ class CompleteLeagueCreationViewController: UIViewController {
         let userUID = user?.uid
         
         if adminTeam == "" && adminsTeam.text == "" {
-            ref2.child("/\(userUID!)").setValue("N/A")
+            ref2.child("/\(userUID!)").child("Team").setValue("N/A")
+            ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
         } else {
-            ref2.child("/\(userUID!)").setValue(adminTeam)
+            ref2.child("/\(userUID!)").child("Team").setValue(adminsTeam.text!)
+            ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
         }
         
         print(userUID!)
@@ -135,6 +135,19 @@ class CompleteLeagueCreationViewController: UIViewController {
         }
         
         self.randomGenNum = randomString
+    }
+    
+    func checkRandomString() {
+        ref2.observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                if self.randomGenNum == snap.key {
+                    self.randomString()
+                } else {
+                    
+                }
+            }
+        })
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -177,6 +190,16 @@ class CompleteLeagueCreationViewController: UIViewController {
         
         self.present(myAlert, animated: true, completion: nil)
         
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "fromCL" {
+            var completeVC: Age_TeamDataSelectViewController
+            
+            completeVC = segue.destination as! Age_TeamDataSelectViewController
+            
+            completeVC.randomNum = randomGenNum
+        }
     }
     
 }

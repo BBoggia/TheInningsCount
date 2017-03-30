@@ -15,13 +15,18 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     @IBOutlet weak var ageListTable: UITableView!
     
     let ref = FIRDatabase.database().reference()
+    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     var ageList = [String]()
     var ageToPass: String!
+    var league:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataObserver()
+        ref.child("User Data").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.value as! String!
+            self.dataObserver()
+        })
         
         self.ageListTable.delegate = self
         self.ageListTable.dataSource = self
@@ -33,7 +38,7 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     }
 
     func dataObserver() {
-        ref.child("Database").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueDatabase").child(league).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
@@ -73,16 +78,10 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         
         ageToPass = currentCell?.textLabel?.text
         
-        performSegue(withIdentifier: "toTeamSelect", sender: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toTeamSelect" {
-            
-            let viewController = segue.destination as! TeamSelectViewController
-            
-            viewController.age = ageToPass
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "teamSelect") as! TeamSelectViewController
+        vc.age = ageToPass
+        navigationController?.pushViewController(vc,animated: true)
     }
 
 }

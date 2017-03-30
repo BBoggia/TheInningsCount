@@ -15,14 +15,19 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     @IBOutlet weak var teamListTable: UITableView!
     
     let ref = FIRDatabase.database().reference()
+    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     var teamList = [String]()
     var teamToPass: String!
     var age: String!
+    var league:String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataObserver()
+        ref.child("User Data").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.value as! String!
+            self.dataObserver()
+        })
         
         self.teamListTable.delegate = self
         self.teamListTable.dataSource = self
@@ -34,7 +39,7 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func dataObserver() {
-        ref.child("Database").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueTeamLists").child(league).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
@@ -74,16 +79,10 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
         
         teamToPass = currentCell?.textLabel?.text
         
-        performSegue(withIdentifier: "toPlayerStats", sender: nil)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toPlayerStats" {
-            
-            let viewController = segue.destination as! PlayerStatsViewController
-            
-            viewController.age = age
-            viewController.playerData = teamToPass
-        }
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "playerStats") as! PlayerStatsViewController
+        vc.age = age
+        vc.team = teamToPass
+        navigationController?.pushViewController(vc,animated: true)
     }
 }

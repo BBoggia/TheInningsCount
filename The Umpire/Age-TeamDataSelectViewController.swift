@@ -7,23 +7,44 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
+import FirebaseDatabase
 
-class Age_TeamDataSelectViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
-
-    @IBOutlet weak var picker: UIPickerView!
+class Age_TeamDataSelectViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var pickerData: [[String]] = [[String]]()
+    var ageList = [String]()
+    var ageToPass: String!
+    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    var league: String!
+    var randomNum: String!
+    
+    let ref = FIRDatabase.database().reference()
+    
+    @IBOutlet weak var ageListTable: UITableView!
+    @IBOutlet weak var navBar: UINavigationItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.picker.delegate = self
-        self.picker.dataSource = self
+        ref.child("User Data").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.value as! String!
+            self.populateView()
+            self.navBar.title = self.league
+        })
         
-        pickerData = [["8-10 Baseball", "10-12 Baseball", "8-10 Softball", "10-12 Softball"],
-                      ["Girard", "Liberty", "McDonald", "Niles", "Hubbard", "Mineral Ridge", "Lordstown", "LaBrea", "Brookfield", "Lakeview", "Mathews (girls only)", "Howland (girls only)"]]
-
-        // Do any additional setup after loading the view.
+        self.ageListTable.delegate = self
+        self.ageListTable.dataSource = self
+        
+        if randomNum != nil {
+            let myAlert = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(randomNum!)", preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
+                action in
+                UIPasteboard.general.string = self.randomNum!
+            }
+            myAlert.addAction(okAction)
+            self.present(myAlert, animated: true, completion: nil)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -31,20 +52,50 @@ class Age_TeamDataSelectViewController: UIViewController, UIPickerViewDelegate, 
         // Dispose of any resources that can be recreated.
     }
     
-
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return 2
+    func populateView() {
+        self.ref.child("LeagueDatabase").child(league).observeSingleEvent(of: .value, with: { (snapshot) in
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                self.ageList.append(snap.key)
+                print(self.ageList)
+                print(snap.key)
+                self.ageListTable.reloadData()
+            }
+        })
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerData[component].count
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        // #warning Potentially incomplete method implementation.
+        // Return the number of sections.
+        return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return pickerData[component][row]
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // #warning Incomplete method implementation.
+        // Return the number of rows in the section.
+        return ageList.count
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = ageListTable.dequeueReusableCell(withIdentifier: "cell")
+        
+        cell?.textLabel?.text = ageList[indexPath.row]
+        
+        return cell!
     }
-
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let indexPath = ageListTable.indexPathForSelectedRow
+        let currentCell = ageListTable.cellForRow(at: indexPath!) as UITableViewCell!
+        
+        ageToPass = currentCell?.textLabel?.text
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "dataEntry") as! b810DataEntryViewController
+        vc.age = ageToPass
+        vc.leagueName = league
+        navigationController?.pushViewController(vc,animated: true)
+    }
 }
