@@ -16,6 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var userUID: String!
     
+    @IBOutlet weak var myLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBAction func logInButton(_ sender: Any) {
@@ -72,7 +73,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
-        
+        myLabel.layer.masksToBounds = true
+        myLabel.layer.cornerRadius = 10
     }
 
     override func didReceiveMemoryWarning() {

@@ -62,7 +62,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         teamsDisplay.text = teams.joined(separator: ", ")
         adminsTeam.text = adminTeam
         leagueAges.text = ageGroups.joined(separator: ", ")
-        
+
     }
     
     override func didReceiveMemoryWarning() {
