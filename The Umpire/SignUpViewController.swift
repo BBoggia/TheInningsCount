@@ -25,14 +25,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var reTypePasswordField: UITextField!
     @IBOutlet weak var leagueCodeField: UITextField!
     @IBAction func createAccountButton(_ sender: Any) {
-        ref.reference().child("LeagueCodes").observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.hasChild(self.leagueCodeField.text!) {
-                self.createAccount()
-                self.autoSignIn()
-            } else {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered does not exist!")
-            }
-        })
+        self.createAccount()
     }
     
     override func viewDidLoad() {
@@ -51,41 +44,49 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func createAccount() {
         
-        if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
+        ref.reference().child("LeagueCodes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.hasChild(self.leagueCodeField.text!) {
+        
+                if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
             
-            let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
             
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-        } else if self.passwordField.text != self.reTypePasswordField.text {
-            
-            let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
-            
-            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-            alertController.addAction(defaultAction)
-            
-            self.present(alertController, animated: true, completion: nil)
-            
-        } else {
-            FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
-                if error == nil {
-                    
-                    self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
-                    
-                } else {
-                    
-                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
-                    
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
-                    
+            
                     self.present(alertController, animated: true, completion: nil)
+                } else if self.passwordField.text != self.reTypePasswordField.text {
+            
+                    let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
+            
+                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                    alertController.addAction(defaultAction)
+            
+                    self.present(alertController, animated: true, completion: nil)
+            
+                } else {
+                    FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
+                        if error == nil {
+                    
+                            self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
+                    
+                        } else {
+                    
+                            let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                    
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertController.addAction(defaultAction)
+                    
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    })
                 }
-            })
-        }
+            } else {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered does not exist!")
+            }
+        })
         
+        self.autoSignIn()
     }
     
     func autoSignIn() {
@@ -118,7 +119,9 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "toTeamSelect" {
             
-            let vC = segue.destination as! SignupTeamSelectViewController
+            var vC: SignupTeamSelectViewController
+            
+            vC = segue.destination as! SignupTeamSelectViewController
             
             vC.randomNum = leagueCodeField.text!
         }

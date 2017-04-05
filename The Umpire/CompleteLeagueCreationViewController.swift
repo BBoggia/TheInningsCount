@@ -88,6 +88,14 @@ class CompleteLeagueCreationViewController: UIViewController {
                     let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
                     let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
                         UIPasteboard.general.string = self.randomGenNum!
+                        
+                        let firebaseAuth = FIRAuth.auth()
+                        do {
+                            try firebaseAuth?.signOut()
+                        } catch let signOutError as NSError {
+                            print ("Error signing out: %@", signOutError)
+                        }
+                        
                         self.performSegue(withIdentifier: "fromCL", sender: nil)
                     }
                     myAlert1.addAction(okAction)
