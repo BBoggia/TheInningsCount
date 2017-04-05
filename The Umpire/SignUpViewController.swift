@@ -25,8 +25,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var reTypePasswordField: UITextField!
     @IBOutlet weak var leagueCodeField: UITextField!
     @IBAction func createAccountButton(_ sender: Any) {
-        createAccount()
-        autoSignIn()
+        ref.reference().child("LeagueCodes").observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.hasChild(self.leagueCodeField.text!) {
+                self.createAccount()
+                self.autoSignIn()
+            } else {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered does not exist!")
+            }
+        })
     }
     
     override func viewDidLoad() {
@@ -95,6 +101,18 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func displayMyAlertMessage(title:String, userMessage:String)
+    {
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        
+        myAlert.addAction(okAction)
+        
+        self.present(myAlert, animated: true, completion: nil)
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
