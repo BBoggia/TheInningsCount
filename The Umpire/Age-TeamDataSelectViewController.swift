@@ -17,7 +17,6 @@ class Age_TeamDataSelectViewController: UIViewController, UITableViewDelegate, U
     var ageToPass: String!
     var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     var league: String!
-    var randomNum: String!
     
     let ref = FIRDatabase.database().reference()
     
@@ -46,15 +45,6 @@ class Age_TeamDataSelectViewController: UIViewController, UITableViewDelegate, U
         self.ageListTable.delegate = self
         self.ageListTable.dataSource = self
         
-        if randomNum != nil {
-            let myAlert = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(randomNum!)", preferredStyle: UIAlertControllerStyle.alert)
-            let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) {
-                action in
-                UIPasteboard.general.string = self.randomNum!
-            }
-            myAlert.addAction(okAction)
-            self.present(myAlert, animated: true, completion: nil)
-        }
     }
 
     override func didReceiveMemoryWarning() {

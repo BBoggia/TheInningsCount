@@ -50,8 +50,6 @@ class CompleteLeagueCreationViewController: UIViewController {
         checkRandomString()
         createAccount()
         autoSignIn()
-        
-        performSegue(withIdentifier: "fromCL", sender: nil)
     }
     
     override func viewDidLoad() {
@@ -87,7 +85,13 @@ class CompleteLeagueCreationViewController: UIViewController {
                     }
                     self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
                     
-                    self.performSegue(withIdentifier: "fromCL", sender: nil)
+                    let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
+                    let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                        UIPasteboard.general.string = self.randomGenNum!
+                        self.performSegue(withIdentifier: "fromCL", sender: nil)
+                    }
+                    myAlert1.addAction(okAction)
+                    self.present(myAlert1, animated: true, completion: nil)
                 } else {
                     self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
                 }
@@ -173,7 +177,6 @@ class CompleteLeagueCreationViewController: UIViewController {
         myAlert.addAction(cancelAction)
         
         self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     func displayMyAlertMessageAlternate(title:String, userMessage:String)
@@ -189,17 +192,5 @@ class CompleteLeagueCreationViewController: UIViewController {
         myAlert.addAction(cancelAction)
         
         self.present(myAlert, animated: true, completion: nil)
-        
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "fromCL" {
-            var completeVC: Age_TeamDataSelectViewController
-            
-            completeVC = segue.destination as! Age_TeamDataSelectViewController
-            
-            completeVC.randomNum = randomGenNum
-        }
-    }
-    
 }
