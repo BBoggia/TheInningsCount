@@ -22,16 +22,6 @@ class Age_TeamDataSelectViewController: UIViewController, UITableViewDelegate, U
     
     @IBOutlet weak var ageListTable: UITableView!
     @IBOutlet weak var navBar: UINavigationItem!
-    @IBAction func logOut(_ sender: Any) {
-        let firebaseAuth = FIRAuth.auth()
-        do {
-            try firebaseAuth?.signOut()
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-        
-        performSegue(withIdentifier: "logout", sender: nil)
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

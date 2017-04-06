@@ -10,6 +10,7 @@ target 'The Umpire' do
   pod 'Firebase/Core'
   pod 'FirebaseAuth'
   pod ‘Firebase/Database’
+  pod 'SwiftyButton'
 
   target 'The UmpireTests' do
     inherit! :search_paths

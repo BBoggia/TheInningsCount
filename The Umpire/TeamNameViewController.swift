@@ -43,7 +43,9 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     @IBAction func createTeams(_ sender: Any) {
         adminsTeam = adminTeam.text!
         
-        performSegue(withIdentifier: "fromTC", sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "ageCreate") as! TeamSelectViewController
+        navigationController?.pushViewController(vc,animated: true)
     }
 
     override func viewDidLoad() {

@@ -58,7 +58,9 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             email1 = adminEmail.text
             password1 = password.text
             
-            performSegue(withIdentifier: "fromLeagueCreation", sender: nil)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamSelectViewController
+            navigationController?.pushViewController(vc,animated: true)
         }
     }
     

@@ -41,7 +41,9 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createGroups(_ sender: Any) {
-        performSegue(withIdentifier: "fromAC", sender: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! TeamSelectViewController
+        navigationController?.pushViewController(vc,animated: true)
     }
     
     override func viewDidLoad() {
