@@ -56,6 +56,7 @@
 		5E16D2A81E9557F80063D9E0 /* The Umpire.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "The Umpire.entitlements"; sourceTree = "<group>"; };
 		5E2667151E70886E008D59AF /* TeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamSelectViewController.swift; sourceTree = "<group>"; };
 		5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerStatsViewController.swift; sourceTree = "<group>"; };
+		5E578C921E97EB9F007763E4 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = "../../Library/Developer/Xcode/DerivedData/The_Umpire-eutuzwhspbqpwvdidaophjlvnwyx/Build/Products/Debug-iphonesimulator/SwiftyButton/SwiftyButton.framework"; sourceTree = "<group>"; };
 		5E9E2A051E96A761000EC69B /* mainHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainHubViewController.swift; sourceTree = "<group>"; };
 		5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamDataSegueViewController.swift; sourceTree = "<group>"; };
 		5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupTeamSelectViewController.swift; sourceTree = "<group>"; };
@@ -121,6 +122,7 @@
 		53BCA81BD652FABD121D43DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5E578C921E97EB9F007763E4 /* SwiftyButton.framework */,
 				9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */,
 				B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */,
 				BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */,
@@ -671,7 +673,7 @@
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -688,7 +690,7 @@
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -52,6 +52,8 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             
             displayMyAlertMessage(title: "Oops!", userMessage: "Your passwords don't match!")
             
+        } else if (self.password.text?.characters.count)! < 6 {
+            displayMyAlertMessage(title: "Oops!", userMessage: "Your password needs to contain atleast 6 characters.")
         } else {
             
             leagueName1 = leagueName.text
@@ -59,7 +61,7 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             password1 = password.text
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamSelectViewController
+            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
             navigationController?.pushViewController(vc,animated: true)
         }
     }

@@ -20,6 +20,9 @@ class mainHubViewController: UIViewController {
     var teamName: String!
     var leagueName: String!
 
+    @IBAction func roster(_ sender: Any) {
+        displayMyAlertMessage(title: "Comming Soon", userMessage: "This feature is in development and will be released soon.")
+    }
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
     @IBAction func logOut(_ sender: Any) {
@@ -48,6 +51,18 @@ class mainHubViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func displayMyAlertMessage(title:String, userMessage:String)
+    {
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        
+        myAlert.addAction(okAction)
+        
+        self.present(myAlert, animated: true, completion: nil)
+        
     }
 
 }

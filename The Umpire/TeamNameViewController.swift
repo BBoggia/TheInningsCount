@@ -17,7 +17,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     var email: String!
     var password: String!
     var adminsTeam = ""
-    var textLabelTeams = ["test", "test"]
+    var textLabelTeams = ["test"]
     @IBOutlet weak var teamDisplay: UILabel!
     
     @IBOutlet weak var teamName: UITextField!
