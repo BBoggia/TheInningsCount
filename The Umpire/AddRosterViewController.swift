@@ -37,7 +37,7 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
         
         numPicker.delegate = self
         
-        pickerDataString = pickerDataInt.flatMap
+        pickerDataString = pickerDataInt.map({String(describing: $0) })
 
         let teamNameRef = ref.child("User Data").child(userUid!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
