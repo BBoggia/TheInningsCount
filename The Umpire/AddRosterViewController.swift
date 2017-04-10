@@ -22,7 +22,7 @@ class AddRosterViewController: UIViewController {
     var stepperValue1: Int!
     var stepperValue5: Int!
     var stepperValue10: Int!
-    var combinedNum: Int!
+    var combinedNum = 0
 
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var playerDisplay: UILabel!
@@ -37,12 +37,15 @@ class AddRosterViewController: UIViewController {
     }
     @IBAction func stepper1(_ sender: Any) {
         stepperValue1 = (Int((sender as AnyObject).value))
+        combinedNum = stepperValue1 + combinedNum
     }
     @IBAction func stepper2(_ sender: Any) {
         stepperValue5 = (Int((sender as AnyObject).value))
+        combinedNum = stepperValue5 + combinedNum
     }
     @IBAction func stepper3(_ sender: Any) {
         stepperValue10 = (Int((sender as AnyObject).value))
+        combinedNum = stepperValue10 + combinedNum
     }
     
     override func viewDidLoad() {
