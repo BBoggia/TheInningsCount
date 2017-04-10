@@ -75,6 +75,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
         myLabel.layer.masksToBounds = true
         myLabel.layer.cornerRadius = 10
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        emailField.inputAccessoryView = toolBar
+        passwordField.inputAccessoryView = toolBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -85,6 +95,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
+    }
+    
+    func doneClicked() {
+        self.view.endEditing(true)
     }
 
 }

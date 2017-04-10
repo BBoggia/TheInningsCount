@@ -55,6 +55,16 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        playerNumberTextField.inputAccessoryView = toolBar
+        pitchCountTextField.inputAccessoryView = toolBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -69,6 +79,10 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func doneClicked() {
+        view.endEditing(true)
     }
 
 }

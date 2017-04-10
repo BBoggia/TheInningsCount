@@ -56,6 +56,16 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         
         textLabelTeams.removeAll()
         
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        teamName.inputAccessoryView = toolBar
+        adminTeam.inputAccessoryView = toolBar
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,6 +75,10 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func doneClicked() {
+        self.view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

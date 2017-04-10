@@ -36,6 +36,17 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         reTypePasswordField.delegate = self
         leagueCodeField.delegate = self
         
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        emailField.inputAccessoryView = toolBar
+        passwordField.inputAccessoryView = toolBar
+        reTypePasswordField.inputAccessoryView = toolBar
+        leagueCodeField.inputAccessoryView = toolBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -114,6 +125,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
         self.present(myAlert, animated: true, completion: nil)
         
+    }
+    
+    func doneClicked() {
+        self.view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

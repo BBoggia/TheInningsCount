@@ -15,6 +15,8 @@
 		5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */; };
 		9D841D7BFC9F785DA7BE0498 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */; };
 		AE84E697B2226C0E3A93D0F6 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */; };
+		DB0935BD1E98885800C6E2AD /* TeamRosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */; };
+		DB0935BF1E9892B900C6E2AD /* AddRosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */; };
 		DB0BF1701E86FA9F00F5084D /* LeagueCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF16F1E86FA9F00F5084D /* LeagueCreationViewController.swift */; };
 		DB0BF1721E86FAB400F5084D /* TeamNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF1711E86FAB400F5084D /* TeamNameViewController.swift */; };
 		DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */; };
@@ -66,6 +68,8 @@
 		B311E486956C1EB21282E352 /* Pods-The UmpireTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.debug.xcconfig"; sourceTree = "<group>"; };
 		B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamRosterViewController.swift; sourceTree = "<group>"; };
+		DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRosterViewController.swift; sourceTree = "<group>"; };
 		DB0BF16F1E86FA9F00F5084D /* LeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeagueCreationViewController.swift; sourceTree = "<group>"; };
 		DB0BF1711E86FAB400F5084D /* TeamNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamNameViewController.swift; sourceTree = "<group>"; };
 		DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteLeagueCreationViewController.swift; sourceTree = "<group>"; };
@@ -184,11 +188,13 @@
 				5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */,
 				DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */,
 				5E9E2A051E96A761000EC69B /* mainHubViewController.swift */,
+				DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
 				DBEBF79F1DF0BAC0003CF098 /* Info.plist */,
 				DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */,
+				DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */,
 			);
 			path = "The Umpire";
 			sourceTree = "<group>";
@@ -510,11 +516,13 @@
 				5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */,
 				DB34DE211E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift in Sources */,
 				DB34DE231E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift in Sources */,
+				DB0935BF1E9892B900C6E2AD /* AddRosterViewController.swift in Sources */,
 				DB0BF1721E86FAB400F5084D /* TeamNameViewController.swift in Sources */,
 				5E9E2A061E96A761000EC69B /* mainHubViewController.swift in Sources */,
 				DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */,
 				DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */,
 				DB0BF1701E86FA9F00F5084D /* LeagueCreationViewController.swift in Sources */,
+				DB0935BD1E98885800C6E2AD /* TeamRosterViewController.swift in Sources */,
 				DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -673,7 +681,7 @@
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -690,7 +698,7 @@
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
 				INFOPLIST_FILE = "The Umpire/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.pinetreestudios.branson.The-Umpire";
 				PRODUCT_NAME = "$(TARGET_NAME)";

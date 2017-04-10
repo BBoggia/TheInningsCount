@@ -53,6 +53,15 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
         
         textLabelGroups.removeAll()
         
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        groupTextField.inputAccessoryView = toolBar
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -62,6 +71,10 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func doneClicked() {
+        self.view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

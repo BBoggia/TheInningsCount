@@ -36,6 +36,18 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         self.adminEmail.delegate = self
         self.password.delegate = self
         self.rePassword.delegate = self
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        toolBar.setItems([doneButton], animated: false)
+        
+        leagueName.inputAccessoryView = toolBar
+        adminEmail.inputAccessoryView = toolBar
+        password.inputAccessoryView = toolBar
+        rePassword.inputAccessoryView = toolBar
     }
 
     override func didReceiveMemoryWarning() {
@@ -81,6 +93,10 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func doneClicked() {
+        self.view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
