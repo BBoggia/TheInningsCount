@@ -44,8 +44,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.playerStatsList.append(snap.value(forKey: "stat") as! String)
-                //SORT THE ARRAY HERE!!!
+                self.playerStatsList.append(snap.value as! String)
                 self.playerDataTable.reloadData()
             }
             print(self.playerStatsList)

@@ -26,7 +26,7 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     @IBOutlet weak var playerDisplay: UILabel!
     @IBOutlet weak var numPicker: UIPickerView!
     @IBAction func add(_ sender: Any) {
-        rosterList.append("#\(currentSelection!)")
+        rosterList.append("Player: \(currentSelection!)")
         playerDisplay.text = rosterList.joined(separator: ", ")
     }
     @IBAction func remove(_ sender: Any) {
@@ -38,6 +38,9 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
         }
     }
     @IBAction func submit(_ sender: Any) {
+        for child in rosterList {
+            ref.child("LeagueTeamLists").child(leagueName).child(teamName).child(child).setValue("0")
+        }
     }
     
     override func viewDidLoad() {
@@ -52,6 +55,15 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
             self.navBar.title = self.leagueName
         })
         
+        ref.child("LeagueTeamLists").child(leagueName).child(teamName).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if snapshot.childrenCount >= 1 {
+                for child in snapshot.children {
+                    let snap = child as! FIRDataSnapshot
+                    self.rosterList.append(snap.key)
+                }
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
