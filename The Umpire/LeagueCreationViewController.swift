@@ -74,6 +74,9 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
+            vc.leagueName = leagueName1 as String
+            vc.email = email1 as String
+            vc.password = password1 as String
             navigationController?.pushViewController(vc,animated: true)
         }
     }
@@ -97,18 +100,6 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     
     func doneClicked() {
         self.view.endEditing(true)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "fromLeagueCreation" {
-            var teamNameVC: TeamNameViewController
-            
-            teamNameVC = segue.destination as! TeamNameViewController
-            teamNameVC.leagueName = leagueName1 as String
-            teamNameVC.email = email1 as String
-            teamNameVC.password = password1 as String
-            
-        }
     }
     
 }

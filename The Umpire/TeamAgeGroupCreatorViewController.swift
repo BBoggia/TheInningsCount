@@ -36,13 +36,19 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
             
         } else {
             textLabelGroups.removeLast()
-            groupDisplay.text = textLabelGroups.joined(separator: ", ")
+            groupDisplay.text = textLabelGroups.joined(separator: "\n")
         }
     }
     
     @IBAction func createGroups(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! TeamSelectViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! CompleteLeagueCreationViewController
+        vc.leagueName = leagueName as String
+        vc.email = email as String
+        vc.password = password as String
+        vc.teams = teams as Array
+        vc.adminTeam = adminTeam as String
+        vc.ageGroups = textLabelGroups as Array
         navigationController?.pushViewController(vc,animated: true)
     }
     
@@ -75,20 +81,6 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     
     func doneClicked() {
         self.view.endEditing(true)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "fromAC" {
-            var completeVC: CompleteLeagueCreationViewController
-            
-            completeVC = segue.destination as! CompleteLeagueCreationViewController
-            completeVC.leagueName = leagueName as String
-            completeVC.email = email as String
-            completeVC.password = password as String
-            completeVC.teams = teams as Array
-            completeVC.adminTeam = adminTeam as String
-            completeVC.ageGroups = textLabelGroups as Array
-        }
     }
     
     func displayMyAlertMessage(title:String, userMessage:String)

@@ -24,6 +24,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     var leagueName:String!
     var userDate = ""
     var databaseDate = ""
+    var sortDate: [AnyHashable:Any] = [:]
     var age:String!
     
     @IBOutlet weak var playerNumberTextField: UITextField!
@@ -55,6 +56,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
+        sortDate = FIRServerValue.timestamp()
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -73,7 +75,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
+        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("stat").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
+        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("sort").setValue(FIRServerValue.timestamp())
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

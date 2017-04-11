@@ -19,15 +19,23 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     var teamName: String!
     var leagueName: String!
     var rosterList = [String]()
-    var pickerDataInt = [0...100]
-    var pickerDataString = [String]()
+    var currentSelection: String!
+    var pickerDataString = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9","10","11", "12", "13", "14", "15", "16", "17", "18", "19","20","21", "22", "23", "24", "25", "26", "27", "28", "29","30","31", "32", "33", "34", "35", "36", "37", "38", "39","40","41", "42", "43", "44", "45", "46", "47", "48", "49","50","51", "52", "53", "54", "55", "56", "57", "58", "59","60","61", "62", "63", "64", "65", "66", "67", "68", "69","70","71", "72", "73", "74", "75", "76", "77", "78", "79","80","81", "82", "83", "84", "85", "86", "87", "88", "89","90","91", "92", "93", "94", "95", "96", "97", "98", "99"]
 
     @IBOutlet weak var navBar: UINavigationItem!
     @IBOutlet weak var playerDisplay: UILabel!
     @IBOutlet weak var numPicker: UIPickerView!
     @IBAction func add(_ sender: Any) {
+        rosterList.append("#\(currentSelection!)")
+        playerDisplay.text = rosterList.joined(separator: ", ")
     }
     @IBAction func remove(_ sender: Any) {
+        if rosterList.count == 0 {
+            
+        } else {
+            rosterList.removeLast()
+            playerDisplay.text = rosterList.joined(separator: ", ")
+        }
     }
     @IBAction func submit(_ sender: Any) {
     }
@@ -36,8 +44,6 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
         super.viewDidLoad()
         
         numPicker.delegate = self
-        
-        pickerDataString = pickerDataInt.map({String(describing: $0) })
 
         let teamNameRef = ref.child("User Data").child(userUid!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -58,11 +64,15 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return pickerDataInt.count
+        return pickerDataString.count
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return pickerDataString[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentSelection = pickerDataString[row]
     }
 
 }

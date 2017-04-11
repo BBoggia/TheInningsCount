@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2C4AFA7746AE3CA7E9DB8F80 /* Pods_The_UmpireTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */; };
+		1C7E174B7641705D32D077E2 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C11DFC7C85CAD7373406968 /* Pods_The_Umpire.framework */; };
+		5D72C7D41BF123B501C561A5 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6632E712B8ED71FC01E0C784 /* Pods_The_UmpireUITests.framework */; };
 		5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2667151E70886E008D59AF /* TeamSelectViewController.swift */; };
 		5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */; };
 		5E9E2A061E96A761000EC69B /* mainHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9E2A051E96A761000EC69B /* mainHubViewController.swift */; };
 		5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */; };
 		5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */; };
-		9D841D7BFC9F785DA7BE0498 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */; };
-		AE84E697B2226C0E3A93D0F6 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */; };
+		B39D8B44F780937F9A585780 /* Pods_The_UmpireTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC23D06F12A913E1F056C963 /* Pods_The_UmpireTests.framework */; };
 		DB0935BD1E98885800C6E2AD /* TeamRosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */; };
 		DB0935BF1E9892B900C6E2AD /* AddRosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */; };
 		DB0BF1701E86FA9F00F5084D /* LeagueCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF16F1E86FA9F00F5084D /* LeagueCreationViewController.swift */; };
@@ -53,8 +53,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		2D7CFC3D96BA8F7D6F665565 /* Pods-The UmpireUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		4AA4B279A195069BF78E312A /* Pods-The UmpireUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.release.xcconfig"; sourceTree = "<group>"; };
+		4C11DFC7C85CAD7373406968 /* Pods_The_Umpire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Umpire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E16D2A81E9557F80063D9E0 /* The Umpire.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "The Umpire.entitlements"; sourceTree = "<group>"; };
 		5E2667151E70886E008D59AF /* TeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamSelectViewController.swift; sourceTree = "<group>"; };
 		5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerStatsViewController.swift; sourceTree = "<group>"; };
@@ -62,18 +61,20 @@
 		5E9E2A051E96A761000EC69B /* mainHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainHubViewController.swift; sourceTree = "<group>"; };
 		5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamDataSegueViewController.swift; sourceTree = "<group>"; };
 		5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupTeamSelectViewController.swift; sourceTree = "<group>"; };
-		63E0EA1861921629237BDE4F /* Pods-The Umpire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.debug.xcconfig"; sourceTree = "<group>"; };
-		9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Umpire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A34CCD2D978D893E68E5B756 /* Pods-The UmpireTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.release.xcconfig"; sourceTree = "<group>"; };
-		B311E486956C1EB21282E352 /* Pods-The UmpireTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.debug.xcconfig"; sourceTree = "<group>"; };
-		B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6632E712B8ED71FC01E0C784 /* Pods_The_UmpireUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB44F84B0241A22A1F7DB700 /* Pods-The UmpireTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.debug.xcconfig"; sourceTree = "<group>"; };
+		BC23D06F12A913E1F056C963 /* Pods_The_UmpireTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BDC75F3928B0542DA7F5D050 /* Pods-The UmpireUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		C12BEB15EEDCBC7EF0F41F03 /* Pods-The Umpire.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.debug.xcconfig"; sourceTree = "<group>"; };
+		D870A9C6D455A80697AA452C /* Pods-The UmpireTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.release.xcconfig"; sourceTree = "<group>"; };
+		D91756FFDB31F893DC540CC0 /* Pods-The Umpire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.release.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.release.xcconfig"; sourceTree = "<group>"; };
 		DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamRosterViewController.swift; sourceTree = "<group>"; };
 		DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRosterViewController.swift; sourceTree = "<group>"; };
 		DB0BF16F1E86FA9F00F5084D /* LeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LeagueCreationViewController.swift; sourceTree = "<group>"; };
 		DB0BF1711E86FAB400F5084D /* TeamNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamNameViewController.swift; sourceTree = "<group>"; };
 		DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteLeagueCreationViewController.swift; sourceTree = "<group>"; };
 		DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Age-TeamDataSelectViewController.swift"; sourceTree = "<group>"; };
+		DB21C1A31E9C4BE400476BCC /* AKPickerView_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKPickerView_Swift.framework; path = "Pods/../build/Debug-iphoneos/AKPickerView-Swift/AKPickerView_Swift.framework"; sourceTree = "<group>"; };
 		DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamAgeGroupCreatorViewController.swift; sourceTree = "<group>"; };
 		DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularTeamSelectViewController.swift; sourceTree = "<group>"; };
 		DBEBF7901DF0BAC0003CF098 /* The Umpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Umpire.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -92,7 +93,7 @@
 		DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DBEBF7C31DF0D239003CF098 /* SignUpViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
 		DBFD3ECE1E2854B10024DD6D /* b810DataEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = b810DataEntryViewController.swift; sourceTree = "<group>"; };
-		F8C6D987970F5A7355BF862E /* Pods-The Umpire.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The Umpire.release.xcconfig"; path = "Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire.release.xcconfig"; sourceTree = "<group>"; };
+		DDE3FC1121152D98E1315600 /* Pods-The UmpireUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +101,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE84E697B2226C0E3A93D0F6 /* Pods_The_Umpire.framework in Frameworks */,
+				1C7E174B7641705D32D077E2 /* Pods_The_Umpire.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,7 +109,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2C4AFA7746AE3CA7E9DB8F80 /* Pods_The_UmpireTests.framework in Frameworks */,
+				B39D8B44F780937F9A585780 /* Pods_The_UmpireTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +117,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9D841D7BFC9F785DA7BE0498 /* Pods_The_UmpireUITests.framework in Frameworks */,
+				5D72C7D41BF123B501C561A5 /* Pods_The_UmpireUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,25 +127,13 @@
 		53BCA81BD652FABD121D43DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DB21C1A31E9C4BE400476BCC /* AKPickerView_Swift.framework */,
 				5E578C921E97EB9F007763E4 /* SwiftyButton.framework */,
-				9DAD4878C784FE7E7A8BEE42 /* Pods_The_Umpire.framework */,
-				B743793C11F83925E1445535 /* Pods_The_UmpireTests.framework */,
-				BF9A96CC96D9361973B5866A /* Pods_The_UmpireUITests.framework */,
+				4C11DFC7C85CAD7373406968 /* Pods_The_Umpire.framework */,
+				BC23D06F12A913E1F056C963 /* Pods_The_UmpireTests.framework */,
+				6632E712B8ED71FC01E0C784 /* Pods_The_UmpireUITests.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		5DE9813B52FB3F343FC3C0E1 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				63E0EA1861921629237BDE4F /* Pods-The Umpire.debug.xcconfig */,
-				F8C6D987970F5A7355BF862E /* Pods-The Umpire.release.xcconfig */,
-				B311E486956C1EB21282E352 /* Pods-The UmpireTests.debug.xcconfig */,
-				A34CCD2D978D893E68E5B756 /* Pods-The UmpireTests.release.xcconfig */,
-				2D7CFC3D96BA8F7D6F665565 /* Pods-The UmpireUITests.debug.xcconfig */,
-				4AA4B279A195069BF78E312A /* Pods-The UmpireUITests.release.xcconfig */,
-			);
-			name = Pods;
 			sourceTree = "<group>";
 		};
 		DBEBF7871DF0BAC0003CF098 = {
@@ -154,8 +143,8 @@
 				DBEBF7A71DF0BAC0003CF098 /* The UmpireTests */,
 				DBEBF7B21DF0BAC0003CF098 /* The UmpireUITests */,
 				DBEBF7911DF0BAC0003CF098 /* Products */,
-				5DE9813B52FB3F343FC3C0E1 /* Pods */,
 				53BCA81BD652FABD121D43DD /* Frameworks */,
+				E5D1423676B72A99610699CE /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,12 +178,12 @@
 				DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */,
 				5E9E2A051E96A761000EC69B /* mainHubViewController.swift */,
 				DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */,
+				DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
 				DBEBF79F1DF0BAC0003CF098 /* Info.plist */,
 				DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */,
-				DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */,
 			);
 			path = "The Umpire";
 			sourceTree = "<group>";
@@ -217,6 +206,19 @@
 			path = "The UmpireUITests";
 			sourceTree = "<group>";
 		};
+		E5D1423676B72A99610699CE /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C12BEB15EEDCBC7EF0F41F03 /* Pods-The Umpire.debug.xcconfig */,
+				D91756FFDB31F893DC540CC0 /* Pods-The Umpire.release.xcconfig */,
+				BB44F84B0241A22A1F7DB700 /* Pods-The UmpireTests.debug.xcconfig */,
+				D870A9C6D455A80697AA452C /* Pods-The UmpireTests.release.xcconfig */,
+				BDC75F3928B0542DA7F5D050 /* Pods-The UmpireUITests.debug.xcconfig */,
+				DDE3FC1121152D98E1315600 /* Pods-The UmpireUITests.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -224,12 +226,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBEBF7B81DF0BAC0003CF098 /* Build configuration list for PBXNativeTarget "The Umpire" */;
 			buildPhases = (
-				AFDD1E6E93BFD8888ADE4095 /* [CP] Check Pods Manifest.lock */,
+				425708FD33463753B11A0EBB /* [CP] Check Pods Manifest.lock */,
 				DBEBF78C1DF0BAC0003CF098 /* Sources */,
 				DBEBF78D1DF0BAC0003CF098 /* Frameworks */,
 				DBEBF78E1DF0BAC0003CF098 /* Resources */,
-				14EEAF2CFBB8A85A7C8DAFB4 /* [CP] Embed Pods Frameworks */,
-				31F590E8978270339429383A /* [CP] Copy Pods Resources */,
+				2B6F2BC21DB18BAE0D7A24D4 /* [CP] Embed Pods Frameworks */,
+				B0A5267D31D877F655795BA3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -244,12 +246,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBEBF7BB1DF0BAC0003CF098 /* Build configuration list for PBXNativeTarget "The UmpireTests" */;
 			buildPhases = (
-				E963BBD51D8DED7C8763C8E6 /* [CP] Check Pods Manifest.lock */,
+				60CEFC53BEA7AB1FB61C5352 /* [CP] Check Pods Manifest.lock */,
 				DBEBF7A01DF0BAC0003CF098 /* Sources */,
 				DBEBF7A11DF0BAC0003CF098 /* Frameworks */,
 				DBEBF7A21DF0BAC0003CF098 /* Resources */,
-				CAA20547DA76D57A23C3F67A /* [CP] Embed Pods Frameworks */,
-				5A07BAA9CE909FD155087130 /* [CP] Copy Pods Resources */,
+				444F2E3F371E473CE55CED9A /* [CP] Embed Pods Frameworks */,
+				B3121206EA432C47C8B2074A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -265,12 +267,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DBEBF7BE1DF0BAC0003CF098 /* Build configuration list for PBXNativeTarget "The UmpireUITests" */;
 			buildPhases = (
-				D5C18FB75B0E52219C7977AC /* [CP] Check Pods Manifest.lock */,
+				4150BEB08D9937E91AA7A1D6 /* [CP] Check Pods Manifest.lock */,
 				DBEBF7AB1DF0BAC0003CF098 /* Sources */,
 				DBEBF7AC1DF0BAC0003CF098 /* Frameworks */,
 				DBEBF7AD1DF0BAC0003CF098 /* Resources */,
-				A77ECE818650527AD31513C4 /* [CP] Embed Pods Frameworks */,
-				E9573D92262C7B75C3CB55B2 /* [CP] Copy Pods Resources */,
+				6B7069FCB61B2178E14AC668 /* [CP] Embed Pods Frameworks */,
+				4C65EBEDF4243879582B31C2 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -365,7 +367,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		14EEAF2CFBB8A85A7C8DAFB4 /* [CP] Embed Pods Frameworks */ = {
+		2B6F2BC21DB18BAE0D7A24D4 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -380,52 +382,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		31F590E8978270339429383A /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5A07BAA9CE909FD155087130 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A77ECE818650527AD31513C4 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		AFDD1E6E93BFD8888ADE4095 /* [CP] Check Pods Manifest.lock */ = {
+		4150BEB08D9937E91AA7A1D6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -440,7 +397,22 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		CAA20547DA76D57A23C3F67A /* [CP] Embed Pods Frameworks */ = {
+		425708FD33463753B11A0EBB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		444F2E3F371E473CE55CED9A /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -455,22 +427,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		D5C18FB75B0E52219C7977AC /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		E9573D92262C7B75C3CB55B2 /* [CP] Copy Pods Resources */ = {
+		4C65EBEDF4243879582B31C2 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -485,7 +442,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E963BBD51D8DED7C8763C8E6 /* [CP] Check Pods Manifest.lock */ = {
+		60CEFC53BEA7AB1FB61C5352 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -498,6 +455,51 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		6B7069FCB61B2178E14AC668 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireUITests/Pods-The UmpireUITests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B0A5267D31D877F655795BA3 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The Umpire/Pods-The Umpire-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		B3121206EA432C47C8B2074A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -675,11 +677,16 @@
 		};
 		DBEBF7B91DF0BAC0003CF098 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 63E0EA1861921629237BDE4F /* Pods-The Umpire.debug.xcconfig */;
+			baseConfigurationReference = C12BEB15EEDCBC7EF0F41F03 /* Pods-The Umpire.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/AKPickerView-Swift",
+				);
 				INFOPLIST_FILE = "The Umpire/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -692,11 +699,16 @@
 		};
 		DBEBF7BA1DF0BAC0003CF098 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8C6D987970F5A7355BF862E /* Pods-The Umpire.release.xcconfig */;
+			baseConfigurationReference = D91756FFDB31F893DC540CC0 /* Pods-The Umpire.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = "The Umpire/The Umpire.entitlements";
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/AKPickerView-Swift",
+				);
 				INFOPLIST_FILE = "The Umpire/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -709,7 +721,7 @@
 		};
 		DBEBF7BC1DF0BAC0003CF098 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B311E486956C1EB21282E352 /* Pods-The UmpireTests.debug.xcconfig */;
+			baseConfigurationReference = BB44F84B0241A22A1F7DB700 /* Pods-The UmpireTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -725,7 +737,7 @@
 		};
 		DBEBF7BD1DF0BAC0003CF098 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A34CCD2D978D893E68E5B756 /* Pods-The UmpireTests.release.xcconfig */;
+			baseConfigurationReference = D870A9C6D455A80697AA452C /* Pods-The UmpireTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -741,7 +753,7 @@
 		};
 		DBEBF7BF1DF0BAC0003CF098 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2D7CFC3D96BA8F7D6F665565 /* Pods-The UmpireUITests.debug.xcconfig */;
+			baseConfigurationReference = BDC75F3928B0542DA7F5D050 /* Pods-The UmpireUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 6E2D64GGFH;
@@ -756,7 +768,7 @@
 		};
 		DBEBF7C01DF0BAC0003CF098 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4AA4B279A195069BF78E312A /* Pods-The UmpireUITests.release.xcconfig */;
+			baseConfigurationReference = DDE3FC1121152D98E1315600 /* Pods-The UmpireUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				DEVELOPMENT_TEAM = 6E2D64GGFH;

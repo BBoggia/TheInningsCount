@@ -44,7 +44,12 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         adminsTeam = adminTeam.text!
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ageCreate") as! TeamSelectViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "ageCreate") as! TeamAgeGroupCreatorViewController
+        vc.leagueName = leagueName as String
+        vc.email = email as String
+        vc.password = password as String
+        vc.teams = textLabelTeams as Array
+        vc.adminTeam = adminsTeam as String
         navigationController?.pushViewController(vc,animated: true)
     }
 
@@ -79,19 +84,6 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     
     func doneClicked() {
         self.view.endEditing(true)
-    }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "fromTC" {
-            var completeVC: TeamAgeGroupCreatorViewController
-            
-            completeVC = segue.destination as! TeamAgeGroupCreatorViewController
-            completeVC.leagueName = leagueName as String
-            completeVC.email = email as String
-            completeVC.password = password as String
-            completeVC.teams = textLabelTeams as Array
-            completeVC.adminTeam = adminsTeam as String
-        }
     }
     
     func displayMyAlertMessage(title:String, userMessage:String)
