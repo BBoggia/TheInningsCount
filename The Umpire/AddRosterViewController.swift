@@ -26,7 +26,7 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     @IBOutlet weak var playerDisplay: UILabel!
     @IBOutlet weak var numPicker: UIPickerView!
     @IBAction func add(_ sender: Any) {
-        rosterList.append("Player: \(currentSelection!)")
+        rosterList.append("Pitcher: \(currentSelection!)")
         playerDisplay.text = rosterList.joined(separator: ", ")
     }
     @IBAction func remove(_ sender: Any) {
@@ -48,13 +48,21 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
         
         numPicker.delegate = self
 
-        let teamNameRef = ref.child("User Data").child(userUid!)
+        let teamNameRef = ref.child("UserData").child(userUid!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
             self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
             self.navBar.title = self.leagueName
+            self.fillList()
         })
-        
+    }
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    func fillList() {
         ref.child("LeagueTeamLists").child(leagueName).child(teamName).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if snapshot.childrenCount >= 1 {
@@ -64,11 +72,6 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
                 }
             }
         })
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

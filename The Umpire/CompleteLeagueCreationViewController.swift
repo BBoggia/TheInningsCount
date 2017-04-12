@@ -14,7 +14,7 @@ import FirebaseDatabase
 class CompleteLeagueCreationViewController: UIViewController {
 
     let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("User Data")
+    let ref2 = FIRDatabase.database().reference().child("UserData")
     let loginRef = ViewController()
     
     var leagueName: String!

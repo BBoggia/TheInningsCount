@@ -21,7 +21,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var leagueName: String!
     
     let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("User Data")
+    let ref2 = FIRDatabase.database().reference().child("UserData")
     
     
     override func viewDidLoad() {

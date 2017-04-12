@@ -14,7 +14,7 @@ import FirebaseDatabase
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database()
-    let ref2 = FIRDatabase.database().reference().child("User Data")
+    let ref2 = FIRDatabase.database().reference().child("UserData")
     let loginRef = ViewController()
     
     var userCity: String!
