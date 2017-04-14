@@ -23,6 +23,8 @@ class mainHubViewController: UIViewController {
     @IBAction func roster(_ sender: Any) {
         displayMyAlertMessage(title: "Comming Soon", userMessage: "This feature is in development and will be released soon.")
     }
+    @IBOutlet var inningsBtn: UIButton!
+    @IBOutlet var dataBtn: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
     @IBAction func logOut(_ sender: Any) {
@@ -46,6 +48,10 @@ class mainHubViewController: UIViewController {
             self.navBar.title = self.leagueName
             self.titleLabel.text = self.teamName
         })
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            inningsBtn.heightAnchor.constraint(equalToConstant: 180).isActive = true
+        }
     }
 
     override func didReceiveMemoryWarning() {

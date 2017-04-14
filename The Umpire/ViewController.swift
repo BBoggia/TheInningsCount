@@ -16,6 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var userUID: String!
     
+    @IBOutlet var appTitle: UILabel!
     @IBOutlet weak var myLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
@@ -85,6 +86,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         emailField.inputAccessoryView = toolBar
         passwordField.inputAccessoryView = toolBar
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -101,5 +106,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.view.endEditing(true)
     }
 
+}
+
+enum UIUserInterfaceIdiom : Int {
+    case unspecified
+    
+    case phone // iPhone and iPod touch style UI
+    case pad // iPad style UI
 }
 

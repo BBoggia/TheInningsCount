@@ -71,6 +71,9 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         teamName.inputAccessoryView = toolBar
         adminTeam.inputAccessoryView = toolBar
         
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            teamName.heightAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true
+        }
     }
     
     override func didReceiveMemoryWarning() {

@@ -67,6 +67,10 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         playerNumberTextField.inputAccessoryView = toolBar
         pitchCountTextField.inputAccessoryView = toolBar
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleField.font = UIFont(name: titleField.font.fontName, size: 55)
+        }
     }
 
     override func didReceiveMemoryWarning() {

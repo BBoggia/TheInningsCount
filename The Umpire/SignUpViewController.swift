@@ -20,10 +20,12 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     var userCity: String!
     var currentUser: Any!
     
+    @IBOutlet var appTitle: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var reTypePasswordField: UITextField!
     @IBOutlet weak var leagueCodeField: UITextField!
+    @IBOutlet var altCreateAccBtn: UIButton!
     @IBAction func createAccountButton(_ sender: Any) {
         self.createAccount()
     }
@@ -47,6 +49,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         passwordField.inputAccessoryView = toolBar
         reTypePasswordField.inputAccessoryView = toolBar
         leagueCodeField.inputAccessoryView = toolBar
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
+        }
     }
 
     override func didReceiveMemoryWarning() {

@@ -48,6 +48,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                 self.playerDataTable.reloadData()
             }
             print(self.playerStatsList)
+            self.playerStatsList.reverse()
         })
     }
     

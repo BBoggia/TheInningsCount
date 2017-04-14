@@ -26,6 +26,12 @@ class CompleteLeagueCreationViewController: UIViewController {
     var ageGroups = [String]()
     var randomGenNum: String!
     
+    @IBOutlet var yourEmail: UILabel!
+    @IBOutlet var yourPassword: UILabel!
+    @IBOutlet var yourLeagueName: UILabel!
+    @IBOutlet var yourLeagueTeams: UILabel!
+    @IBOutlet var yourLeagueAges: UILabel!
+    @IBOutlet var yourTeam: UILabel!
     @IBOutlet weak var emailDisplay: UILabel!
     @IBOutlet weak var passwordDisplay: UILabel!
     @IBOutlet weak var leagueNameDisplay: UILabel!
@@ -60,6 +66,20 @@ class CompleteLeagueCreationViewController: UIViewController {
         teamsDisplay.text = teams.joined(separator: ", ")
         adminsTeam.text = adminTeam
         leagueAges.text = ageGroups.joined(separator: ", ")
+        
+        /*if UIDevice.current.userInterfaceIdiom == .pad {
+            yourEmail.font = UIFont(name: yourEmail.font.fontName, size: 24)
+            yourPassword.font = yourEmail.font
+            yourLeagueName.font = yourEmail.font
+            yourLeagueAges.font = yourEmail.font
+            yourTeam.font = yourEmail.font
+            emailDisplay.font = UIFont(name: emailDisplay.font.fontName, size: 24)
+            passwordDisplay.font = UIFont(name: passwordDisplay.font.fontName, size: 24)
+            leagueNameDisplay.font = UIFont(name: leagueNameDisplay.font.fontName, size: 24)
+            teamsDisplay.font = UIFont(name: teamsDisplay.font.fontName, size: 24)
+            adminsTeam.font = UIFont(name: adminsTeam.font.fontName, size: 24)
+            leagueAges.font = UIFont(name: leagueAges.font.fontName, size: 24)
+        }*/
 
     }
     
