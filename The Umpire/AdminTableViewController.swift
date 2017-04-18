@@ -22,6 +22,9 @@ class AdminTableViewController: UITableViewController {
     var tablePath: FIRDatabaseReference!
     var convertedArray = [String]()
     var league: String!
+    var ageGroup: String!
+    var selectedCell: String!
+    var alertTextField: String!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -85,6 +88,62 @@ class AdminTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         cell.textLabel?.text = convertedArray[indexPath.row]
+        
+        selectedCell = cell.textLabel?.text
+        
+        if decider == 0 {
+            
+            func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel)
+            {
+                
+                let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+                
+                myAlert.addTextField()
+                
+                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                    self.alertTextField = myAlert.textFields![0].text
+                    self.ref.child("LeagueDatabase").child(self.league).updateChildValues([self.selectedCell:self.alertTextField])
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                
+                myAlert.addAction(okAction)
+                myAlert.addAction(cancelAction)
+                
+                self.present(myAlert, animated: true, completion: nil)
+            }
+        } else if decider == 1 {
+            func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel)
+            {
+                
+                let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+                
+                myAlert.addTextField()
+                
+                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                    self.alertTextField = myAlert.textFields![0].text
+                    self.ref.child("LeagueDatabase").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
+                        for age in snapshot.children {
+                            self.ref.child("LeagueDatabase").child(self.league).child(age).updateChildValues([self.selectedCell:self.alertTextField])
+                        }
+                        self.ref.child("LeagueTeamLists").child(league).updateChildValues([self.selectedCell:self.alertTextField])
+                    })
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                
+                myAlert.addAction(okAction)
+                myAlert.addAction(cancelAction)
+                
+                self.present(myAlert, animated: true, completion: nil)
+            }
+        } else if decider == 2 {
+            
+        } else if decider == 3 {
+            
+        } else {
+            
+        }
 
         return cell
     }
