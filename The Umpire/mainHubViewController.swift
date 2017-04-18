@@ -47,6 +47,12 @@ class mainHubViewController: UIViewController {
             self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
             self.navBar.title = self.leagueName
             self.titleLabel.text = self.teamName
+            
+            if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
+                
+                self.navBar.rightBarButtonItem = UIBarButtonItem(title: "Admin", style: .plain, target: self, action: #selector(self.adminSegue))
+
+            }
         })
         
         if UIDevice.current.userInterfaceIdiom == .pad {
@@ -57,6 +63,10 @@ class mainHubViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func adminSegue() {
+        performSegue(withIdentifier: "toAdmin", sender: nil)
     }
     
     func displayMyAlertMessage(title:String, userMessage:String)

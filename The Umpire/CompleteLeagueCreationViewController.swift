@@ -101,7 +101,7 @@ class CompleteLeagueCreationViewController: UIViewController {
                         }
                     }
                     for team in self.teams {
-                        self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).setValue("team")
+                        self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).child("Coaches UID").setValue("Coaches Email")
                     }
                     self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
                     
@@ -137,9 +137,11 @@ class CompleteLeagueCreationViewController: UIViewController {
         if adminTeam == "" && adminsTeam.text == "" {
             ref2.child("/\(userUID!)").child("Team").setValue("N/A")
             ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
+            ref2.child("/\(userUID!)").child("status").setValue("admin")
         } else {
             ref2.child("/\(userUID!)").child("Team").setValue(adminsTeam.text!)
             ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
+            ref2.child("/\(userUID!)").child("status").setValue("admin")
         }
         
         print(userUID!)

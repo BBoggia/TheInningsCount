@@ -18,15 +18,21 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     var password: String!
     var adminsTeam = ""
     var textLabelTeams = ["test"]
+    var ageGroups = [String]()
     @IBOutlet weak var teamDisplay: UILabel!
     
     @IBOutlet weak var teamName: UITextField!
     @IBOutlet weak var adminTeam: UITextField!
     
     @IBAction func addTeam(_ sender: Any) {
-        textLabelTeams.append(teamName.text!)
-        teamDisplay.text = textLabelTeams.joined(separator: ", ")
-        teamName.text?.removeAll()
+        
+        if (teamName.text?.contains("$"))! || (teamName.text?.contains("/"))! || (teamName.text?.contains("\\"))! || (teamName.text?.contains("#"))! || (teamName.text?.contains("["))! || (teamName.text?.contains("]"))! || (teamName.text?.contains("."))! {
+            displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+        } else {
+            textLabelTeams.append(teamName.text!)
+            teamDisplay.text = textLabelTeams.joined(separator: ", ")
+            teamName.text?.removeAll()
+        }
     }
     
     @IBAction func removeTeam(_ sender: Any) {
@@ -44,12 +50,13 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         adminsTeam = adminTeam.text!
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "ageCreate") as! TeamAgeGroupCreatorViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! CompleteLeagueCreationViewController
         vc.leagueName = leagueName as String
         vc.email = email as String
         vc.password = password as String
         vc.teams = textLabelTeams as Array
         vc.adminTeam = adminsTeam as String
+        vc.ageGroups = ageGroups as Array
         navigationController?.pushViewController(vc,animated: true)
     }
 

@@ -21,6 +21,8 @@
 		DB0BF1721E86FAB400F5084D /* TeamNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF1711E86FAB400F5084D /* TeamNameViewController.swift */; };
 		DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */; };
 		DB1DCF5A1E52850F00CE1143 /* Age-TeamDataSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */; };
+		DB321FE01EA5A21400FF5AFC /* AdminHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB321FDF1EA5A21400FF5AFC /* AdminHubViewController.swift */; };
+		DB321FE41EA5B5FB00FF5AFC /* AdminTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB321FE31EA5B5FB00FF5AFC /* AdminTableViewController.swift */; };
 		DB34DE211E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */; };
 		DB34DE231E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */; };
 		DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */; };
@@ -75,6 +77,8 @@
 		DB0BF1731E870CA900F5084D /* CompleteLeagueCreationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompleteLeagueCreationViewController.swift; sourceTree = "<group>"; };
 		DB1DCF591E52850F00CE1143 /* Age-TeamDataSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Age-TeamDataSelectViewController.swift"; sourceTree = "<group>"; };
 		DB21C1A31E9C4BE400476BCC /* AKPickerView_Swift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AKPickerView_Swift.framework; path = "Pods/../build/Debug-iphoneos/AKPickerView-Swift/AKPickerView_Swift.framework"; sourceTree = "<group>"; };
+		DB321FDF1EA5A21400FF5AFC /* AdminHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminHubViewController.swift; sourceTree = "<group>"; };
+		DB321FE31EA5B5FB00FF5AFC /* AdminTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminTableViewController.swift; sourceTree = "<group>"; };
 		DB34DE201E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamAgeGroupCreatorViewController.swift; sourceTree = "<group>"; };
 		DB34DE221E8D66DB007AE2A8 /* RegularTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularTeamSelectViewController.swift; sourceTree = "<group>"; };
 		DBEBF7901DF0BAC0003CF098 /* The Umpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Umpire.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -179,6 +183,8 @@
 				5E9E2A051E96A761000EC69B /* mainHubViewController.swift */,
 				DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */,
 				DB0935BE1E9892B900C6E2AD /* AddRosterViewController.swift */,
+				DB321FDF1EA5A21400FF5AFC /* AdminHubViewController.swift */,
+				DB321FE31EA5B5FB00FF5AFC /* AdminTableViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
@@ -511,6 +517,8 @@
 			files = (
 				5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
+				DB321FE41EA5B5FB00FF5AFC /* AdminTableViewController.swift in Sources */,
+				DB321FE01EA5A21400FF5AFC /* AdminHubViewController.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */,

@@ -20,7 +20,11 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createAccount(_ sender: Any) {
         
-        createAccount()
+        if (leagueName.text?.contains("$"))! || (leagueName.text?.contains("/"))! || (leagueName.text?.contains("\\"))! || (leagueName.text?.contains("#"))! || (leagueName.text?.contains("["))! || (leagueName.text?.contains("]"))! || (leagueName.text?.contains("."))! {
+            displayMyAlertMessage(title: "Oops!", userMessage: "Your league name cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+        } else {
+            createAccount()
+        }
     }
     
     var leagueName1: String!
@@ -48,6 +52,8 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         adminEmail.inputAccessoryView = toolBar
         password.inputAccessoryView = toolBar
         rePassword.inputAccessoryView = toolBar
+        
+        displayMyAlertMessage(title: "League Creation", userMessage: "")
     }
 
     override func didReceiveMemoryWarning() {
@@ -73,7 +79,7 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             password1 = password.text
             
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
+            let vc = storyboard.instantiateViewController(withIdentifier: "ageCreate") as! TeamAgeGroupCreatorViewController
             vc.leagueName = leagueName1 as String
             vc.email = email1 as String
             vc.password = password1 as String

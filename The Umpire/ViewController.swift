@@ -15,11 +15,25 @@ class ViewController: UIViewController, UITextFieldDelegate {
     let user = FIRAuth.auth()?.currentUser
     
     var userUID: String!
+    var effect: UIVisualEffect!
     
-    @IBOutlet var appTitle: UILabel!
+    @IBOutlet var popUpView: UIView!
+    
+    @IBOutlet weak var viewInScroll: UIView!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var visualEffectView: UIVisualEffectView!
+    @IBOutlet weak var appTitle: UILabel!
     @IBOutlet weak var myLabel: UILabel!
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
+    @IBOutlet weak var closeButton: UIButton!
+    
+    @IBAction func helpButton(_ sender: Any) {
+        openPopUp()
+    }
+    @IBAction func close(_ sender: UIButton) {
+        closePopUp()
+    }
     @IBAction func logInButton(_ sender: Any) {
         if self.emailField.text == "" || self.passwordField.text == "" {
             let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
@@ -63,7 +77,19 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
+        effect = visualEffectView.effect
+        visualEffectView.effect = nil
+        
+        popUpView.layer.cornerRadius = 5
+        scrollView.layer.cornerRadius = 5
+        viewInScroll.layer.cornerRadius = 5
+        closeButton.layer.cornerRadius = 5
+        visualEffectView.layer.bounds.size.height = 0
+        visualEffectView.layer.bounds.size.width = 0
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height, 0)
+        
+        isAppAlreadyLaunchedOnce()
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -89,6 +115,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
+            popUpView.layer.bounds.size.height = 600
+            popUpView.layer.bounds.size.width = 450
         }
     }
 
@@ -105,10 +133,55 @@ class ViewController: UIViewController, UITextFieldDelegate {
     func doneClicked() {
         self.view.endEditing(true)
     }
+    
+    func openPopUp() {
+        self.view.addSubview(popUpView)
+        popUpView.center = self.view.center
+        
+        popUpView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+        popUpView.alpha = 0
+        
+        self.visualEffectView.layer.bounds.size.width = self.view.layer.bounds.width
+        self.visualEffectView.layer.bounds.size.height = self.view.layer.bounds.height
+        
+        UIView.animate(withDuration: 0.4) {
+            self.visualEffectView.effect = self.effect
+            self.popUpView.alpha = 1
+            self.popUpView.transform = CGAffineTransform.identity
+        }
+    }
+    
+    func closePopUp() {
+        UIView.animate(withDuration: 0.3, animations: {
+            self.popUpView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
+            self.popUpView.alpha = 0
+            
+            self.visualEffectView.effect = nil
+        }, completion: { (success:Bool) in
+            self.popUpView.removeFromSuperview()
+        })
+        
+        self.visualEffectView.layer.bounds.size.height = 0
+        self.visualEffectView.layer.bounds.size.width = 0
+    }
+    
+    func isAppAlreadyLaunchedOnce() -> Bool {
+        let defaults = UserDefaults.standard
+        
+        if let isAppAlreadyLaunchedOnce = defaults.string(forKey: "isFirstLaunch"){
+            print("App already launched : \(isAppAlreadyLaunchedOnce)")
+            return true
+        }else{
+            defaults.set(true, forKey: "isFirstLaunch")
+            print("App launched first time")
+            self.openPopUp()
+            return false
+        }
+    }
 
 }
 
-enum UIUserInterfaceIdiom : Int {
+enum UIUserInterfaceIdiom: Int {
     case unspecified
     
     case phone // iPhone and iPod touch style UI

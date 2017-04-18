@@ -22,7 +22,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     
     let ref = FIRDatabase.database().reference()
     let ref2 = FIRDatabase.database().reference().child("UserData")
-    
+    let user = FIRAuth.auth()?.currentUser
+    let userUID = FIRAuth.auth()?.currentUser?.uid
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,6 +65,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         
         ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)
         ref2.child("/\(userUID!)").child("League").setValue(leagueName)
+        ref2.child("/\(userUID!)").child("status").setValue("coach")
         
         print(userUID!)
     }
@@ -93,6 +95,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         selectedTeam = currentCell?.textLabel?.text
         
         saveUID()
+        
+        self.ref.child("LeagueTeamLists").child(self.leagueName).child(selectedTeam).child(userUID!).setValue(user?.email)
         
         performSegue(withIdentifier: "toTeamSelect", sender: nil)
     }

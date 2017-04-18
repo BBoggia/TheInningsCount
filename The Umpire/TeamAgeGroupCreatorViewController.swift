@@ -16,17 +16,20 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     var leagueName: String!
     var email: String!
     var password: String!
-    var adminTeam = ""
     var textLabelGroups = [""]
-    var teams = [String]()
     
     @IBOutlet weak var groupDisplay: UILabel!
     @IBOutlet weak var groupTextField: UITextField!
     
     @IBAction func addGroup(_ sender: Any) {
-        textLabelGroups.append(groupTextField.text!)
-        groupDisplay.text = textLabelGroups.joined(separator: ", ")
-        groupTextField.text?.removeAll()
+        
+        if (groupTextField.text?.contains("$"))! || (groupTextField.text?.contains("/"))! || (groupTextField.text?.contains("\\"))! || (groupTextField.text?.contains("#"))! || (groupTextField.text?.contains("["))! || (groupTextField.text?.contains("]"))! || (groupTextField.text?.contains("."))! {
+            displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+        } else {
+            textLabelGroups.append(groupTextField.text!)
+            groupDisplay.text = textLabelGroups.joined(separator: ", ")
+            groupTextField.text?.removeAll()
+        }
     }
     
     @IBAction func removeGroup(_ sender: Any) {
@@ -42,12 +45,10 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func createGroups(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! CompleteLeagueCreationViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
         vc.leagueName = leagueName as String
         vc.email = email as String
         vc.password = password as String
-        vc.teams = teams as Array
-        vc.adminTeam = adminTeam as String
         vc.ageGroups = textLabelGroups as Array
         navigationController?.pushViewController(vc,animated: true)
     }
