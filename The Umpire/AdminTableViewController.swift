@@ -23,6 +23,7 @@ class AdminTableViewController: UITableViewController {
     var ageGroup: String!
     var selectedCell: String!
     var alertTextField: String!
+    var theSnapshot: FIRDataSnapshot!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,7 +56,6 @@ class AdminTableViewController: UITableViewController {
                 self.tableView.reloadData()
             }
             print(self.convertedArray)
-            self.convertedArray.reverse()
         })
     }
 
@@ -74,12 +74,12 @@ class AdminTableViewController: UITableViewController {
 
         cell.textLabel?.text = convertedArray[indexPath.row]
         
-        selectedCell = cell.textLabel?.text
-        
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        selectedCell = convertedArray[indexPath.row]
         
         let myAlert = UIAlertController(title: "Rename Age Group", message: "Enter the new name for the age group selected.", preferredStyle: UIAlertControllerStyle.alert)
         
@@ -87,7 +87,13 @@ class AdminTableViewController: UITableViewController {
         
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
             self.alertTextField = myAlert.textFields![0].text
-            self.ref.child("LeagueDatabase").child(self.league).updateChildValues([self.selectedCell!:self.alertTextField!])
+            
+            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.ref.child("LeagueDatabase").child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+            })
+            
+            self.tableView.reloadData()
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
