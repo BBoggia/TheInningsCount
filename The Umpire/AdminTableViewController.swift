@@ -17,8 +17,6 @@ class AdminTableViewController: UITableViewController {
     let userUID = FIRAuth.auth()?.currentUser?.uid
     let ref = FIRDatabase.database().reference()
     
-    var decider: Int!
-    
     var tablePath: FIRDatabaseReference!
     var convertedArray = [String]()
     var league: String!
@@ -29,28 +27,12 @@ class AdminTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.value as! String!
             self.dataObserver()
         })
         
-        switch decider {
-        case 0:
-            tablePath = ref.child(league)
-            print("Rename Age Group")
-            
-        case 1:
-            print("Rename Team")
-            
-        case 2:
-            print("Add/Remove Ages & Teams")
-        
-        case 3:
-            print("Remove a Coach")
-            
-        default:
-            print(LocalizedError.self)
-        }
 
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
@@ -62,11 +44,14 @@ class AdminTableViewController: UITableViewController {
     }
     
     func dataObserver() {
+        
+        self.tablePath = self.ref.child("LeagueDatabase").child(self.league)
+        
         tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.convertedArray.append(snap.value as! String)
+                self.convertedArray.append(snap.key)
                 self.tableView.reloadData()
             }
             print(self.convertedArray)
@@ -91,61 +76,26 @@ class AdminTableViewController: UITableViewController {
         
         selectedCell = cell.textLabel?.text
         
-        if decider == 0 {
-            
-            func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel)
-            {
-                
-                let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-                
-                myAlert.addTextField()
-                
-                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-                    self.alertTextField = myAlert.textFields![0].text
-                    self.ref.child("LeagueDatabase").child(self.league).updateChildValues([self.selectedCell:self.alertTextField])
-                }
-                
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-                
-                myAlert.addAction(okAction)
-                myAlert.addAction(cancelAction)
-                
-                self.present(myAlert, animated: true, completion: nil)
-            }
-        } else if decider == 1 {
-            func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel)
-            {
-                
-                let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-                
-                myAlert.addTextField()
-                
-                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-                    self.alertTextField = myAlert.textFields![0].text
-                    self.ref.child("LeagueDatabase").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-                        for age in snapshot.children {
-                            self.ref.child("LeagueDatabase").child(self.league).child(age).updateChildValues([self.selectedCell:self.alertTextField])
-                        }
-                        self.ref.child("LeagueTeamLists").child(league).updateChildValues([self.selectedCell:self.alertTextField])
-                    })
-                }
-                
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-                
-                myAlert.addAction(okAction)
-                myAlert.addAction(cancelAction)
-                
-                self.present(myAlert, animated: true, completion: nil)
-            }
-        } else if decider == 2 {
-            
-        } else if decider == 3 {
-            
-        } else {
-            
-        }
-
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let myAlert = UIAlertController(title: "Rename Age Group", message: "Enter the new name for the age group selected.", preferredStyle: UIAlertControllerStyle.alert)
+        
+        myAlert.addTextField()
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            self.alertTextField = myAlert.textFields![0].text
+            self.ref.child("LeagueDatabase").child(self.league).updateChildValues([self.selectedCell!:self.alertTextField!])
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        
+        self.present(myAlert, animated: true, completion: nil)
     }
 
 }
