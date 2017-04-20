@@ -53,7 +53,7 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         password.inputAccessoryView = toolBar
         rePassword.inputAccessoryView = toolBar
         
-        displayMyAlertMessage(title: "League Creation", userMessage: "")
+        //displayMyAlertMessage(title: "League Creation", userMessage: "")
     }
 
     override func didReceiveMemoryWarning() {

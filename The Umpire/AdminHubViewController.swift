@@ -22,13 +22,13 @@ class AdminHubViewController: UIViewController {
     }
     @IBAction func renameAge(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "adminTable") as! AdminTableViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "renameTeam") as! AdminTableViewController
         
         navigationController?.pushViewController(vc,animated: true)
     }
     @IBAction func renameTeam(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "adminTable") as! AdminTableViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "renameAge") as! RenameTeam1TableViewController
         
         navigationController?.pushViewController(vc,animated: true)
     }

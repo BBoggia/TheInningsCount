@@ -85,23 +85,35 @@ class RenameTeam1TableViewController: UITableViewController {
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
             self.alertTextField = myAlert.textFields![0].text
             
-            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref.child("LeagueTeamLists").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.ref.child("LeagueTeamLists").child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                self.ref.child("LeagueTeamLists").child(self.league).child(self.alertTextField).setValue("Team")
+                
+                self.ref.child("LeagueTeamLists").child(self.league).child(self.selectedCell).removeValue()
+                
             })
-            
-            let tempRef = self.ref.child("LeagueDatabase").child(self.league)
             
             self.ref.child("LeagueDatabase").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
                 
                 for child in snapshot.children {
-                    tempRef.child(child).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                    
+                    let snap = child as! FIRDataSnapshot
+                    
+                    
+                    
+                    self.ref.child("LeagueDatabase").child(self.league).child(snap.key).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: snap.key).childSnapshot(forPath: self.selectedCell).value)
+                    
+                    //self.ref.child("LeagueDatabase").child(self.league).child(snap.key).child(self.selectedCell).removeValue()
                 }
             })
             
             self.ref.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
                 for child in snapshot.children {
+                    let snap = child as! FIRDataSnapshot
                     
+                    if snap.childSnapshot(forPath: "League").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.selectedCell {
+                        self.ref.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
+                    }
                 }
             })
             
