@@ -1647,41 +1647,10 @@
                             <outlet property="delegate" destination="8YW-vg-6Wa" id="gg7-bL-ahv"/>
                         </connections>
                     </tableView>
-                    <connections>
-                        <segue destination="lzB-ZR-mOx" kind="show" identifier="toRenameTeam2" id="Or9-bI-kna"/>
-                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VKC-X3-YYf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3788" y="2281"/>
-        </scene>
-        <!--Rename Team2 Table View Controller-->
-        <scene sceneID="4gT-rk-HlP">
-            <objects>
-                <tableViewController id="lzB-ZR-mOx" customClass="RenameTeam2TableViewController" customModule="The_Umpire" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="qod-Qf-76o">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="hQk-HI-13v">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hQk-HI-13v" id="zOf-la-tHl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                </tableViewCellContentView>
-                            </tableViewCell>
-                        </prototypes>
-                        <connections>
-                            <outlet property="dataSource" destination="lzB-ZR-mOx" id="Zfz-p3-Y5Q"/>
-                            <outlet property="delegate" destination="lzB-ZR-mOx" id="i2p-ux-0V5"/>
-                        </connections>
-                    </tableView>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="0ab-hU-dGL" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4753" y="2281"/>
         </scene>
         <!--Team Roster View Controller-->
         <scene sceneID="o3S-bi-0ke">

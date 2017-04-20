@@ -79,7 +79,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
+        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).childByAutoId().setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
         //ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("stat").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
         //ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("sort").setValue(FIRServerValue.timestamp())
     }

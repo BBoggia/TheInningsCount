@@ -13,14 +13,17 @@ import FirebaseDatabase
 
 class RenameTeam1TableViewController: UITableViewController {
     
-    let ref = FIRAuth.database().currentUser!
-    let user: FIRAuth
-    let userUID = FIRAuth.auth()?.currentUser
+    let user = FIRAuth.auth()?.currentUser
+    let userUID = FIRAuth.auth()?.currentUser?.uid
+    let ref = FIRDatabase.database().reference()
     
-    var tablePath: FIRDataSnapshot!
+    var tablePath: FIRDatabaseReference!
     var convertedArray = [String]()
-    var alertTextField: String!
     var league: String!
+    var ageGroup: String!
+    var selectedCell: String!
+    var alertTextField: String!
+    var theSnapshot: FIRDataSnapshot!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,7 +87,22 @@ class RenameTeam1TableViewController: UITableViewController {
             
             self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.ref.child("LeagueDatabase").child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                self.ref.child("LeagueTeamLists").child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+            })
+            
+            let tempRef = self.ref.child("LeagueDatabase").child(self.league)
+            
+            self.ref.child("LeagueDatabase").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                for child in snapshot.children {
+                    tempRef.child(child).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                }
+            })
+            
+            self.ref.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+                for child in snapshot.children {
+                    
+                }
             })
             
             self.tableView.reloadData()
