@@ -12,7 +12,6 @@
 		5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2667151E70886E008D59AF /* TeamSelectViewController.swift */; };
 		5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */; };
 		5E75A3391EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */; };
-		5E75A33B1EA7DC0200E11CB4 /* RenameTeam2TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75A33A1EA7DC0200E11CB4 /* RenameTeam2TableViewController.swift */; };
 		5E9E2A061E96A761000EC69B /* mainHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9E2A051E96A761000EC69B /* mainHubViewController.swift */; };
 		5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */; };
 		5EB1E9951EA9269400079CA6 /* AddRemoveAgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */; };
@@ -65,7 +64,6 @@
 		5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerStatsViewController.swift; sourceTree = "<group>"; };
 		5E578C921E97EB9F007763E4 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = "../../Library/Developer/Xcode/DerivedData/The_Umpire-eutuzwhspbqpwvdidaophjlvnwyx/Build/Products/Debug-iphonesimulator/SwiftyButton/SwiftyButton.framework"; sourceTree = "<group>"; };
 		5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameTeam1TableViewController.swift; sourceTree = "<group>"; };
-		5E75A33A1EA7DC0200E11CB4 /* RenameTeam2TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameTeam2TableViewController.swift; sourceTree = "<group>"; };
 		5E9E2A051E96A761000EC69B /* mainHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainHubViewController.swift; sourceTree = "<group>"; };
 		5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamDataSegueViewController.swift; sourceTree = "<group>"; };
 		5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveAgeTableViewController.swift; sourceTree = "<group>"; };
@@ -194,7 +192,6 @@
 				DB321FDF1EA5A21400FF5AFC /* AdminHubViewController.swift */,
 				DB321FE31EA5B5FB00FF5AFC /* AdminTableViewController.swift */,
 				5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */,
-				5E75A33A1EA7DC0200E11CB4 /* RenameTeam2TableViewController.swift */,
 				5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */,
 				5EB1E9961EA926F600079CA6 /* AddRemoveTeamTableViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
@@ -531,7 +528,6 @@
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
 				DB321FE41EA5B5FB00FF5AFC /* AdminTableViewController.swift in Sources */,
 				DB321FE01EA5A21400FF5AFC /* AdminHubViewController.swift in Sources */,
-				5E75A33B1EA7DC0200E11CB4 /* RenameTeam2TableViewController.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */,

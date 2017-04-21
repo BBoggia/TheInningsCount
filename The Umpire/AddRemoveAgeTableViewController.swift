@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AddRemoveAgeTableViewController: UITableViewController, UITableViewDelegate, UITableViewDataSource {
+class AddRemoveAgeTableViewController: UITableViewController {
     
     let user = FIRAuth.auth()?.currentUser
     let userUID = FIRAuth.auth()?.currentUser?.uid
@@ -28,18 +28,35 @@ class AddRemoveAgeTableViewController: UITableViewController, UITableViewDelegat
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.delegate = self
-        tableView.dataSource = self
+        
+        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.value as! String!
+            self.dataObserver()
+        })
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    func dataObserver() {
+        
+        self.tablePath = self.ref.child("LeagueTeamLists").child(self.league)
+        
+        self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            for child in snapshot.children {
+                let snap = child as! FIRDataSnapshot
+                self.convertedArray.append(snap.key)
+                self.tableView.reloadData()
+            }
+            print(self.convertedArray)
+        })
+    }
 
-    func confirmDelete(planet: String) {
-        let alert = UIAlertController(title: "Delete Age", message: "Are you sure you want to permanently delete \(planet)?", preferredStyle: .actionSheet)
+    func confirmDelete(title: String) {
+        let alert = UIAlertController(title: "Delete Age", message: "Are you sure you want to permanently delete \(title)?", preferredStyle: .actionSheet)
         
         let DeleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: handleDeletePlanet)
         let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: cancelDeletePlanet)
@@ -63,14 +80,14 @@ class AddRemoveAgeTableViewController: UITableViewController, UITableViewDelegat
             // Note that indexPath is wrapped in an array:  [indexPath]
             tableView.deleteRows(at: [indexPath as IndexPath], with: .automatic)
             
-            deletePlanetIndexPath = nil
+            deleteIndexPath = nil
             
             tableView.endUpdates()
         }
     }
     
     func cancelDeletePlanet(alertAction: UIAlertAction!) {
-        deletePlanetIndexPath = nil
+        deleteIndexPath = nil
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -84,7 +101,7 @@ class AddRemoveAgeTableViewController: UITableViewController, UITableViewDelegat
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
 
         cell.textLabel?.text = convertedArray[indexPath.row]
 
@@ -93,9 +110,9 @@ class AddRemoveAgeTableViewController: UITableViewController, UITableViewDelegat
     
     func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
         if editingStyle == .delete {
-            deletePlanetIndexPath = indexPath
-            let planetToDelete = planets[indexPath.row]
-            confirmDelete(planetToDelete)
+            deleteIndexPath = indexPath
+            let toDelete = convertedArray[indexPath.row]
+            confirmDelete(title: toDelete)
         }
     }
 
