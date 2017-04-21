@@ -1,22 +1,21 @@
 //
-//  SignupTeamSelectViewController.swift
+//  SignupAgeTableViewController.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 3/29/17.
+//  Created by Branson Boggia on 4/21/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
 
 import UIKit
 import Firebase
-import FirebaseDatabase
 import FirebaseAuth
+import FirebaseDatabase
 
-class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-
+class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    
     @IBOutlet weak var teamTableView: UITableView!
     
-    var teamList = [String]()
-    var selectedTeam: String!
+    var ageList = [String]()
     var selectedAge: String!
     var randomNum: String!
     var leagueName: String!
@@ -29,36 +28,30 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref2.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandNum").value as! String!
-            
-            self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            
-            self.populateView()
-        })
+        dataObserver()
         
         teamTableView.delegate = self
         teamTableView.dataSource = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    /*func dataObserver() {
-        ref.child("LeagueData").child(randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
+    func dataObserver() {
+        ref.child("LeagueData").child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String!
             self.populateView()
         })
-    }*/
+    }
     
     func populateView() {
-        ref.child("LeagueData").child(self.randomNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueData").child(self.randomNum).child("Info").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.teamList.append(snap.key)
-                print(self.teamList)
+                self.ageList.append(snap.key)
+                print(self.ageList)
                 print(snap.key)
                 self.teamTableView.reloadData()
             }
@@ -73,8 +66,6 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             action in
             
             self.saveUID()
-            
-            self.ref.child("LeagueTeamLists").child(self.leagueName).child(self.selectedTeam).child(self.userUID!).setValue(self.user?.email)
             
             self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
         }
@@ -93,24 +84,26 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let user = FIRAuth.auth()?.currentUser
         let userUID = user?.uid
         
-        ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)
+        ref2.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
+        ref2.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        ref2.child("/\(userUID!)").child("League").child("RandNum").setValue(randomNum)
         
         print(userUID!)
     }
-
+    
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return teamList.count
+        return ageList.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = teamTableView.dequeueReusableCell(withIdentifier: "cell")
         
-        cell?.textLabel?.text = teamList[indexPath.row]
+        cell?.textLabel?.text = ageList[indexPath.row]
         
         return cell!
     }
@@ -120,8 +113,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let indexPath = teamTableView.indexPathForSelectedRow
         let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
         
-        selectedTeam = currentCell?.textLabel?.text
+        selectedAge = currentCell?.textLabel?.text
         
-        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedTeam), is this correct?")
+        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedAge), is this correct?")
     }
 }

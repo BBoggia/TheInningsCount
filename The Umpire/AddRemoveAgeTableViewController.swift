@@ -42,7 +42,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueTeamLists").child(self.league)
+        self.tablePath = self.ref.child("LeagueDatabase").child(self.league)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

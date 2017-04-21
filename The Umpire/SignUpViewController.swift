@@ -61,7 +61,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func createAccount() {
         
-        ref.reference().child("LeagueCodes").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.reference().child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChild(self.leagueCodeField.text!) {
         
                 if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
