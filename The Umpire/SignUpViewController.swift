@@ -85,7 +85,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                         if error == nil {
                     
-                            self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
+                            self.performSegue(withIdentifier: "toAgeSelect", sender: nil)
                     
                         } else {
                     
@@ -138,11 +138,11 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toTeamSelect" {
+        if segue.identifier == "toAgeSelect" {
             
-            var vC: SignupTeamSelectViewController
+            var vC: SignupAgeTableViewController
             
-            vC = segue.destination as! SignupTeamSelectViewController
+            vC = segue.destination as! SignupAgeTableViewController
             
             vC.randomNum = leagueCodeField.text!
         }

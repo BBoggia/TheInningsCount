@@ -17,11 +17,12 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var adminEmail: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var rePassword: UITextField!
+    @IBOutlet weak var descLabel: UILabel!
     
     @IBAction func createAccount(_ sender: Any) {
         
         if (leagueName.text?.contains("$"))! || (leagueName.text?.contains("/"))! || (leagueName.text?.contains("\\"))! || (leagueName.text?.contains("#"))! || (leagueName.text?.contains("["))! || (leagueName.text?.contains("]"))! || (leagueName.text?.contains("."))! {
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your league name cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+            displayMyAlertMessage(title: "Oops!", userMessage: "Your league name cannot contain the following characters: \n '$' '.' '/' '\\' '#' '[' ']'")
         } else {
             createAccount()
         }
@@ -40,6 +41,8 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         self.adminEmail.delegate = self
         self.password.delegate = self
         self.rePassword.delegate = self
+        
+        descLabel.text = "Please do not use the following symbols in your information.\n$ . [ ] # / \\ "
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()

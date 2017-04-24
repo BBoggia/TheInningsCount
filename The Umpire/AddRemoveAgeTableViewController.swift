@@ -25,12 +25,15 @@ class AddRemoveAgeTableViewController: UITableViewController {
     var alertTextField: String!
     var theSnapshot: FIRDataSnapshot!
     var deleteIndexPath: NSIndexPath? = nil
+    var randNum: String!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.value as! String!
+        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
     }
@@ -42,7 +45,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueDatabase").child(self.league)
+        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

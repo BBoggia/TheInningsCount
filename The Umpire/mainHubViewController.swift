@@ -44,7 +44,7 @@ class mainHubViewController: UIViewController {
         let teamNameRef = ref.child("UserData").child(userUID!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
-            self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
+            self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.navBar.title = self.leagueName
             self.titleLabel.text = self.teamName
             

@@ -14,18 +14,19 @@ import FirebaseDatabase
 class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     let ref = FIRDatabase.database().reference()
-    let mainRef = FIRDatabase.database()
     let user = FIRAuth.auth()?.currentUser
     var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     let dateFormatter = DateFormatter()
     var currentDate = Date()
     
-    var teamName:String!
-    var leagueName:String!
+    var teamName: String!
+    var leagueName: String!
     var userDate = ""
     var databaseDate = ""
     var sortDate: [AnyHashable:Any] = [:]
-    var age:String!
+    var age: String!
+    var randNum: String!
+    var adminStop: Bool!
     
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
@@ -43,16 +44,37 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         playerNumberTextField.delegate = self
         pitchCountTextField.delegate = self
         
-        let teamNameRef = mainRef.reference().child("UserData").child(userUID!)
-        teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
-            self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
-            
-        })
+        if adminStop == nil {
         
-        titleField.text = age!
-        
-        self.navigationController?.title = leagueName
+            ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
+                
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
+                    self.navigationController?.pushViewController(vc,animated: true)
+                
+                } else {
+                    let teamNameRef = self.ref.child("UserData").child(self.userUID!)
+                    teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
+                        self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+                        self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
+                        self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+                        self.titleField.text = self.teamName
+                        self.navigationController?.title = self.leagueName
+
+                    })
+                }
+            })
+        } else if adminStop == true {
+            let teamNameRef = self.ref.child("UserData").child(self.userUID!)
+            teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+                self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+                self.titleField.text = self.teamName
+                self.navigationController?.title = self.leagueName
+            })
+        }
         
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
@@ -79,9 +101,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).childByAutoId().setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
-        //ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("stat").setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
-        //ref.child("LeagueDatabase").child(leagueName).child(age).child(teamName).child("\(self.databaseDate)").child("sort").setValue(FIRServerValue.timestamp())
+        ref.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

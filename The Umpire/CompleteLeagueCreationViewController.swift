@@ -21,7 +21,6 @@ class CompleteLeagueCreationViewController: UIViewController {
     var email: String!
     var password: String!
     var teams = [String]()
-    var adminTeam = ""
     var changedData: String!
     var ageGroups = [String]()
     var randomGenNum: String!
@@ -31,12 +30,10 @@ class CompleteLeagueCreationViewController: UIViewController {
     @IBOutlet var yourLeagueName: UILabel!
     @IBOutlet var yourLeagueTeams: UILabel!
     @IBOutlet var yourLeagueAges: UILabel!
-    @IBOutlet var yourTeam: UILabel!
     @IBOutlet weak var emailDisplay: UILabel!
     @IBOutlet weak var passwordDisplay: UILabel!
     @IBOutlet weak var leagueNameDisplay: UILabel!
     @IBOutlet weak var teamsDisplay: UILabel!
-    @IBOutlet weak var adminsTeam: UILabel!
     @IBOutlet weak var leagueAges: UILabel!
     
     @IBAction func changeEmail(_ sender: Any) {
@@ -48,12 +45,8 @@ class CompleteLeagueCreationViewController: UIViewController {
     @IBAction func changeLeagueName(_ sender: Any) {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new league name you want to use.", editedField: leagueNameDisplay)
     }
-    @IBAction func adminTeam(_ sender: Any) {
-        displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new name of your team.", editedField: adminsTeam)
-    }
     @IBAction func confirm(_ sender: Any) {
         randomString()
-        checkRandomString()
         createAccount()
         autoSignIn()
     }
@@ -64,7 +57,6 @@ class CompleteLeagueCreationViewController: UIViewController {
         passwordDisplay.text = password
         leagueNameDisplay.text = leagueName
         teamsDisplay.text = teams.joined(separator: ", ")
-        adminsTeam.text = adminTeam
         leagueAges.text = ageGroups.joined(separator: ", ")
         
         /*if UIDevice.current.userInterfaceIdiom == .pad {
@@ -89,44 +81,38 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     func createAccount() {
         
-        if teams.contains(adminsTeam.text!) {
-            FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
-                if error == nil {
-                    self.autoSignIn()
-                    self.saveUID()
+        FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
+            if error == nil {
+                self.autoSignIn()
+                self.saveUID()
                     
-                    for item in self.teams {
-                        for item2 in self.ageGroups {
-                            self.ref.child("LeagueDatabase").child(self.leagueNameDisplay.text!).child(item2).child(item).child("Long Date").setValue("Date | Player Number | Innings Pitched")
-                        }
-                    }
+                for age in self.ageGroups {
                     for team in self.teams {
-                        self.ref.child("LeagueTeamLists").child(self.leagueNameDisplay.text!).child(team).child("Coaches UID").setValue("Coaches Email")
+                        self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+                        self.ref.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
+                        self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
                     }
-                    self.ref.child("LeagueCodes").child(self.randomGenNum!).setValue(self.leagueNameDisplay.text!)
+                }
                     
-                    let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
-                    let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
+                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
                         UIPasteboard.general.string = self.randomGenNum!
                         
-                        let firebaseAuth = FIRAuth.auth()
-                        do {
-                            try firebaseAuth?.signOut()
-                        } catch let signOutError as NSError {
-                            print ("Error signing out: %@", signOutError)
-                        }
-                        
-                        self.performSegue(withIdentifier: "fromCL", sender: nil)
+                    let firebaseAuth = FIRAuth.auth()
+                    do {
+                        try firebaseAuth?.signOut()
+                    } catch let signOutError as NSError {
+                        print ("Error signing out: %@", signOutError)
                     }
-                    myAlert1.addAction(okAction)
-                    self.present(myAlert1, animated: true, completion: nil)
-                } else {
-                    self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
+                        
+                    self.performSegue(withIdentifier: "fromCL", sender: nil)
                 }
-            })
-        } else {
-            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your team doesen't match any of the league teams you created.")
-        }
+                myAlert1.addAction(okAction)
+                self.present(myAlert1, animated: true, completion: nil)
+            } else {
+                self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
+            }
+        })
     }
     
     func saveUID() {
@@ -134,15 +120,10 @@ class CompleteLeagueCreationViewController: UIViewController {
         let user = FIRAuth.auth()?.currentUser
         let userUID = user?.uid
         
-        if adminTeam == "" && adminsTeam.text == "" {
-            ref2.child("/\(userUID!)").child("Team").setValue("N/A")
-            ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
-            ref2.child("/\(userUID!)").child("status").setValue("admin")
-        } else {
-            ref2.child("/\(userUID!)").child("Team").setValue(adminsTeam.text!)
-            ref2.child("/\(userUID!)").child("League").setValue(leagueNameDisplay.text!)
-            ref2.child("/\(userUID!)").child("status").setValue("admin")
-        }
+        ref2.child("/\(userUID!)").child("Team").setValue("League Administrator")
+        ref2.child("/\(userUID!)").child("League").child("Name").setValue(leagueNameDisplay.text!)
+        ref2.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
+        ref2.child("/\(userUID!)").child("status").setValue("admin")
         
         print(userUID!)
     }
@@ -169,6 +150,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         }
         
         self.randomGenNum = randomString
+        self.checkRandomString()
     }
     
     func checkRandomString() {

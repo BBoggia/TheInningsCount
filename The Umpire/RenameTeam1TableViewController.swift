@@ -24,14 +24,19 @@ class RenameTeam1TableViewController: UITableViewController {
     var selectedCell: String!
     var alertTextField: String!
     var theSnapshot: FIRDataSnapshot!
+    var randNum: String!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.value as! String!
+        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
+        
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,7 +46,7 @@ class RenameTeam1TableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueTeamLists").child(self.league)
+        self.tablePath = self.ref.child("LeagueData").child(self.randNum).child("Info")
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -52,6 +57,7 @@ class RenameTeam1TableViewController: UITableViewController {
             }
             print(self.convertedArray)
         })
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -76,55 +82,11 @@ class RenameTeam1TableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        self.selectedCell = convertedArray[indexPath.row]
+        selectedCell = convertedArray[indexPath.row]
         
-        let myAlert = UIAlertController(title: "Rename Team", message: "Enter the new name for the team selected.", preferredStyle: UIAlertControllerStyle.alert)
-        
-        myAlert.addTextField()
-        
-        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-            self.alertTextField = myAlert.textFields![0].text
-            
-            self.ref.child("LeagueTeamLists").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                self.ref.child("LeagueTeamLists").child(self.league).child(self.alertTextField).setValue("Team")
-                
-                self.ref.child("LeagueTeamLists").child(self.league).child(self.selectedCell).removeValue()
-                
-            })
-            
-            self.ref.child("LeagueDatabase").child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                for child in snapshot.children {
-                    
-                    let snap = child as! FIRDataSnapshot
-                    
-                    
-                    
-                    self.ref.child("LeagueDatabase").child(self.league).child(snap.key).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: snap.key).childSnapshot(forPath: self.selectedCell).value)
-                    
-                    //self.ref.child("LeagueDatabase").child(self.league).child(snap.key).child(self.selectedCell).removeValue()
-                }
-            })
-            
-            self.ref.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
-                for child in snapshot.children {
-                    let snap = child as! FIRDataSnapshot
-                    
-                    if snap.childSnapshot(forPath: "League").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.selectedCell {
-                        self.ref.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
-                    }
-                }
-            })
-            
-            self.tableView.reloadData()
-        }
-        
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
-        myAlert.addAction(okAction)
-        myAlert.addAction(cancelAction)
-        
-        self.present(myAlert, animated: true, completion: nil)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "teamRename") as! RenameTeam2TableViewController
+        vc.ageGroup = selectedCell
+        navigationController?.pushViewController(vc,animated: true)
     }
 }

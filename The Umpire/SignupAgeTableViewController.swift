@@ -86,7 +86,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         
         ref2.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
         ref2.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
-        ref2.child("/\(userUID!)").child("League").child("RandNum").setValue(randomNum)
+        ref2.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomNum)
         
         print(userUID!)
     }

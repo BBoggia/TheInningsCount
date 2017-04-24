@@ -21,13 +21,15 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     var age: String!
     var league: String!
     var team: String!
+    var randNum: String!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.value as! String!
+        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
         
@@ -40,15 +42,14 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func dataObserver() {
-        ref.child("LeagueDatabase").child(league).child(age).child(team).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.playerStatsList.append(snap.value as! String)
+                self.playerStatsList.append(snap.value as! String!)
+                print(self.playerStatsList)
                 self.playerDataTable.reloadData()
             }
-            print(self.playerStatsList)
-            self.playerStatsList.reverse()
         })
     }
     

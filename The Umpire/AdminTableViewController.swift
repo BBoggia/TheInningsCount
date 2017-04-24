@@ -24,13 +24,16 @@ class AdminTableViewController: UITableViewController {
     var selectedCell: String!
     var alertTextField: String!
     var theSnapshot: FIRDataSnapshot!
+    var randNum: String!
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         
         ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.value as! String!
+            self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
         
@@ -46,7 +49,7 @@ class AdminTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueDatabase").child(self.league)
+        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
         
         tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -90,7 +93,8 @@ class AdminTableViewController: UITableViewController {
             
             self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.ref.child("LeagueDatabase").child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                self.tablePath.child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                self.tablePath.child(self.selectedCell).removeValue()
             })
             
             self.tableView.reloadData()

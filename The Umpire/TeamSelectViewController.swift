@@ -19,13 +19,15 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     var teamList = [String]()
     var teamToPass: String!
     var age: String!
-    var league:String!
+    var league: String!
+    var randNum: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.value as! String!
+        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
         
@@ -38,13 +40,12 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func dataObserver() {
-        ref.child("LeagueTeamLists").child(league).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
                 self.teamList.append(snap.key)
                 print(self.teamList)
-                print(snap.key)
                 self.teamListTable.reloadData()
             }
         })

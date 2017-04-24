@@ -16,13 +16,11 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     var leagueName: String!
     var email: String!
     var password: String!
-    var adminsTeam = ""
     var textLabelTeams = ["test"]
     var ageGroups = [String]()
     @IBOutlet weak var teamDisplay: UILabel!
     
     @IBOutlet weak var teamName: UITextField!
-    @IBOutlet weak var adminTeam: UITextField!
     
     @IBAction func addTeam(_ sender: Any) {
         
@@ -47,7 +45,6 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func createTeams(_ sender: Any) {
-        adminsTeam = adminTeam.text!
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "acCreate") as! CompleteLeagueCreationViewController
@@ -55,7 +52,6 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         vc.email = email as String
         vc.password = password as String
         vc.teams = textLabelTeams as Array
-        vc.adminTeam = adminsTeam as String
         vc.ageGroups = ageGroups as Array
         navigationController?.pushViewController(vc,animated: true)
     }
@@ -64,7 +60,6 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         self.teamName.delegate = self
-        self.adminTeam.delegate = self
         
         textLabelTeams.removeAll()
         
@@ -76,7 +71,6 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         toolBar.setItems([doneButton], animated: false)
         
         teamName.inputAccessoryView = toolBar
-        adminTeam.inputAccessoryView = toolBar
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             teamName.heightAnchor.constraint(lessThanOrEqualToConstant: 300).isActive = true

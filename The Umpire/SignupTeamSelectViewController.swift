@@ -17,7 +17,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     
     var teamList = [String]()
     var selectedTeam: String!
-    var selectedAge: String!
+    var age: String!
     var randomNum: String!
     var leagueName: String!
     
@@ -30,9 +30,11 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         super.viewDidLoad()
         
         ref2.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandNum").value as! String!
+            self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             
             self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+            
+            self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
             
             self.populateView()
         })
@@ -46,20 +48,12 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         // Dispose of any resources that can be recreated.
     }
     
-    /*func dataObserver() {
-        ref.child("LeagueData").child(randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.leagueName = snapshot.value as! String!
-            self.populateView()
-        })
-    }*/
-    
     func populateView() {
-        ref.child("LeagueData").child(self.randomNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueData").child(self.randomNum).child("Info").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
                 self.teamList.append(snap.key)
                 print(self.teamList)
-                print(snap.key)
                 self.teamTableView.reloadData()
             }
         })
@@ -74,9 +68,9 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             
             self.saveUID()
             
-            self.ref.child("LeagueTeamLists").child(self.leagueName).child(self.selectedTeam).child(self.userUID!).setValue(self.user?.email)
+            self.ref.child("LeagueData").child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
             
-            self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
+            self.performSegue(withIdentifier: "backToMain", sender: nil)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -94,8 +88,6 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let userUID = user?.uid
         
         ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)
-        
-        print(userUID!)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
