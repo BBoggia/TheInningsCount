@@ -46,7 +46,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     
     func dataObserver() {
         
-        let messageQuery = self.msgRef.queryLimited(toLast:25)
+        let messageQuery = self.msgRef.queryLimited(toLast:15)
         
         self.newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
             
@@ -56,6 +56,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
                 print(self.messages)
                 self.clientTable.reloadData()
             }
+            self.clientTable.reloadData()
         })
     }
     

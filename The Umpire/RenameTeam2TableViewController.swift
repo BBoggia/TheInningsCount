@@ -46,7 +46,7 @@ class RenameTeam2TableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueData").child(self.randNum).child("Info").child(ageGroup)
+        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

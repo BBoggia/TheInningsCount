@@ -219,12 +219,12 @@
 				DB69662A1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift */,
 				DB69662C1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift */,
 				DBEF39F61EAD90AC00ECCAB8 /* AdminGlobalMessagingViewController.swift */,
+				DBEF39F81EAD925F00ECCAB8 /* ViewLeagueAnnouncementsViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
 				DBEBF79F1DF0BAC0003CF098 /* Info.plist */,
 				DBEBF7C11DF0BAFD003CF098 /* GoogleService-Info.plist */,
-				DBEF39F81EAD925F00ECCAB8 /* ViewLeagueAnnouncementsViewController.swift */,
 			);
 			path = "The Umpire";
 			sourceTree = "<group>";

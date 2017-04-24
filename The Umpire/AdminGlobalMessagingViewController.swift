@@ -12,7 +12,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AdminGlobalMessagingViewController: UIViewController {
+class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate {
 
     let user = FIRAuth.auth()?.currentUser
     let userUID = FIRAuth.auth()?.currentUser?.uid
@@ -20,6 +20,7 @@ class AdminGlobalMessagingViewController: UIViewController {
     
     var league: String!
     var randNum: String!
+    var textField : UITextField!
     
     @IBOutlet weak var announcementTextField: UITextField!
     @IBAction func submit(_ sender: Any) {
@@ -35,6 +36,36 @@ class AdminGlobalMessagingViewController: UIViewController {
         })
             
         self.view.gradientOfView(withColors: UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0), UIColor(red:0.74, green:0.76, blue:0.78, alpha:1.0))
+        
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        
+        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
+        
+        textField = UITextField(frame: CGRect(x: 0, y: 0, width: toolBar.layer.bounds.size.width * 0.78, height: 30))
+        textField.delegate = self
+        announcementTextField.delegate = self
+        let border = CALayer()
+        let width: CGFloat = 1.0
+        border.borderColor = UIColor.black.cgColor
+        border.frame = CGRect(x: 0, y: 0, width: textField.layer.bounds.size.width, height: textField.layer.bounds.size.height)
+        border.borderWidth = width
+        border.cornerRadius = 8
+        textField.layer.addSublayer(border)
+        textField.layer.masksToBounds = true
+        textField.backgroundColor = UIColor.white
+        textField.layer.cornerRadius = 8
+        let tableTextField = UIBarButtonItem(customView: textField)
+        
+        
+        toolBar.setItems([tableTextField, doneButton], animated: true)
+        
+        announcementTextField.inputAccessoryView = toolBar
+        
+        while announcementTextField.isEditing == true {
+            announcementTextField.endEditing(true)
+            textField.becomeFirstResponder()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -45,6 +76,10 @@ class AdminGlobalMessagingViewController: UIViewController {
     func sendMessage(withMessage message: String) {
         
         self.ref.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(message)
+    }
+    
+    func doneClicked() {
+        view.endEditing(true)
     }
     
     func displayMyAlertMessage(title:String, userMessage:String)
