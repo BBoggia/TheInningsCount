@@ -46,9 +46,15 @@ class CompleteLeagueCreationViewController: UIViewController {
         displayMyAlertMessage(title: "Corrections", userMessage: "Enter the new league name you want to use.", editedField: leagueNameDisplay)
     }
     @IBAction func confirm(_ sender: Any) {
-        randomString()
-        createAccount()
-        autoSignIn()
+        
+        if (leagueNameDisplay.text?.contains("$"))! || (leagueNameDisplay.text?.contains("."))! || (leagueNameDisplay.text?.contains("["))! || (leagueNameDisplay.text?.contains("]"))! || (leagueNameDisplay.text?.contains("#"))! || (leagueNameDisplay.text?.contains("/"))! || (leagueNameDisplay.text?.contains("\\"))!    {
+            
+            randomString()
+            createAccount()
+            autoSignIn()
+        } else {
+            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your league name contains one of the following restricted characters!\n\n$, ., [, ], #, /, \\")
+        }
     }
     
     override func viewDidLoad() {
@@ -90,9 +96,11 @@ class CompleteLeagueCreationViewController: UIViewController {
                     for team in self.teams {
                         self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue("Date | Player Number | Innings Pitched")
                         self.ref.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
-                        self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
                     }
                 }
+                
+                self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
+                self.ref.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administraitor will be displayer here.", "Date":"Date of Post"])
                     
                 let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
@@ -198,10 +206,7 @@ class CompleteLeagueCreationViewController: UIViewController {
         
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default, handler: nil)
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
         myAlert.addAction(okAction)
-        myAlert.addAction(cancelAction)
         
         self.present(myAlert, animated: true, completion: nil)
     }

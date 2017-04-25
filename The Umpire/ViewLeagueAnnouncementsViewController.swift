@@ -24,6 +24,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     var league: String!
     var randNum: String!
     var messages = [String]()
+    var dates = [String]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,19 +46,22 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     }
     
     func dataObserver() {
-        
-        let messageQuery = self.msgRef.queryLimited(toLast:15)
-        
-        self.newMessageRefHandle = messageQuery.observe(.childAdded, with: { (snapshot) -> Void in
+        self.ref.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
-                self.messages.append(snap.value as! String!)
-                print(self.messages)
+                let snap = child as? FIRDataSnapshot
+                self.messages.append(snap?.childSnapshot(forPath: "Message").value as! String!)
+                self.dates.append(snap?.childSnapshot(forPath: "Date").value as! String!)
                 self.clientTable.reloadData()
             }
-            self.clientTable.reloadData()
-        })
+            
+        }, withCancel: nil)
+    }
+    
+    deinit {
+        if let refHandle = newMessageRefHandle  {
+            self.ref.child("LeagueData").child(self.randNum).child("Messages").removeObserver(withHandle: refHandle)
+        }
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -70,18 +74,12 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = clientTable.dequeueReusableCell(withIdentifier: "cell")
+        let cell = clientTable.dequeueReusableCell(withIdentifier: "cell") as! AdminMsgTableViewCell
         
-        cell?.textLabel?.text = messages[indexPath.row]
+        cell.msgLbl.text = messages[indexPath.row]
+        cell.dateLbl.text = dates[indexPath.row]
         
-        return cell!
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let indexPath = clientTable.indexPathForSelectedRow
-        let currentCell = clientTable.cellForRow(at: indexPath!) as UITableViewCell!
-        
+        return cell
     }
 
 }
