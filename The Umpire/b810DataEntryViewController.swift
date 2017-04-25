@@ -28,6 +28,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     var randNum: String!
     var adminStop: Bool!
     
+    @IBOutlet weak var lblText: UILabel!
+    @IBOutlet weak var whiteLbl: UILabel!
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
     @IBOutlet weak var titleField: UILabel!
@@ -43,6 +45,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         playerNumberTextField.delegate = self
         pitchCountTextField.delegate = self
+        
+        whiteLbl.layer.cornerRadius = 10
         
         if adminStop == nil {
         
@@ -92,6 +96,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             titleField.font = UIFont(name: titleField.font.fontName, size: 55)
+            lblText.font = UIFont(name: lblText.font.fontName, size: 28)
         }
     }
 

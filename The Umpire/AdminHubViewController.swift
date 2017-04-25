@@ -17,6 +17,8 @@ class AdminHubViewController: UIViewController {
     let user = FIRAuth.auth()?.currentUser
     let userUID = FIRAuth.auth()?.currentUser?.uid
     
+    @IBOutlet weak var descLbl: UILabel!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBAction func sendMsg(_ sender: Any) {
         
     }
@@ -49,6 +51,11 @@ class AdminHubViewController: UIViewController {
         super.viewDidLoad()
 
         self.view.gradientOfView(withColors: UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0), UIColor(red:0.74, green:0.76, blue:0.78, alpha:1.0))
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 32)
+            descLbl.font = UIFont(name: descLbl.font.fontName, size: 28)
+        }
     }
 
     override func didReceiveMemoryWarning() {

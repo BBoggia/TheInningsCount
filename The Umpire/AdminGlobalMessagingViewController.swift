@@ -70,7 +70,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         }, withCancel: nil)
     }
     
-    @objc func sendMessage(/*withMessage message: String*/) {
+    @objc func sendMessage() {
         
         if self.keyboardStatus == false {
             self.ref.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message" as NSString!:self.announcementTextField.text!, "Date" as NSString!:NSDate().userSafeDate, "Status" as NSString!:"Placeholder" as NSString!])

@@ -69,8 +69,16 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             self.saveUID()
             
             self.ref.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
+            self.ref2.child(self.userUID!).child("status").setValue("coach")
             
-            self.performSegue(withIdentifier: "backToMain", sender: nil)
+            let firebaseAuth = FIRAuth.auth()
+            do {
+                try firebaseAuth?.signOut()
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+            
+            self.performSegue(withIdentifier: "toMain", sender: nil)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)

@@ -87,7 +87,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         closeButton.layer.cornerRadius = 5
         visualEffectView.layer.bounds.size.height = 0
         visualEffectView.layer.bounds.size.width = 0
-        scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height, 0)
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height - 370, 0)
         
         isAppAlreadyLaunchedOnce()
         
@@ -117,6 +117,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
             popUpView.layer.bounds.size.height = 600
             popUpView.layer.bounds.size.width = 450
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height - 370, 0)
         }
     }
 
