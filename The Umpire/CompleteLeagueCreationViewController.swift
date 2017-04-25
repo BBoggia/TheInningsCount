@@ -49,11 +49,12 @@ class CompleteLeagueCreationViewController: UIViewController {
         
         if (leagueNameDisplay.text?.contains("$"))! || (leagueNameDisplay.text?.contains("."))! || (leagueNameDisplay.text?.contains("["))! || (leagueNameDisplay.text?.contains("]"))! || (leagueNameDisplay.text?.contains("#"))! || (leagueNameDisplay.text?.contains("/"))! || (leagueNameDisplay.text?.contains("\\"))!    {
             
+            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your league name contains one of the following restricted characters!\n\n$, ., [, ], #, /, \\")
+            
+        } else {
             randomString()
             createAccount()
             autoSignIn()
-        } else {
-            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your league name contains one of the following restricted characters!\n\n$, ., [, ], #, /, \\")
         }
     }
     

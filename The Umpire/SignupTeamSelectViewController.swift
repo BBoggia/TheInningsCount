@@ -68,7 +68,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             
             self.saveUID()
             
-            self.ref.child("LeagueData").child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
+            self.ref.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
             
             self.performSegue(withIdentifier: "backToMain", sender: nil)
         }
@@ -114,6 +114,6 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         
         selectedTeam = currentCell?.textLabel?.text
         
-        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedTeam), is this correct?")
+        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedTeam!), is this correct?")
     }
 }

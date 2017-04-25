@@ -81,5 +81,10 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
         
         return cell
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        clientTable.estimatedRowHeight = 100
+        clientTable.rowHeight = UITableViewAutomaticDimension
+    }
 
 }

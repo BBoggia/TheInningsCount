@@ -40,7 +40,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func dataObserver() {
-        ref.child("LeagueData").child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref.child("LeagueData").child(self.randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String!
             self.populateView()
         })
@@ -115,6 +115,6 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         
         selectedAge = currentCell?.textLabel?.text
         
-        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedAge), is this correct?")
+        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedAge!), is this correct?")
     }
 }

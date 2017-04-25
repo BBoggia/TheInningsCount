@@ -11,7 +11,7 @@ import UIKit
 class AdminMsgTableViewCell: UITableViewCell {
 
     @IBOutlet var dateLbl: UILabel!
-    @IBOutlet var msgLbl: UILabel!
+    @IBOutlet weak var msgLbl: UITextView!
     
     override func awakeFromNib() {
         super.awakeFromNib()

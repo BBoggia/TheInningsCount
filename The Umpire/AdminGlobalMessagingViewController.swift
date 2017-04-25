@@ -193,4 +193,9 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         
         return cell
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        tableView.estimatedRowHeight = 100
+        tableView.rowHeight = UITableViewAutomaticDimension
+    }
 }
