@@ -31,6 +31,7 @@
 		DB6966271EAD2E4000F2AFE7 /* CustomStandardButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6966261EAD2E4000F2AFE7 /* CustomStandardButton.swift */; };
 		DB69662B1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB69662A1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift */; };
 		DB69662D1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB69662C1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift */; };
+		DB6FF0341EB00DE1002EE06B /* PlayerStatsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB6FF0331EB00DE1002EE06B /* PlayerStatsTableViewCell.swift */; };
 		DBE6E8AE1EAB8CE70024DEC4 /* RenameTeam2TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBE6E8AD1EAB8CE70024DEC4 /* RenameTeam2TableViewController.swift */; };
 		DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */; };
 		DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DBEBF7951DF0BAC0003CF098 /* ViewController.swift */; };
@@ -97,6 +98,7 @@
 		DB6966261EAD2E4000F2AFE7 /* CustomStandardButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStandardButton.swift; sourceTree = "<group>"; };
 		DB69662A1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminDataEntryAgeTableViewController.swift; sourceTree = "<group>"; };
 		DB69662C1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AdminDataEntryTeamTableViewController.swift; sourceTree = "<group>"; };
+		DB6FF0331EB00DE1002EE06B /* PlayerStatsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerStatsTableViewCell.swift; sourceTree = "<group>"; };
 		DBE6E8AD1EAB8CE70024DEC4 /* RenameTeam2TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameTeam2TableViewController.swift; sourceTree = "<group>"; };
 		DBEBF7901DF0BAC0003CF098 /* The Umpire.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Umpire.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DBEBF7931DF0BAC0003CF098 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 				DBEF39F61EAD90AC00ECCAB8 /* AdminGlobalMessagingViewController.swift */,
 				DBEF39F81EAD925F00ECCAB8 /* ViewLeagueAnnouncementsViewController.swift */,
 				DBEF39FC1EAED5D900ECCAB8 /* AdminMsgTableViewCell.swift */,
+				DB6FF0331EB00DE1002EE06B /* PlayerStatsTableViewCell.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
@@ -563,6 +566,7 @@
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
 				5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */,
+				DB6FF0341EB00DE1002EE06B /* PlayerStatsTableViewCell.swift in Sources */,
 				DB69662D1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift in Sources */,
 				5EB1E9971EA926F600079CA6 /* AddRemoveTeamTableViewController.swift in Sources */,
 				DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */,

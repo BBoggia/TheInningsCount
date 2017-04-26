@@ -54,7 +54,8 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
                 self.dates.append(snap?.childSnapshot(forPath: "Date").value as! String!)
                 self.clientTable.reloadData()
             }
-            
+            self.messages.reverse()
+            self.dates.reverse()
         }, withCancel: nil)
     }
     

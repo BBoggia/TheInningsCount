@@ -106,7 +106,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue("\(userDate) | Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)")
+        ref.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

@@ -95,7 +95,7 @@ class CompleteLeagueCreationViewController: UIViewController {
                     
                 for age in self.ageGroups {
                     for team in self.teams {
-                        self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue("Date | Player Number | Innings Pitched")
+                        self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue(["Date" as NSString! : "Date" as NSString!, "Stat" as NSString! : "Player Number | Innings Pitched" as NSString!])
                         self.ref.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
                     }
                 }

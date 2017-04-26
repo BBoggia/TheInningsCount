@@ -26,6 +26,7 @@ class mainHubViewController: UIViewController {
     @IBOutlet var inningsBtn: UIButton!
     @IBOutlet var dataBtn: UIButton!
     @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak var coachesHub: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
     @IBAction func logOut(_ sender: Any) {
         let firebaseAuth = FIRAuth.auth()
@@ -57,6 +58,9 @@ class mainHubViewController: UIViewController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             inningsBtn.heightAnchor.constraint(equalToConstant: 180).isActive = true
+            titleLabel.font = UIFont(name: titleLabel.font.fontName, size: 38)
+            coachesHub.font = UIFont(name: coachesHub.font.fontName, size: 42)
+            
         }
     }
 

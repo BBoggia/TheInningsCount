@@ -18,6 +18,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     let ref = FIRDatabase.database().reference()
     var userUID = FIRAuth.auth()?.currentUser?.uid as String!
     var playerStatsList = [String]()
+    var dateList = [String]()
     var age: String!
     var league: String!
     var team: String!
@@ -42,14 +43,17 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func dataObserver() {
+       
         ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! FIRDataSnapshot
-                self.playerStatsList.append(snap.value as! String!)
-                print(self.playerStatsList)
+                self.playerStatsList.append(snap.childSnapshot(forPath: "Stat").value as! String!)
+                self.dateList.append(snap.childSnapshot(forPath: "Date").value as! String!)
                 self.playerDataTable.reloadData()
             }
+            self.playerStatsList.reverse()
+            self.dateList.reverse()
         })
     }
     
@@ -63,10 +67,11 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = playerDataTable.dequeueReusableCell(withIdentifier: "cell")
+        let cell = playerDataTable.dequeueReusableCell(withIdentifier: "cell") as! PlayerStatsTableViewCell
         
-        cell?.textLabel?.text = playerStatsList[indexPath.row]
+        cell.statLbl.text = playerStatsList[indexPath.row]
+        cell.dateLbl.text = dateList[indexPath.row]
         
-        return cell!
+        return cell
     }
 }

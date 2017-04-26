@@ -66,7 +66,8 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
                 self.dateData.append(snap.childSnapshot(forPath: "Date").value as! String!)
                 self.tableView.reloadData()
             }
-            
+            self.msgData.reverse()
+            self.dateData.reverse()
         }, withCancel: nil)
     }
     
