@@ -9,14 +9,15 @@
 /* Begin PBXBuildFile section */
 		1C7E174B7641705D32D077E2 /* Pods_The_Umpire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4C11DFC7C85CAD7373406968 /* Pods_The_Umpire.framework */; };
 		5D72C7D41BF123B501C561A5 /* Pods_The_UmpireUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6632E712B8ED71FC01E0C784 /* Pods_The_UmpireUITests.framework */; };
+		5E154C131ECCA70A00B661A1 /* AddRemoveTeamViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E154C121ECCA70A00B661A1 /* AddRemoveTeamViewController.swift */; };
+		5E154C151ECCA77200B661A1 /* AddRemoveAgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E154C141ECCA77200B661A1 /* AddRemoveAgeViewController.swift */; };
 		5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2667151E70886E008D59AF /* TeamSelectViewController.swift */; };
 		5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */; };
+		5E459E631ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E459E621ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift */; };
 		5E4609F61EAA5E6F00675C8C /* SignupAgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E4609F51EAA5E6F00675C8C /* SignupAgeTableViewController.swift */; };
 		5E75A3391EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */; };
 		5E9E2A061E96A761000EC69B /* mainHubViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9E2A051E96A761000EC69B /* mainHubViewController.swift */; };
 		5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */; };
-		5EB1E9951EA9269400079CA6 /* AddRemoveAgeTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */; };
-		5EB1E9971EA926F600079CA6 /* AddRemoveTeamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB1E9961EA926F600079CA6 /* AddRemoveTeamTableViewController.swift */; };
 		5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */; };
 		B39D8B44F780937F9A585780 /* Pods_The_UmpireTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BC23D06F12A913E1F056C963 /* Pods_The_UmpireTests.framework */; };
 		DB0935BD1E98885800C6E2AD /* TeamRosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB0935BC1E98885800C6E2AD /* TeamRosterViewController.swift */; };
@@ -67,16 +68,17 @@
 
 /* Begin PBXFileReference section */
 		4C11DFC7C85CAD7373406968 /* Pods_The_Umpire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_Umpire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E154C121ECCA70A00B661A1 /* AddRemoveTeamViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveTeamViewController.swift; sourceTree = "<group>"; };
+		5E154C141ECCA77200B661A1 /* AddRemoveAgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveAgeViewController.swift; sourceTree = "<group>"; };
 		5E16D2A81E9557F80063D9E0 /* The Umpire.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "The Umpire.entitlements"; sourceTree = "<group>"; };
 		5E2667151E70886E008D59AF /* TeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamSelectViewController.swift; sourceTree = "<group>"; };
 		5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayerStatsViewController.swift; sourceTree = "<group>"; };
+		5E459E621ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveTeamAgeViewController.swift; sourceTree = "<group>"; };
 		5E4609F51EAA5E6F00675C8C /* SignupAgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupAgeTableViewController.swift; sourceTree = "<group>"; };
 		5E578C921E97EB9F007763E4 /* SwiftyButton.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftyButton.framework; path = "../../Library/Developer/Xcode/DerivedData/The_Umpire-eutuzwhspbqpwvdidaophjlvnwyx/Build/Products/Debug-iphonesimulator/SwiftyButton/SwiftyButton.framework"; sourceTree = "<group>"; };
 		5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RenameTeam1TableViewController.swift; sourceTree = "<group>"; };
 		5E9E2A051E96A761000EC69B /* mainHubViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mainHubViewController.swift; sourceTree = "<group>"; };
 		5EAB9CF51E64AE2100F57FFD /* TeamDataSegueViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TeamDataSegueViewController.swift; sourceTree = "<group>"; };
-		5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveAgeTableViewController.swift; sourceTree = "<group>"; };
-		5EB1E9961EA926F600079CA6 /* AddRemoveTeamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddRemoveTeamTableViewController.swift; sourceTree = "<group>"; };
 		5EDABAD81E8C28200045E9C2 /* SignupTeamSelectViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignupTeamSelectViewController.swift; sourceTree = "<group>"; };
 		6632E712B8ED71FC01E0C784 /* Pods_The_UmpireUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_The_UmpireUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB44F84B0241A22A1F7DB700 /* Pods-The UmpireTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-The UmpireTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-The UmpireTests/Pods-The UmpireTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -217,8 +219,8 @@
 				DB321FE31EA5B5FB00FF5AFC /* AdminTableViewController.swift */,
 				5E75A3381EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift */,
 				DBE6E8AD1EAB8CE70024DEC4 /* RenameTeam2TableViewController.swift */,
-				5EB1E9941EA9269400079CA6 /* AddRemoveAgeTableViewController.swift */,
-				5EB1E9961EA926F600079CA6 /* AddRemoveTeamTableViewController.swift */,
+				5E154C141ECCA77200B661A1 /* AddRemoveAgeViewController.swift */,
+				5E154C121ECCA70A00B661A1 /* AddRemoveTeamViewController.swift */,
 				5E4609F51EAA5E6F00675C8C /* SignupAgeTableViewController.swift */,
 				DB69662A1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift */,
 				DB69662C1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift */,
@@ -226,6 +228,7 @@
 				DBEF39F81EAD925F00ECCAB8 /* ViewLeagueAnnouncementsViewController.swift */,
 				DBEF39FC1EAED5D900ECCAB8 /* AdminMsgTableViewCell.swift */,
 				DB6FF0331EB00DE1002EE06B /* PlayerStatsTableViewCell.swift */,
+				5E459E621ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
 				DBEBF79A1DF0BAC0003CF098 /* Assets.xcassets */,
 				DBEBF79C1DF0BAC0003CF098 /* LaunchScreen.storyboard */,
@@ -556,6 +559,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5E459E631ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift in Sources */,
 				5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */,
 				DBE6E8AE1EAB8CE70024DEC4 /* RenameTeam2TableViewController.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
@@ -565,10 +569,10 @@
 				DB6966271EAD2E4000F2AFE7 /* CustomStandardButton.swift in Sources */,
 				DBFD3ECF1E2854B10024DD6D /* b810DataEntryViewController.swift in Sources */,
 				5E2667161E70886E008D59AF /* TeamSelectViewController.swift in Sources */,
+				5E154C131ECCA70A00B661A1 /* AddRemoveTeamViewController.swift in Sources */,
 				5EDABAD91E8C28200045E9C2 /* SignupTeamSelectViewController.swift in Sources */,
 				DB6FF0341EB00DE1002EE06B /* PlayerStatsTableViewCell.swift in Sources */,
 				DB69662D1EAD734000F2AFE7 /* AdminDataEntryTeamTableViewController.swift in Sources */,
-				5EB1E9971EA926F600079CA6 /* AddRemoveTeamTableViewController.swift in Sources */,
 				DB0BF1741E870CA900F5084D /* CompleteLeagueCreationViewController.swift in Sources */,
 				5EAB9CF61E64AE2100F57FFD /* TeamDataSegueViewController.swift in Sources */,
 				DB34DE211E89F992007AE2A8 /* TeamAgeGroupCreatorViewController.swift in Sources */,
@@ -579,13 +583,13 @@
 				DBEF39FD1EAED5D900ECCAB8 /* AdminMsgTableViewCell.swift in Sources */,
 				5E9E2A061E96A761000EC69B /* mainHubViewController.swift in Sources */,
 				5E75A3391EA7DBEC00E11CB4 /* RenameTeam1TableViewController.swift in Sources */,
+				5E154C151ECCA77200B661A1 /* AddRemoveAgeViewController.swift in Sources */,
 				DBEF39F91EAD925F00ECCAB8 /* ViewLeagueAnnouncementsViewController.swift in Sources */,
 				DBEBF7961DF0BAC0003CF098 /* ViewController.swift in Sources */,
 				DB0BF1701E86FA9F00F5084D /* LeagueCreationViewController.swift in Sources */,
 				DB69662B1EAD709C00F2AFE7 /* AdminDataEntryAgeTableViewController.swift in Sources */,
 				DB0935BD1E98885800C6E2AD /* TeamRosterViewController.swift in Sources */,
 				DBEBF7941DF0BAC0003CF098 /* AppDelegate.swift in Sources */,
-				5EB1E9951EA9269400079CA6 /* AddRemoveAgeTableViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

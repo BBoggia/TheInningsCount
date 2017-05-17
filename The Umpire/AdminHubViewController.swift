@@ -36,7 +36,7 @@ class AdminHubViewController: UIViewController {
     }
     @IBAction func addRemoveAgeTeam(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "addRemoveAgTA") as! AddRemoveAgeTableViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "AddRemove") as! AddRemoveTeamAgeViewController
         
         navigationController?.pushViewController(vc,animated: true)
     }

@@ -1,8 +1,8 @@
 //
-//  AddRemoveAgeTableViewController.swift
+//  AddRemoveTeamViewController.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 4/20/17.
+//  Created by Branson Boggia on 5/17/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
 
@@ -11,11 +11,13 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AddRemoveAgeTableViewController: UITableViewController {
+class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let user = FIRAuth.auth()?.currentUser
     let userUID = FIRAuth.auth()?.currentUser?.uid
     let ref = FIRDatabase.database().reference()
+    
+    @IBOutlet weak var tableView: UITableView!
     
     var tablePath: FIRDatabaseReference!
     var convertedArray = [String]()
@@ -26,8 +28,12 @@ class AddRemoveAgeTableViewController: UITableViewController {
     var theSnapshot: FIRDataSnapshot!
     var deleteIndexPath: NSIndexPath? = nil
     var randNum: String!
+    var toDelete: String!
     
-
+    @IBAction func addBtn(_ sender: Any) {
+        
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,8 +42,11 @@ class AddRemoveAgeTableViewController: UITableViewController {
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
+        
+        tableView.delegate = self
+        tableView.dataSource = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -57,11 +66,11 @@ class AddRemoveAgeTableViewController: UITableViewController {
             print(self.convertedArray)
         })
     }
-
+    
     func confirmDelete(title: String) {
         let alert = UIAlertController(title: "Delete Age", message: "Are you sure you want to permanently delete \(title)?", preferredStyle: .actionSheet)
         
-        let DeleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: handleDeletePlanet)
+        let DeleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: handleDelete)
         let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: cancelDeletePlanet)
         
         alert.addAction(DeleteAction)
@@ -74,13 +83,12 @@ class AddRemoveAgeTableViewController: UITableViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
-    func handleDeletePlanet(alertAction: UIAlertAction!) -> Void {
+    func handleDelete(alertAction: UIAlertAction!) -> Void {
         if let indexPath = deleteIndexPath {
             tableView.beginUpdates()
             
             self.convertedArray.remove(at: indexPath.row)
             
-            // Note that indexPath is wrapped in an array:  [indexPath]
             tableView.deleteRows(at: [indexPath as IndexPath], with: .automatic)
             
             deleteIndexPath = nil
@@ -89,34 +97,53 @@ class AddRemoveAgeTableViewController: UITableViewController {
         }
     }
     
+    func deleteFromDB() {
+        
+        self.ref.child("LeagueStats").child(randNum).child(league).child(self.toDelete).removeValue()
+        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).removeValue()
+        
+        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var deletedAgeCoaches = [String]()
+            
+            for team in snapshot.children {
+                
+                for uid in snapshot.childSnapshot(forPath: team as! String).childSnapshot(forPath: "Coaches").children {
+                    deletedAgeCoaches.append(uid as! String)
+                }
+            }
+        })
+    }
+    
     func cancelDeletePlanet(alertAction: UIAlertAction!) {
         deleteIndexPath = nil
     }
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return convertedArray.count
     }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-
+        
         cell.textLabel?.text = convertedArray[indexPath.row]
-
+        
         return cell
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            deleteIndexPath = indexPath
-            let toDelete = convertedArray[indexPath.row]
-            confirmDelete(title: toDelete)
+            deleteIndexPath = indexPath as NSIndexPath
+            self.toDelete = convertedArray[indexPath.row]
+            confirmDelete(title: self.toDelete)
         }
     }
-
+    
 }
+
