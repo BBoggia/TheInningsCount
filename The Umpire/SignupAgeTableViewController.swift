@@ -20,13 +20,16 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     var randomNum: String!
     var leagueName: String!
     
-    let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("UserData")
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
+    let ref = Database.database().reference()
+    let ref2 = Database.database().reference().child("UserData")
+    var user: User!
+    var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
         
         dataObserver()
         
@@ -49,7 +52,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     func populateView() {
         ref.child("LeagueData").child(self.randomNum).child("Info").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
                 print(self.ageList)
                 print(snap.key)
@@ -81,7 +84,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     
     func saveUID() {
         
-        let user = FIRAuth.auth()?.currentUser
+        let user = Auth.auth().currentUser
         let userUID = user?.uid
         
         ref2.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)

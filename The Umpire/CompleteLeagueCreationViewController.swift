@@ -13,8 +13,8 @@ import FirebaseDatabase
 
 class CompleteLeagueCreationViewController: UIViewController {
 
-    let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("UserData")
+    let ref = Database.database().reference()
+    let ref2 = Database.database().reference().child("UserData")
     let loginRef = ViewController()
     
     var leagueName: String!
@@ -88,7 +88,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     func createAccount() {
         
-        FIRAuth.auth()?.createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
+        Auth.auth().createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
             if error == nil {
                 self.autoSignIn()
                 self.saveUID()
@@ -107,9 +107,9 @@ class CompleteLeagueCreationViewController: UIViewController {
                 let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
                         UIPasteboard.general.string = self.randomGenNum!
                         
-                    let firebaseAuth = FIRAuth.auth()
+                    let firebaseAuth = Auth.auth()
                     do {
-                        try firebaseAuth?.signOut()
+                        try firebaseAuth.signOut()
                     } catch let signOutError as NSError {
                         print ("Error signing out: %@", signOutError)
                     }
@@ -126,7 +126,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     func saveUID() {
         
-        let user = FIRAuth.auth()?.currentUser
+        let user = Auth.auth().currentUser
         let userUID = user?.uid
         
         ref2.child("/\(userUID!)").child("Team").setValue("League Administrator")
@@ -138,7 +138,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     
     func autoSignIn() {
-        FIRAuth.auth()?.signIn(withEmail: self.emailDisplay.text!, password: self.passwordDisplay.text!, completion: {
+        Auth.auth().signIn(withEmail: self.emailDisplay.text!, password: self.passwordDisplay.text!, completion: {
             (user, error) in
             if error == nil {
             }
@@ -165,7 +165,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     func checkRandomString() {
         ref2.observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 if self.randomGenNum == snap.key {
                     self.randomString()
                 } else {

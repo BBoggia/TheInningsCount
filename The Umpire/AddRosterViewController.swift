@@ -13,8 +13,8 @@ import FirebaseDatabase
 
 class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     
-    var ref = FIRDatabase.database().reference()
-    var userUid = FIRAuth.auth()?.currentUser?.uid as String!
+    var ref = Database.database().reference()
+    var userUID: String!
     
     var teamName: String!
     var leagueName: String!
@@ -46,9 +46,11 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        userUID = Auth.auth().currentUser?.uid as String!
+        
         numPicker.delegate = self
 
-        let teamNameRef = ref.child("UserData").child(userUid!)
+        let teamNameRef = ref.child("UserData").child(userUID!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
             self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
@@ -67,7 +69,7 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
             
             if snapshot.childrenCount >= 1 {
                 for child in snapshot.children {
-                    let snap = child as! FIRDataSnapshot
+                    let snap = child as! DataSnapshot
                     self.rosterList.append(snap.key)
                 }
             }

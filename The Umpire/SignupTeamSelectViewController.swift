@@ -21,13 +21,15 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var randomNum: String!
     var leagueName: String!
     
-    let ref = FIRDatabase.database().reference()
-    let ref2 = FIRDatabase.database().reference().child("UserData")
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
+    let ref = Database.database().reference()
+    let ref2 = Database.database().reference().child("UserData")
+    let user = Auth.auth().currentUser
+    var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userUID = Auth.auth().currentUser?.uid
         
         ref2.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
             self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
@@ -51,7 +53,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     func populateView() {
         ref.child("LeagueData").child(self.randomNum).child("Info").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.teamList.append(snap.key)
                 print(self.teamList)
                 self.teamTableView.reloadData()
@@ -71,9 +73,9 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             self.ref.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
             self.ref2.child(self.userUID!).child("status").setValue("coach")
             
-            let firebaseAuth = FIRAuth.auth()
+            let firebaseAuth = Auth.auth()
             do {
-                try firebaseAuth?.signOut()
+                try firebaseAuth.signOut()
             } catch let signOutError as NSError {
                 print ("Error signing out: %@", signOutError)
             }
@@ -92,7 +94,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     
     func saveUID() {
         
-        let user = FIRAuth.auth()?.currentUser
+        let user = Auth.auth().currentUser
         let userUID = user?.uid
         
         ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)

@@ -14,8 +14,8 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
 
     @IBOutlet weak var ageListTable: UITableView!
     
-    let ref = FIRDatabase.database().reference()
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    let ref = Database.database().reference()
+    var userUID: String!
     var ageList = [String]()
     var ageToPass: String!
     var league:String!
@@ -24,6 +24,8 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userUID = Auth.auth().currentUser?.uid
         
         ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
@@ -43,7 +45,7 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         ref.child("LeagueStats").child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
                 print(self.ageList)
                 self.ageListTable.reloadData()

@@ -14,8 +14,8 @@ import FirebaseAuth
 
 class AdminHubViewController: UIViewController {
     
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
+    var user: User!
+    var userUID: String!
     
     @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var titleLbl: UILabel!
@@ -49,6 +49,9 @@ class AdminHubViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
 
         self.view.gradientOfView(withColors: UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0), UIColor(red:0.74, green:0.76, blue:0.78, alpha:1.0))
         

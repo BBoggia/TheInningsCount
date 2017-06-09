@@ -13,22 +13,25 @@ import FirebaseDatabase
 
 class RenameTeam1TableViewController: UITableViewController {
     
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
-    let ref = FIRDatabase.database().reference()
+    var user: User!
+    var userUID: String!
+    let ref = Database.database().reference()
     
-    var tablePath: FIRDatabaseReference!
+    var tablePath: DatabaseReference!
     var convertedArray = [String]()
     var league: String!
     var ageGroup: String!
     var selectedCell: String!
     var alertTextField: String!
-    var theSnapshot: FIRDataSnapshot!
+    var theSnapshot: DataSnapshot!
     var randNum: String!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
         
         ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
@@ -51,7 +54,7 @@ class RenameTeam1TableViewController: UITableViewController {
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.convertedArray.append(snap.key)
                 self.tableView.reloadData()
             }

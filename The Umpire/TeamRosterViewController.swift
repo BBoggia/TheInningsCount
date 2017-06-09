@@ -13,12 +13,12 @@ import FirebaseDatabase
 
 class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var ref = FIRDatabase.database().reference()
+    var ref = Database.database().reference()
     
     var teamName: String!
     var leagueName: String!
     var rosterList = [String]()
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    var userUID: String!
 
     @IBOutlet weak var teamRosterTable: UITableView!
     @IBOutlet weak var navBar: UINavigationItem!
@@ -26,6 +26,8 @@ class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userUID = Auth.auth().currentUser?.uid as String!
         
         let teamNameRef = ref.child("UserData").child(userUID!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
@@ -47,7 +49,7 @@ class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableVi
             if snapshot.childrenCount > 1 {
                 
                 for child in snapshot.children {
-                    let snap = child as! FIRDataSnapshot
+                    let snap = child as! DataSnapshot
                     self.rosterList.append("Player Number: \(snap.key)")
                     print(self.rosterList)
                     print(snap.key)

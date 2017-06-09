@@ -13,8 +13,8 @@ import FirebaseDatabase
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
-    let ref = FIRDatabase.database()
-    let ref2 = FIRDatabase.database().reference().child("UserData")
+    let ref = Database.database()
+    let ref2 = Database.database().reference().child("UserData")
     let loginRef = ViewController()
     
     var userCity: String!
@@ -82,7 +82,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     self.present(alertController, animated: true, completion: nil)
             
                 } else {
-                    FIRAuth.auth()?.createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
+                    Auth.auth().createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                         if error == nil {
                     
                             self.performSegue(withIdentifier: "toAgeSelect", sender: nil)
@@ -107,7 +107,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     }
     
     func autoSignIn() {
-        FIRAuth.auth()?.signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
+        Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
             (user, error) in
             
             if error == nil {

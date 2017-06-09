@@ -15,8 +15,8 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var playerDataTable: UITableView!
     
-    let ref = FIRDatabase.database().reference()
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    let ref = Database.database().reference()
+    var userUID: String!
     var playerStatsList = [String]()
     var dateList = [String]()
     var age: String!
@@ -27,6 +27,8 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userUID = Auth.auth().currentUser?.uid as String!
         
         ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
@@ -47,7 +49,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
         ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.playerStatsList.append(snap.childSnapshot(forPath: "Stat").value as! String!)
                 self.dateList.append(snap.childSnapshot(forPath: "Date").value as! String!)
                 self.playerDataTable.reloadData()

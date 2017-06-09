@@ -14,9 +14,9 @@ import FirebaseDatabase
 
 class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate {
 
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
-    let ref = FIRDatabase.database().reference()
+    var user: User!
+    var userUID: String!
+    let ref = Database.database().reference()
     
     var league: String!
     var randNum: String!
@@ -35,6 +35,9 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -61,7 +64,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         self.ref.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.msgData.append(snap.childSnapshot(forPath: "Message").value as! String!)
                 self.dateData.append(snap.childSnapshot(forPath: "Date").value as! String!)
                 self.tableView.reloadData()

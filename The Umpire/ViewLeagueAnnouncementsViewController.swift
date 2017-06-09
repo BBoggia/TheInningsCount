@@ -15,11 +15,11 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
 
     @IBOutlet weak var clientTable: UITableView!
     
-    let user = FIRAuth.auth()?.currentUser
-    let userUID = FIRAuth.auth()?.currentUser?.uid
-    let ref = FIRDatabase.database().reference()
-    var msgRef: FIRDatabaseReference!
-    private var newMessageRefHandle: FIRDatabaseHandle?
+    var user: User!
+    var userUID: String!
+    let ref = Database.database().reference()
+    var msgRef: DatabaseReference!
+    private var newMessageRefHandle: DatabaseHandle?
     
     var league: String!
     var randNum: String!
@@ -28,6 +28,9 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
 
         clientTable.delegate = self
         clientTable.dataSource = self
@@ -49,7 +52,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
         self.ref.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as? FIRDataSnapshot
+                let snap = child as? DataSnapshot
                 self.messages.append(snap?.childSnapshot(forPath: "Message").value as! String!)
                 self.dates.append(snap?.childSnapshot(forPath: "Date").value as! String!)
                 self.clientTable.reloadData()

@@ -12,7 +12,7 @@ import FirebaseAuth
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    let user = FIRAuth.auth()?.currentUser
+    var user: User?
     
     var userUID: String!
     var effect: UIVisualEffect!
@@ -43,7 +43,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             self.present(alertController, animated: true, completion: nil)
         } else {
-            FIRAuth.auth()?.signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
+            Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
                 (user, error) in
                 
                 if error == nil {
@@ -78,6 +78,8 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        user = Auth.auth().currentUser
+        
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         
@@ -94,9 +96,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         emailField.delegate = self
         passwordField.delegate = self
         
-        let firebaseAuth = FIRAuth.auth()
+        let firebaseAuth = Auth.auth()
         do {
-            try firebaseAuth?.signOut()
+            try firebaseAuth.signOut()
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }

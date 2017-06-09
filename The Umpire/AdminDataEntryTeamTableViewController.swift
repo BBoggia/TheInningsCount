@@ -13,9 +13,9 @@ import FirebaseDatabase
 
 class AdminDataEntryTeamTableViewController: UITableViewController {
     
-    let ref = FIRDatabase.database().reference()
-    let user = FIRAuth.auth()?.currentUser
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    let ref = Database.database().reference()
+    var user: User!
+    var userUID: String!
     
     var randNum: String!
     var leagueName: String!
@@ -25,6 +25,9 @@ class AdminDataEntryTeamTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
         
         ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.childSnapshot(forPath: "Name").value as! String!
@@ -43,7 +46,7 @@ class AdminDataEntryTeamTableViewController: UITableViewController {
         ref.child("LeagueStats").child(self.randNum).child(self.leagueName).child(self.selectedAge).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
-                let snap = child as! FIRDataSnapshot
+                let snap = child as! DataSnapshot
                 self.tableList.append(snap.key)
                 self.tableView.reloadData()
             }

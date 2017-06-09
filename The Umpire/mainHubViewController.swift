@@ -13,9 +13,9 @@ import FirebaseDatabase
 
 class mainHubViewController: UIViewController {
     
-    let ref = FIRDatabase.database().reference()
-    var user = FIRAuth.auth()?.currentUser
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    let ref = Database.database().reference()
+    var user = Auth.auth().currentUser
+    var userUID: String!
     
     var teamName: String!
     var leagueName: String!
@@ -29,9 +29,9 @@ class mainHubViewController: UIViewController {
     @IBOutlet weak var coachesHub: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
     @IBAction func logOut(_ sender: Any) {
-        let firebaseAuth = FIRAuth.auth()
+        let firebaseAuth = Auth.auth()
         do {
-            try firebaseAuth?.signOut()
+            try firebaseAuth.signOut()
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
@@ -41,6 +41,8 @@ class mainHubViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        userUID = Auth.auth().currentUser?.uid as String!
 
         let teamNameRef = ref.child("UserData").child(userUID!)
         teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in

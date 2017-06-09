@@ -13,9 +13,9 @@ import FirebaseDatabase
 
 class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
-    let ref = FIRDatabase.database().reference()
-    let user = FIRAuth.auth()?.currentUser
-    var userUID = FIRAuth.auth()?.currentUser?.uid as String!
+    let ref = Database.database().reference()
+    var user: User!
+    var userUID = Auth.auth().currentUser?.uid as String!
     let dateFormatter = DateFormatter()
     var currentDate = Date()
     
@@ -42,6 +42,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        user = Auth.auth().currentUser
         
         playerNumberTextField.delegate = self
         pitchCountTextField.delegate = self
@@ -82,7 +84,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
-        sortDate = FIRServerValue.timestamp()
+        sortDate = ServerValue.timestamp()
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
