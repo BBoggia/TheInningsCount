@@ -12,9 +12,11 @@ import FirebaseAuth
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    var user: User?
+    let ref = Database.database().reference()
     
+    var user: User?
     var userUID: String!
+    
     var effect: UIVisualEffect!
     
     @IBOutlet var popUpView: UIView!
@@ -79,6 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         user = Auth.auth().currentUser
+        userUID = Auth.auth().currentUser?.uid
         
         effect = visualEffectView.effect
         visualEffectView.effect = nil
@@ -114,6 +117,15 @@ class ViewController: UIViewController, UITextFieldDelegate {
         
         emailField.inputAccessoryView = toolBar
         passwordField.inputAccessoryView = toolBar
+        
+        let ifRefTeam = ref.child("UserData").child(userUID).value(forKey: "Team:") as! String
+        let ifRefAge = ref.child("UserData").child(userUID).value(forKey: "AgeGroup:") as! String
+        
+        if ifRefTeam == "removed" {
+            //Show team selection
+        } else if ifRefAge == "removed" {
+            //Show age selection
+        }
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)

@@ -1,8 +1,8 @@
 //
-//  AddRemoveAgeViewController.swift
+//  AddRemoveTeamViewController2.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 5/17/17.
+//  Created by Branson Boggia on 6/16/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
 
@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddRemoveTeamViewController2: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var user: User!
     var userUID: String!
@@ -22,12 +22,14 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
     var league: String!
+    var ageGroup: String!
     var selectedCell: String!
     var alertTextField: String!
     var theSnapshot: DataSnapshot!
     var deleteIndexPath: NSIndexPath? = nil
     var randNum: String!
     var toDelete: String!
+    var team: String!
     
     @IBAction func addBtn(_ sender: Any) {
         
@@ -56,7 +58,7 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -104,25 +106,19 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     
     func deleteFromDB() {
         
-        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
             
-            var deletedAgeCoaches = [String]()
-            var ageTeams = [String]()
-            
-            for team in snapshot.children {
-                
-                ageTeams.append(team as! String)
+            for child in snapshot.children {
+                let snap = child as! DataSnapshot
+                if snap.childSnapshot(forPath: "Team:").value as! String! == self.toDelete && snap.childSnapshot(forPath: "AgeGroup:").value as! String! == self.ageGroup {
+                    let uid = snap.key 
+                    self.ref.child("UserData").child(uid).child("Team:").setValue("removed")
+                }
             }
-            
-            for uid in ageTeams {
-                deletedAgeCoaches.append(snapshot.childSnapshot(forPath: "Coaches").childSnapshot(forPath: uid).key)
-            }
-            
-            print(deletedAgeCoaches)
         })
         
-        self.ref.child("LeagueStats").child(randNum).child(league).child(self.toDelete).removeValue()
-        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).removeValue()
+        self.ref.child("LeagueData").child(randNum).child("Info").child(self.ageGroup).child(self.toDelete).removeValue()
+        self.ref.child("LeagueStats").child(league).child(ageGroup).child(toDelete).removeValue()
     }
     
     func cancelDeletePlanet(alertAction: UIAlertAction!) {
