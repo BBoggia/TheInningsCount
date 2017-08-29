@@ -15,7 +15,7 @@ class RenameTeam2TableViewController: UITableViewController {
 
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
@@ -30,10 +30,12 @@ class RenameTeam2TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -49,7 +51,7 @@ class RenameTeam2TableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup)
+        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -96,28 +98,28 @@ class RenameTeam2TableViewController: UITableViewController {
             self.alertTextField = myAlert.textFields?[0].text
             
             
-            self.ref.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
                 
-                self.ref.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
                 
-                self.ref.child("LeagueData").child(self.randNum).child("Info").child(self.selectedCell).child(self.selectedCell).removeValue()
-                
-            })
-            
-            self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
-                
-                self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
-                
-                self.ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.selectedCell).removeValue()
+                self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.selectedCell).child(self.selectedCell).removeValue()
                 
             })
             
-            self.ref.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
+                
+                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.selectedCell).removeValue()
+                
+            })
+            
+            self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
                 for child in snapshot.children {
                     let snap = child as! DataSnapshot
                     
                     if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.selectedCell && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.ageGroup {
-                        self.ref.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
+                        self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
                     }
                 }
             })

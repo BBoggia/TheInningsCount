@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     var user: User!
     var userUID = Auth.auth().currentUser?.uid as String!
     let dateFormatter = DateFormatter()
@@ -33,6 +33,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var playerNumberTextField: UITextField!
     @IBOutlet weak var pitchCountTextField: UITextField!
     @IBOutlet weak var titleField: UILabel!
+    @IBOutlet weak var adminChoose: UIBarButtonItem!
     
     @IBAction func submit(_ sender: Any) {
         
@@ -43,6 +44,8 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         
         playerNumberTextField.delegate = self
@@ -52,29 +55,11 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         if adminStop == nil {
         
-            ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-                if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
-                
-                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                    let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
-                    self.navigationController?.pushViewController(vc,animated: true)
-                
-                } else {
-                    let teamNameRef = self.ref.child("UserData").child(self.userUID!)
-                    teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
-                        self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-                        self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
-                        self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
-                        self.titleField.text = self.teamName
-                        self.navigationController?.title = self.leagueName
-
-                    })
-                }
-            })
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Choose Team", style: .plain, target: self, action: #selector(self.adminChooseTeam))
+            
         } else if adminStop == true {
-            let teamNameRef = self.ref.child("UserData").child(self.userUID!)
-            teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
+            teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
                 self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
                 self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
                 self.titleField.text = self.teamName
@@ -108,7 +93,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
+        ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -118,6 +103,29 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func doneClicked() {
         view.endEditing(true)
+    }
+    
+    func adminChooseTeam() {
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+            if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
+                self.navigationController?.pushViewController(vc,animated: true)
+                
+            } else {
+                let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
+                teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
+                    self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
+                    self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
+                    self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+                    self.titleField.text = self.teamName
+                    self.navigationController?.title = self.leagueName
+                    
+                })
+            }
+        })
     }
 
 }

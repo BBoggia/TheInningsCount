@@ -21,17 +21,20 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var randomNum: String!
     var leagueName: String!
     
-    let ref = Database.database().reference()
-    let ref2 = Database.database().reference().child("UserData")
+    var ref : DatabaseReference?
+    var ref2 : DatabaseReference?
     let user = Auth.auth().currentUser
     var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        ref2 = Database.database().reference().child("UserData")
+        
         userUID = Auth.auth().currentUser?.uid
         
-        ref2.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref2?.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
             self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             
             self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
@@ -51,7 +54,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     }
     
     func populateView() {
-        ref.child("LeagueData").child(self.randomNum).child("Info").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueData").child(self.randomNum).child("Info").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.teamList.append(snap.key)
@@ -70,8 +73,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             
             self.saveUID()
             
-            self.ref.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
-            self.ref2.child(self.userUID!).child("status").setValue("coach")
+            self.ref?.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
+            self.ref2?.child(self.userUID!).child("status").setValue("coach")
             
             let firebaseAuth = Auth.auth()
             do {
@@ -97,7 +100,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2.child("/\(userUID!)").child("Team").setValue(selectedTeam)
+        ref2?.child("/\(userUID!)").child("Team").setValue(selectedTeam)
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {

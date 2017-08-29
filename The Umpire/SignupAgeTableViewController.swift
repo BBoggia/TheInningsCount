@@ -20,13 +20,16 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     var randomNum: String!
     var leagueName: String!
     
-    let ref = Database.database().reference()
-    let ref2 = Database.database().reference().child("UserData")
+    var ref : DatabaseReference?
+    var ref2 : DatabaseReference?
     var user: User!
     var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref = Database.database().reference()
+        ref2 = Database.database().reference().child("UserData")
         
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
@@ -43,14 +46,14 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func dataObserver() {
-        ref.child("LeagueData").child(self.randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueData").child(self.randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String!
             self.populateView()
         })
     }
     
     func populateView() {
-        ref.child("LeagueData").child(self.randomNum).child("Info").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueData").child(self.randomNum).child("Info").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
@@ -87,9 +90,9 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
-        ref2.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
-        ref2.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomNum)
+        ref2?.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
+        ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomNum)
         
         print(userUID!)
     }

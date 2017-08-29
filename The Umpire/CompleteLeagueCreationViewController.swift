@@ -13,8 +13,8 @@ import FirebaseDatabase
 
 class CompleteLeagueCreationViewController: UIViewController {
 
-    let ref = Database.database().reference()
-    let ref2 = Database.database().reference().child("UserData")
+    var ref : DatabaseReference?
+    var ref2 : DatabaseReference?
     let loginRef = ViewController()
     
     var leagueName: String!
@@ -60,6 +60,10 @@ class CompleteLeagueCreationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        ref = Database.database().reference()
+        ref2 = Database.database().reference().child("UserData")
+        
         emailDisplay.text = email
         passwordDisplay.text = password
         leagueNameDisplay.text = leagueName
@@ -95,13 +99,13 @@ class CompleteLeagueCreationViewController: UIViewController {
                     
                 for age in self.ageGroups {
                     for team in self.teams {
-                        self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue(["Date" as NSString! : "Date" as NSString!, "Stat" as NSString! : "Player Number | Innings Pitched" as NSString!])
-                        self.ref.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
+                        self.ref?.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue(["Date" as NSString! : "Date" as NSString!, "Stat" as NSString! : "Player Number | Innings Pitched" as NSString!])
+                        self.ref?.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
                     }
                 }
                 
-                self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
-                self.ref.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administraitor will be displayer here.", "Date":"Date of Post"])
+                self.ref?.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
+                self.ref?.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administraitor will be displayed here.", "Date":"Date of Post"])
                     
                 let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
@@ -129,10 +133,10 @@ class CompleteLeagueCreationViewController: UIViewController {
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2.child("/\(userUID!)").child("Team").setValue("League Administrator")
-        ref2.child("/\(userUID!)").child("League").child("Name").setValue(leagueNameDisplay.text!)
-        ref2.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
-        ref2.child("/\(userUID!)").child("status").setValue("admin")
+        ref2?.child("/\(userUID!)").child("Team").setValue("League Administrator")
+        ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueNameDisplay.text!)
+        ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
+        ref2?.child("/\(userUID!)").child("status").setValue("admin")
         
         print(userUID!)
     }
@@ -163,7 +167,7 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     
     func checkRandomString() {
-        ref2.observeSingleEvent(of: .value, with: { (snapshot) in
+        ref2?.observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 if self.randomGenNum == snap.key {

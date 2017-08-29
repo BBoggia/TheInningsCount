@@ -15,7 +15,7 @@ class RenameTeam1TableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
@@ -30,10 +30,12 @@ class RenameTeam1TableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -49,7 +51,7 @@ class RenameTeam1TableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

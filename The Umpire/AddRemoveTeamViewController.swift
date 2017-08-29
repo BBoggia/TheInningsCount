@@ -15,7 +15,7 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
     
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -31,10 +31,12 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -51,7 +53,7 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

@@ -15,7 +15,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     
     @IBOutlet weak var playerDataTable: UITableView!
     
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     var userUID: String!
     var playerStatsList = [String]()
     var dateList = [String]()
@@ -28,9 +28,11 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         userUID = Auth.auth().currentUser?.uid as String!
         
-        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -46,7 +48,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     
     func dataObserver() {
        
-        ref.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot

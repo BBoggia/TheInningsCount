@@ -15,7 +15,7 @@ class AdminTableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
@@ -29,10 +29,12 @@ class AdminTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -50,7 +52,7 @@ class AdminTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
         
         tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             

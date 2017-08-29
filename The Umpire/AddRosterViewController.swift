@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     
-    var ref = Database.database().reference()
+    var ref : DatabaseReference?
     var userUID: String!
     
     var teamName: String!
@@ -39,19 +39,21 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     }
     @IBAction func submit(_ sender: Any) {
         for child in rosterList {
-            ref.child("LeagueTeamLists").child(leagueName).child(teamName).child(child).setValue("0")
+            ref?.child("LeagueTeamLists").child(leagueName).child(teamName).child(child).setValue("0")
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         userUID = Auth.auth().currentUser?.uid as String!
         
         numPicker.delegate = self
 
-        let teamNameRef = ref.child("UserData").child(userUID!)
-        teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+        let teamNameRef = ref?.child("UserData").child(userUID!)
+        teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
             self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String!
             self.navBar.title = self.leagueName
@@ -65,7 +67,7 @@ class AddRosterViewController: UIViewController, UIPickerViewDelegate {
     }
     
     func fillList() {
-        ref.child("LeagueTeamLists").child(leagueName).child(teamName).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueTeamLists").child(leagueName).child(teamName).observeSingleEvent(of: .value, with: { (snapshot) in
             
             if snapshot.childrenCount >= 1 {
                 for child in snapshot.children {

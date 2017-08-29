@@ -16,7 +16,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
 
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     var league: String!
     var randNum: String!
@@ -36,13 +36,15 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
         tableView.delegate = self
         tableView.dataSource = self
         
-        ref.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -61,7 +63,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     }
     
     func dataObserver() {
-        self.ref.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
+        self.ref?.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
@@ -77,9 +79,9 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     @objc func sendMessage() {
         
         if self.keyboardStatus == false {
-            self.ref.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message" as NSString!:self.announcementTextField.text!, "Date" as NSString!:NSDate().userSafeDate, "Status" as NSString!:"Placeholder" as NSString!])
+            self.ref?.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message" as NSString!:self.announcementTextField.text!, "Date" as NSString!:NSDate().userSafeDate, "Status" as NSString!:"Placeholder" as NSString!])
         } else if self.keyboardStatus == true {
-            self.ref.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message" as NSString!:self.textField.text!, "Date" as NSString!:NSDate().userSafeDate, "Status" as NSString!:"Placeholder" as NSString!])
+            self.ref?.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message" as NSString!:self.textField.text!, "Date" as NSString!:NSDate().userSafeDate, "Status" as NSString!:"Placeholder" as NSString!])
         }
     }
     

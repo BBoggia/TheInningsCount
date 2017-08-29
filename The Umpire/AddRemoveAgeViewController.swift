@@ -15,7 +15,7 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     
     var user: User!
     var userUID: String!
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     
     @IBOutlet weak var tableView: UITableView!
     
@@ -36,10 +36,12 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
@@ -56,7 +58,7 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     
     func dataObserver() {
         
-        self.tablePath = self.ref.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
         
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -104,7 +106,7 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
     
     func deleteFromDB() {
         
-        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).observeSingleEvent(of: .value, with: { (snapshot) in
+        self.ref?.child("LeagueData").child(randNum).child("Info").child(self.toDelete).observeSingleEvent(of: .value, with: { (snapshot) in
             
             var deletedAgeCoaches = [String]()
             var ageTeams = [String]()
@@ -121,8 +123,8 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
             print(deletedAgeCoaches)
         })
         
-        self.ref.child("LeagueStats").child(randNum).child(league).child(self.toDelete).removeValue()
-        self.ref.child("LeagueData").child(randNum).child("Info").child(self.toDelete).removeValue()
+        self.ref?.child("LeagueStats").child(randNum).child(league).child(self.toDelete).removeValue()
+        self.ref?.child("LeagueData").child(randNum).child("Info").child(self.toDelete).removeValue()
     }
     
     func cancelDeletePlanet(alertAction: UIAlertAction!) {

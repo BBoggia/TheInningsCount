@@ -13,7 +13,7 @@ import FirebaseDatabase
 
 class mainHubViewController: UIViewController {
     
-    let ref = Database.database().reference()
+    var ref : DatabaseReference?
     var user = Auth.auth().currentUser
     var userUID: String!
     
@@ -42,10 +42,12 @@ class mainHubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        ref = Database.database().reference()
+        
         userUID = Auth.auth().currentUser?.uid as String!
 
-        let teamNameRef = ref.child("UserData").child(userUID!)
-        teamNameRef.observeSingleEvent(of: .value, with: { (snapshot) in
+        let teamNameRef = ref?.child("UserData").child(userUID!)
+        teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
             self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
             self.navBar.title = self.leagueName
