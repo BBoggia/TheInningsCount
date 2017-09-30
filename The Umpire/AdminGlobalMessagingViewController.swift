@@ -95,7 +95,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         return false
     }
     
-    func displayMyAlertMessage()
+    @objc func displayMyAlertMessage()
     {
         let myAlert: UIAlertController!
         

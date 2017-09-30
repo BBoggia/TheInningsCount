@@ -101,11 +101,11 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         return false;
     }
     
-    func doneClicked() {
+    @objc func doneClicked() {
         view.endEditing(true)
     }
     
-    func adminChooseTeam() {
+    @objc func adminChooseTeam() {
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
                 

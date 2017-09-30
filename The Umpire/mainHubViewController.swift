@@ -73,7 +73,7 @@ class mainHubViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func adminSegue() {
+    @objc func adminSegue() {
         performSegue(withIdentifier: "toAdmin", sender: nil)
     }
     

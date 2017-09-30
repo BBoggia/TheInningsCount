@@ -136,7 +136,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         
     }
     
-    func doneClicked() {
+    @objc func doneClicked() {
         self.view.endEditing(true)
     }
     

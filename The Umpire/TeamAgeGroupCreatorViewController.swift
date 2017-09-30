@@ -11,36 +11,24 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
+class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
     var leagueName: String!
     var email: String!
     var password: String!
-    var textLabelGroups = [""]
+    var selectedAge: String!
+    var ageGroups = [String]()
+    var teamLists = [String: [String]]()
     
-    @IBOutlet weak var groupDisplay: UILabel!
-    @IBOutlet weak var groupTextField: UITextField!
+    @IBOutlet weak var ageTableView: UITableView!
     
-    @IBAction func addGroup(_ sender: Any) {
-        
-        if (groupTextField.text?.contains("$"))! || (groupTextField.text?.contains("/"))! || (groupTextField.text?.contains("\\"))! || (groupTextField.text?.contains("#"))! || (groupTextField.text?.contains("["))! || (groupTextField.text?.contains("]"))! || (groupTextField.text?.contains("."))! {
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
-        } else {
-            textLabelGroups.append(groupTextField.text!)
-            groupDisplay.text = textLabelGroups.joined(separator: ", ")
-            groupTextField.text?.removeAll()
-        }
+    @IBAction func addAgeBtn(_ sender: Any) {
+        displayTextEntryField(title: "Age Group Name", userMessage: "Enter the name of an age group then press confirm.")
     }
     
     @IBAction func removeGroup(_ sender: Any) {
-        if textLabelGroups.count < 1 {
-            
-            displayMyAlertMessage(title: "Oops!", userMessage: "There are no more teams in the list.")
-            
-        } else {
-            textLabelGroups.removeLast()
-            groupDisplay.text = textLabelGroups.joined(separator: "\n")
-        }
+        
+        
     }
     
     @IBAction func createGroups(_ sender: Any) {
@@ -49,16 +37,15 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
         vc.leagueName = leagueName as String
         vc.email = email as String
         vc.password = password as String
-        vc.ageGroups = textLabelGroups as Array
+        vc.ageGroups = ageGroups as Array
         navigationController?.pushViewController(vc,animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.groupTextField.delegate = self
-        
-        textLabelGroups.removeAll()
+        self.ageTableView.delegate = self
+        self.ageTableView.dataSource = self
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -67,7 +54,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
         
         toolBar.setItems([doneButton], animated: false)
         
-        groupTextField.inputAccessoryView = toolBar
+        displayMyAlertMessage(title: "Create a Division", userMessage: "Here if your league has more than one age group or division you can add them otherwise just make one. To create a division use the + icon in the top right corner. To add individual teams just select one from your list and start adding!")
         
     }
     
@@ -80,7 +67,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
         return false;
     }
     
-    func doneClicked() {
+    @objc func doneClicked() {
         self.view.endEditing(true)
     }
     
@@ -96,4 +83,78 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate {
         
     }
     
+    func displayTextEntryField(title:String, userMessage:String)
+    {
+        
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        
+        myAlert.addTextField()
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            
+            if (myAlert.textFields![0].text!.contains("$")) ||
+                (myAlert.textFields![0].text!.contains("/")) ||
+                (myAlert.textFields![0].text!.contains("\\")) ||
+                (myAlert.textFields![0].text!.contains("#")) ||
+                (myAlert.textFields![0].text!.contains("[")) ||
+                (myAlert.textFields![0].text!.contains("]")) ||
+                (myAlert.textFields![0].text!.contains(".")) {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+            } else {
+                self.ageGroups.append(myAlert.textFields![0].text!)
+                print(myAlert.textFields![0].text!)
+                self.ageTableView.reloadData()
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        
+        self.present(myAlert, animated: true, completion: nil)
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return ageGroups.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = ageTableView.dequeueReusableCell(withIdentifier: "cell")
+        
+        cell?.textLabel?.text = ageGroups[indexPath.row]
+        
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let indexPath = ageTableView.indexPathForSelectedRow
+        let currentCell = ageTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        
+        selectedAge = currentCell?.textLabel?.text
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            var deletedAge = ageGroups[indexPath.row] as String!
+            
+            for i in teamLists.keys {
+                
+                let key = i as String
+                if key == deletedAge {
+                    self.teamLists.removeValue(forKey: deletedAge!)
+                }
+            }
+            
+            self.ageGroups.remove(at: indexPath.row)
+            
+            ageTableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 }

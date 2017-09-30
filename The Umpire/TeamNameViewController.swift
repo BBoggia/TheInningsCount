@@ -86,7 +86,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
         return false;
     }
     
-    func doneClicked() {
+    @objc func doneClicked() {
         self.view.endEditing(true)
     }
     
