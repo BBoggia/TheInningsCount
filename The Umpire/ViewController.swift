@@ -96,7 +96,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         visualEffectView.layer.bounds.size.width = 0
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height - 370, 0)
         
-        isAppAlreadyLaunchedOnce()
+        initialLaunch()
         
         emailField.delegate = self
         passwordField.delegate = self
@@ -173,7 +173,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.visualEffectView.layer.bounds.size.width = 0
     }
     
-    func isAppAlreadyLaunchedOnce() -> Bool {
+    func initialLaunch() -> Bool {
         let defaults = UserDefaults.standard
         
         if let isAppAlreadyLaunchedOnce = defaults.string(forKey: "isFirstLaunch"){

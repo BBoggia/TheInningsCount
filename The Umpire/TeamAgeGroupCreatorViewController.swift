@@ -18,7 +18,8 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     var password: String!
     var selectedAge: String!
     var ageGroups = [String]()
-    var teamLists = [String: [String]]()
+    var leagueList = [Dictionary<String, Array<String>>]()
+    let saveData = UserDefaults.standard
     
     @IBOutlet weak var ageTableView: UITableView!
     
@@ -26,19 +27,21 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         displayTextEntryField(title: "Age Group Name", userMessage: "Enter the name of an age group then press confirm.")
     }
     
-    @IBAction func removeGroup(_ sender: Any) {
-        
-        
-    }
-    
     @IBAction func createGroups(_ sender: Any) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
-        vc.leagueName = leagueName as String
-        vc.email = email as String
-        vc.password = password as String
-        vc.ageGroups = ageGroups as Array
-        navigationController?.pushViewController(vc,animated: true)
+        
+        let myAlert = UIAlertController(title: "Are you sure?", message: "Make sure that all your divisions and teams are correct before continuing!", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { action in
+            
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
+            vc.leagueName = self.leagueName as String
+            vc.email = self.email as String
+            vc.password = self.password as String
+            vc.ageGroups = self.ageGroups as Array
+            self.navigationController?.pushViewController(vc,animated: true)
+        }
+        myAlert.addAction(okAction)
+        self.present(myAlert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -47,6 +50,10 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         self.ageTableView.delegate = self
         self.ageTableView.dataSource = self
         
+        /*let defaults = UserDefaults.standard
+        
+        defaults.set(leagueList, forKey: "leagueData")*/
+        
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
@@ -54,12 +61,26 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         
         toolBar.setItems([doneButton], animated: false)
         
-        displayMyAlertMessage(title: "Create a Division", userMessage: "Here if your league has more than one age group or division you can add them otherwise just make one. To create a division use the + icon in the top right corner. To add individual teams just select one from your list and start adding!")
+        displayMyAlertMessage(title: "Create a Division", userMessage: "Here you can add your league's divisions; e.g. Age9, Age10, ect.\n\nTo create a division use the + icon in the top right hand corner, follow the instructions, and select one from the list to add it's teams.")
         
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    override func viewWillAppear(_ animated : Bool) {
+        super.viewWillAppear(animated)
+        //leagueList = saveData.array(forKey: leagueName) as! [Dictionary<String, Array<String>>]
+        //print(leagueList)
+        
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+        
+        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -102,7 +123,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
                 self.displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
             } else {
                 self.ageGroups.append(myAlert.textFields![0].text!)
-                print(myAlert.textFields![0].text!)
+                print(self.ageGroups)
                 self.ageTableView.reloadData()
             }
         }
@@ -137,19 +158,22 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         let currentCell = ageTableView.cellForRow(at: indexPath!) as UITableViewCell!
         
         selectedAge = currentCell?.textLabel?.text
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "teamCreation") as! TeamCreationViewController
+        vc.divSelection = selectedAge
+        vc.leagueName = leagueName
+        navigationController?.pushViewController(vc,animated: true)
     }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             
-            var deletedAge = ageGroups[indexPath.row] as String!
-            
-            for i in teamLists.keys {
+            let deletedAge = ageGroups[indexPath.row] as String!
+         
+            for var dict in leagueList {
                 
-                let key = i as String
-                if key == deletedAge {
-                    self.teamLists.removeValue(forKey: deletedAge!)
-                }
+                dict.removeValue(forKey: deletedAge!)
             }
             
             self.ageGroups.remove(at: indexPath.row)
@@ -157,4 +181,8 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
             ageTableView.deleteRows(at: [indexPath], with: .fade)
         }
     }
+}
+
+struct divData {
+    var leagueList = [Dictionary<String, Array<String>>]()
 }

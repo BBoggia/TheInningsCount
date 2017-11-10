@@ -8,14 +8,27 @@
 
 import UIKit
 
-class TeamCreationViewController: UIViewController {
+class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource {
     
+    @IBOutlet weak var teamTableView: UITableView!
+    @IBOutlet weak var navBar: UINavigationItem!
     
+    var leagueName: String!
+    var teams = [String]()
+    var selectedTeam: String!
+    var divSelection: String!
+    var divDict = [String:Array<String>]()
+    var saveData = UserDefaults.standard
+    
+    @IBAction func addTeam(_ sender: Any) {
+        
+        displayTextEntryField(title: "Add a Team")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        navBar.title = divSelection!
     }
 
     override func didReceiveMemoryWarning() {
@@ -23,6 +36,98 @@ class TeamCreationViewController: UIViewController {
         
     }
     
-
-
+    override func viewWillDisappear(_ animated : Bool) {
+        super.viewWillDisappear(animated)
+        
+        divDict = [divSelection:teams]
+        
+        if ((UserDefaults.standard.array(forKey: leagueName)) == nil) {
+            
+            saveData.setValue(divDict, forKey: leagueName)
+            saveData.synchronize()
+            print(divDict)
+            print(saveData.array(forKey: leagueName) as? [String] ?? String())
+        } else {
+            
+            var newData = (UserDefaults.standard.array(forKey: leagueName))
+            newData?.append(divDict)
+            saveData.setValue(newData, forKey: leagueName)
+            saveData.synchronize()
+            print(divDict)
+            print(saveData.array(forKey: leagueName) as? [String] ?? String())
+            
+        }
+    }
+    
+    func displayMyAlertMessage(title:String, userMessage:String) {
+        
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        myAlert.addAction(okAction)
+        self.present(myAlert, animated: true, completion: nil)
+    }
+    
+    func displayTextEntryField(title:String) {
+        
+        let myAlert = UIAlertController(title: title, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        myAlert.addTextField()
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            
+            if (myAlert.textFields![0].text!.contains("$")) ||
+                (myAlert.textFields![0].text!.contains("/")) ||
+                (myAlert.textFields![0].text!.contains("\\")) ||
+                (myAlert.textFields![0].text!.contains("#")) ||
+                (myAlert.textFields![0].text!.contains("[")) ||
+                (myAlert.textFields![0].text!.contains("]")) ||
+                (myAlert.textFields![0].text!.contains(".")) {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your team name cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+            } else if (myAlert.textFields![0].text!.isEmpty) {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "You can't leave a teams name blank")
+            } else {
+                self.teams.append(myAlert.textFields![0].text!)
+                print(myAlert.textFields![0].text!)
+                self.teamTableView.reloadData()
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        self.present(myAlert, animated: true, completion: nil)
+    }
+    
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return teams.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = teamTableView.dequeueReusableCell(withIdentifier: "cell")
+        cell?.textLabel?.text = teams[indexPath.row]
+        
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let indexPath = teamTableView.indexPathForSelectedRow
+        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        
+        selectedTeam = currentCell?.textLabel?.text
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            
+            self.teams.remove(at: indexPath.row)
+            teamTableView.deleteRows(at: [indexPath], with: .fade)
+        }
+    }
 }

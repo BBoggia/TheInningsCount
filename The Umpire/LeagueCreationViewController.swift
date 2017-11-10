@@ -73,7 +73,7 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             
             displayMyAlertMessage(title: "Oops!", userMessage: "Your passwords don't match!")
             
-        } else if (self.password.text?.characters.count)! < 6 {
+        } else if (self.password.text?.count)! < 6 {
             displayMyAlertMessage(title: "Oops!", userMessage: "Your password needs to contain atleast 6 characters.")
         } else {
             
