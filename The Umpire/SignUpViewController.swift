@@ -65,7 +65,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func createAccount() {
         
         ref?.child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.hasChild(self.leagueCodeField.text!) {
+            if !(self.leagueCodeField.text!.isEmpty) && snapshot.hasChild(self.leagueCodeField.text!) {
         
                 if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
             
@@ -84,6 +84,10 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             
                     self.present(alertController, animated: true, completion: nil)
             
+                } else if !((self.emailField.text?.contains("@"))!) || !((self.emailField.text?.contains("."))!) {
+                    
+                    self.displayMyAlertMessage(title: "Oops!", userMessage: "It seems your email is missing something.")
+                    
                 } else {
                     Auth.auth().createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
                         if error == nil {
@@ -92,7 +96,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     
                         } else {
                     
-                            let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                            let alertController = UIAlertController(title: "Oops!", message: "That code doesn't match any available Leagues.", preferredStyle: .alert)
                     
                             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                             alertController.addAction(defaultAction)

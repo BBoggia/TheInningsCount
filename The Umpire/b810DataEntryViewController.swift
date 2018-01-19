@@ -26,7 +26,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     var sortDate: [AnyHashable:Any] = [:]
     var age: String!
     var randNum: String!
-    var adminStop: Bool!
+    var isAdmin: Bool!
     
     @IBOutlet weak var lblText: UILabel!
     @IBOutlet weak var whiteLbl: UILabel!
@@ -53,11 +53,11 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         
         whiteLbl.layer.cornerRadius = 10
         
-        if adminStop == nil {
+        if isAdmin == nil {
         
-            self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Choose Team", style: .plain, target: self, action: #selector(self.adminChooseTeam))
+            adminChooseTeam()
             
-        } else if adminStop == true {
+        } else if isAdmin == true {
             let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
             teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
                 self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
@@ -93,7 +93,15 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
+        if self.teamName != nil && !((self.playerNumberTextField.text?.isEmpty)!) || !((self.pitchCountTextField.text?.isEmpty)!)  {
+            
+            ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
+            
+        } else {
+            
+            displayMyAlertMessage(title: "Oops!", userMessage: "Please select a team before submiting player stats.")
+            
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -126,6 +134,18 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
                 })
             }
         })
+    }
+    
+    func displayMyAlertMessage(title:String, userMessage:String)
+    {
+        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
+        
+        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
+        
+        myAlert.addAction(okAction)
+        
+        self.present(myAlert, animated: true, completion: nil)
+        
     }
 
 }

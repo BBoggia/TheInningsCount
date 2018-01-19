@@ -17,8 +17,8 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     var teams = [String]()
     var selectedTeam: String!
     var divSelection: String!
-    var divDict = [String:Array<String>]()
-    var saveData = UserDefaults.standard
+    var defaults = UserDefaults.standard
+    var changesMade: Bool!
     
     @IBAction func addTeam(_ sender: Any) {
         
@@ -28,7 +28,22 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let save = defaults.array(forKey: "leagueData")! as! [[String:[String]]]
+        
+        for i in save {
+            
+            if i[divSelection] != nil {
+                
+                self.teams = i[divSelection]!
+                self.teamTableView.reloadData()
+            }
+        }
+        
+        self.teamTableView.delegate = self
+        self.teamTableView.dataSource = self
         navBar.title = divSelection!
+        changesMade = false
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,24 +54,17 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     override func viewWillDisappear(_ animated : Bool) {
         super.viewWillDisappear(animated)
         
-        divDict = [divSelection:teams]
-        
-        if ((UserDefaults.standard.array(forKey: leagueName)) == nil) {
+        if teams.count >= 1 && changesMade == true {
             
-            saveData.setValue(divDict, forKey: leagueName)
-            saveData.synchronize()
-            print(divDict)
-            print(saveData.array(forKey: leagueName) as? [String] ?? String())
-        } else {
-            
-            var newData = (UserDefaults.standard.array(forKey: leagueName))
-            newData?.append(divDict)
-            saveData.setValue(newData, forKey: leagueName)
-            saveData.synchronize()
-            print(divDict)
-            print(saveData.array(forKey: leagueName) as? [String] ?? String())
-            
+            var divDict = [String:[String]]()
+            divDict = [divSelection:teams]
+            var newData = defaults.array(forKey: "leagueData") as! [[String : [String]]]
+            newData.append(divDict)
+            defaults.set(newData, forKey: "leagueData")
         }
+        
+        print(defaults.array(forKey: "leagueData") as? [String] ?? String())
+        
     }
     
     func displayMyAlertMessage(title:String, userMessage:String) {
@@ -81,13 +89,16 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
                 (myAlert.textFields![0].text!.contains("[")) ||
                 (myAlert.textFields![0].text!.contains("]")) ||
                 (myAlert.textFields![0].text!.contains(".")) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your team name cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your team name cannot contain the following characters. \n '$' '.' '/' '\\' '#' '[' ']'")
             } else if (myAlert.textFields![0].text!.isEmpty) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "You can't leave a teams name blank")
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "You cannot leave a teams name blank.")
+            } else if self.teams.contains(myAlert.textFields![0].text!) {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "One or more teams cannot share the same name.")
             } else {
                 self.teams.append(myAlert.textFields![0].text!)
-                print(myAlert.textFields![0].text!)
+                print(self.teams)
                 self.teamTableView.reloadData()
+                self.changesMade = true
             }
         }
         
@@ -109,9 +120,8 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = teamTableView.dequeueReusableCell(withIdentifier: "cell")
+        let cell = teamTableView.dequeueReusableCell(withIdentifier: "createTeamCell")
         cell?.textLabel?.text = teams[indexPath.row]
-        
         return cell!
     }
     

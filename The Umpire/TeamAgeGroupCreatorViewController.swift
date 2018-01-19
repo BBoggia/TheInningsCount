@@ -18,8 +18,10 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     var password: String!
     var selectedAge: String!
     var ageGroups = [String]()
-    var leagueList = [Dictionary<String, Array<String>>]()
+    var leagueList = [[String : [String]]]()
     let saveData = UserDefaults.standard
+    var ref = Database.database().reference()
+    var randomGenNum = ""
     
     @IBOutlet weak var ageTableView: UITableView!
     
@@ -29,18 +31,22 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     
     @IBAction func createGroups(_ sender: Any) {
         
-        let myAlert = UIAlertController(title: "Are you sure?", message: "Make sure that all your divisions and teams are correct before continuing!", preferredStyle: UIAlertControllerStyle.alert)
+        let myAlert = UIAlertController(title: "Are you sure?", message: "Please verify that all of your divisions and teams are correct before continuing.", preferredStyle: UIAlertControllerStyle.alert)
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { action in
             
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "teamCreate") as! TeamNameViewController
-            vc.leagueName = self.leagueName as String
-            vc.email = self.email as String
-            vc.password = self.password as String
-            vc.ageGroups = self.ageGroups as Array
-            self.navigationController?.pushViewController(vc,animated: true)
+            var dataToSave = self.saveData.array(forKey: "leagueData")
+            dataToSave?.removeFirst()
+            self.leagueList = dataToSave as! [[String : [String]]]
+            
+            self.randomString()
+            self.createAccount()
+            self.autoSignIn()
+            
+            self.performSegue(withIdentifier: "navController", sender: nil)
         }
         myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
         self.present(myAlert, animated: true, completion: nil)
     }
     
@@ -50,10 +56,6 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         self.ageTableView.delegate = self
         self.ageTableView.dataSource = self
         
-        /*let defaults = UserDefaults.standard
-        
-        defaults.set(leagueList, forKey: "leagueData")*/
-        
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
@@ -61,8 +63,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         
         toolBar.setItems([doneButton], animated: false)
         
-        displayMyAlertMessage(title: "Create a Division", userMessage: "Here you can add your league's divisions; e.g. Age9, Age10, ect.\n\nTo create a division use the + icon in the top right hand corner, follow the instructions, and select one from the list to add it's teams.")
-        
+        displayMyAlertMessage(title: "Create a Division", userMessage: "Here you can add your league's divisions; e.g. Age9, Age10, ect.\n\nTo create a division use the + icon in the top right hand corner, follow the instructions, and select one from the list to add teams.")
     }
     
     override func didReceiveMemoryWarning() {
@@ -71,17 +72,108 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     
     override func viewWillAppear(_ animated : Bool) {
         super.viewWillAppear(animated)
-        //leagueList = saveData.array(forKey: leagueName) as! [Dictionary<String, Array<String>>]
-        //print(leagueList)
         
+        print(saveData.array(forKey: "leagueData") as? [[String:[String]]] as Any!)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        
-        
     }
+    
+     func createAccount() {
+     
+        Auth.auth().createUser(withEmail: email, password: password, completion: { (user, error) in
+        if error == nil {
+            self.autoSignIn()
+            self.saveUID()
+            
+            let index = 0
+            for dict in self.leagueList {
+                
+                let dictKey = Array(dict)[index].key
+                let dictValue = Array(dict)[index].value
+                
+                for team in dictValue {
+                    
+                    self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueName).child(dictKey).child(team).child("Long Date").setValue(["Date" as NSString! : "Date" as NSString!, "Stat" as NSString! : "Player Number | Innings Pitched" as NSString!])
+                }
+            }
+     
+            self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
+            self.ref.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administrator will be displayed here.", "Date":"Date of Post"])
+     
+            let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down, it has also been copied to your clipboard. \n|\n\(self.randomGenNum)", preferredStyle: UIAlertControllerStyle.alert)
+            let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                UIPasteboard.general.string = self.randomGenNum
+     
+            let firebaseAuth = Auth.auth()
+            do {
+                try firebaseAuth.signOut()
+            } catch let signOutError as NSError {
+                print ("Error signing out: %@", signOutError)
+            }
+     
+                self.performSegue(withIdentifier: "fromCL", sender: nil)
+            }
+                myAlert1.addAction(okAction)
+                self.present(myAlert1, animated: true, completion: nil)
+            } else {
+                self.displayMyAlertMessage(title: "Oops!", userMessage: (error?.localizedDescription)!)
+            }
+        })
+     }
+     
+     func saveUID() {
+     
+        let user = Auth.auth().currentUser
+        let userUID = user?.uid
+     
+        ref.child("UserData").child("/\(userUID!)").child("Team").setValue("League Administrator")
+        ref.child("UserData").child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        ref.child("UserData").child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
+        ref.child("UserData").child("/\(userUID!)").child("status").setValue("admin")
+     
+        print(userUID!)
+     }
+     
+     func autoSignIn() {
+        Auth.auth().signIn(withEmail: self.email, password: self.password, completion: {
+        (user, error) in
+        if error == nil {
+            }
+        })
+     }
+     
+     func randomString() {
+     
+        let letters : NSString = "0123456789"
+        let len = UInt32(letters.length)
+     
+        var randomString = ""
+     
+        for _ in 0 ..< 5 {
+            let rand = arc4random_uniform(len)
+            var nextChar = letters.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
+     
+        self.randomGenNum = randomString
+        self.checkRandomString()
+     }
+     
+     func checkRandomString() {
+        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        for child in snapshot.children {
+            let snap = child as! DataSnapshot
+            if self.randomGenNum == snap.key {
+                self.randomString()
+            } else {
+     
+            }
+        }
+     })
+     }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
@@ -101,7 +193,6 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         myAlert.addAction(okAction)
         
         self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     func displayTextEntryField(title:String, userMessage:String)
@@ -120,7 +211,9 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
                 (myAlert.textFields![0].text!.contains("[")) ||
                 (myAlert.textFields![0].text!.contains("]")) ||
                 (myAlert.textFields![0].text!.contains(".")) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "Division names cannot contain the following characters. \n '$' '.' '/' '\\' '#' '[' ']'")
+            } else if self.ageGroups.contains(myAlert.textFields![0].text!) {
+                    self.displayMyAlertMessage(title: "Oops!", userMessage: "One or more divisions cannot share the same name.")
             } else {
                 self.ageGroups.append(myAlert.textFields![0].text!)
                 print(self.ageGroups)
@@ -145,8 +238,8 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = ageTableView.dequeueReusableCell(withIdentifier: "cell")
         
+        let cell = ageTableView.dequeueReusableCell(withIdentifier: "createAgeCell")
         cell?.textLabel?.text = ageGroups[indexPath.row]
         
         return cell!
@@ -184,5 +277,5 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
 }
 
 struct divData {
-    var leagueList = [Dictionary<String, Array<String>>]()
+    var leagueList = [[String : [String]]]()
 }

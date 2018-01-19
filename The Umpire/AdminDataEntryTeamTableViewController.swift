@@ -81,7 +81,7 @@ class AdminDataEntryTeamTableViewController: UITableViewController {
         let vc = storyboard.instantiateViewController(withIdentifier: "dataEntry") as! b810DataEntryViewController
         vc.age = self.selectedAge
         vc.teamName = currentCell?.textLabel?.text as String!
-        vc.adminStop = true
+        vc.isAdmin = true
         navigationController?.pushViewController(vc,animated: true)
     }
     

@@ -53,7 +53,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func populateView() {
-        ref?.child("LeagueData").child(self.randomNum).child("Info").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueStats").child(self.randomNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
@@ -73,7 +73,9 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
             
             self.saveUID()
             
-            self.performSegue(withIdentifier: "toTeamSelect", sender: nil)
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "toTeamSelect") as! SignupTeamSelectViewController
+            self.navigationController?.pushViewController(vc,animated: true)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -93,6 +95,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         ref2?.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
         ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
         ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomNum)
+        ref2?.child("/\(userUID!)").child("status").setValue("coach")
         
         print(userUID!)
     }

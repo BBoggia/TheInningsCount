@@ -37,6 +37,18 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        let defaults = UserDefaults.standard
+        
+        if ((defaults.array(forKey: "leagueData")) != nil) {
+            
+            defaults.mutableArrayValue(forKey: "leagueData").removeAllObjects()
+            
+        }
+        
+        var placeHolderArr: [[String:[String]]] = []
+        placeHolderArr.append(["placeHolder":["placeHolder"]])
+        defaults.set(placeHolderArr, forKey: "leagueData")
+        
         self.leagueName.delegate = self
         self.adminEmail.delegate = self
         self.password.delegate = self
@@ -56,7 +68,6 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         password.inputAccessoryView = toolBar
         rePassword.inputAccessoryView = toolBar
         
-        //displayMyAlertMessage(title: "League Creation", userMessage: "")
     }
 
     override func didReceiveMemoryWarning() {
@@ -74,7 +85,13 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             displayMyAlertMessage(title: "Oops!", userMessage: "Your passwords don't match!")
             
         } else if (self.password.text?.count)! < 6 {
+            
             displayMyAlertMessage(title: "Oops!", userMessage: "Your password needs to contain atleast 6 characters.")
+            
+        } else if !((self.adminEmail.text?.contains("@"))!) || !((self.adminEmail.text?.contains("."))!) {
+            
+            displayMyAlertMessage(title: "Oops!", userMessage: "It seems your email is missing something.")
+            
         } else {
             
             leagueName1 = leagueName.text

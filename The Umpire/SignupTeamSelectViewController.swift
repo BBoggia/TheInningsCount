@@ -54,7 +54,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     }
     
     func populateView() {
-        ref?.child("LeagueData").child(self.randomNum).child("Info").child(age).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueStats").child(self.randomNum).child(self.leagueName).child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.teamList.append(snap.key)
