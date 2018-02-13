@@ -105,7 +105,7 @@ class CompleteLeagueCreationViewController: UIViewController {
                 }
                 
                 self.ref?.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
-                self.ref?.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administraitor will be displayed here.", "Date":"Date of Post"])
+                self.ref?.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Admin will be displayed here.", "Date":"Date of Post"])
                     
                 let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down or it has been copied to your clipboard. \n|\n\(self.randomGenNum!)", preferredStyle: UIAlertControllerStyle.alert)
                 let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
@@ -133,7 +133,8 @@ class CompleteLeagueCreationViewController: UIViewController {
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2?.child("/\(userUID!)").child("Team").setValue("League Administrator")
+        ref2?.child("/\(userUID!)").child("AgeGroup").setValue("League Admin")
+        ref2?.child("/\(userUID!)").child("Team").setValue("League Admin")
         ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueNameDisplay.text!)
         ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
         ref2?.child("/\(userUID!)").child("status").setValue("admin")

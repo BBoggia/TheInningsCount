@@ -17,8 +17,10 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     
     var ageList = [String]()
     var selectedAge: String!
-    var randomNum: String!
+    var leagueCode: String!
     var leagueName: String!
+    var usrEmail: String!
+    var usrPass: String!
     
     var ref : DatabaseReference?
     var ref2 : DatabaseReference?
@@ -46,14 +48,14 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func dataObserver() {
-        ref?.child("LeagueData").child(self.randomNum).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueData").child(self.leagueCode).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String!
             self.populateView()
         })
     }
     
     func populateView() {
-        ref?.child("LeagueStats").child(self.randomNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueStats").child(self.leagueCode).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
@@ -64,40 +66,27 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         })
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
+    func displayMyAlertMessage(title:String, userMessage:String) {
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
         
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) {
             action in
             
-            self.saveUID()
-            
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "toTeamSelect") as! SignupTeamSelectViewController
+            let vc = storyboard.instantiateViewController(withIdentifier: "coachTeamSelect") as! SignupTeamSelectViewController
+            vc.age = self.selectedAge
+            vc.usrEmail = self.usrEmail
+            vc.usrPass = self.usrPass
+            vc.leagueCode = self.leagueCode
+            vc.leagueName = self.leagueName
             self.navigationController?.pushViewController(vc,animated: true)
         }
-        
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
         
         self.present(myAlert, animated: true, completion: nil)
         
-    }
-    
-    func saveUID() {
-        
-        let user = Auth.auth().currentUser
-        let userUID = user?.uid
-        
-        ref2?.child("/\(userUID!)").child("AgeGroup").setValue(selectedAge)
-        ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
-        ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomNum)
-        ref2?.child("/\(userUID!)").child("status").setValue("coach")
-        
-        print(userUID!)
     }
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -111,7 +100,6 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = teamTableView.dequeueReusableCell(withIdentifier: "cell")
-        
         cell?.textLabel?.text = ageList[indexPath.row]
         
         return cell!
@@ -121,7 +109,6 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         
         let indexPath = teamTableView.indexPathForSelectedRow
         let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
-        
         selectedAge = currentCell?.textLabel?.text
         
         displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedAge!), is this correct?")

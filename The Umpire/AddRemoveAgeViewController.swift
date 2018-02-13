@@ -11,26 +11,39 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddRemoveAgeTableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
     var ref : DatabaseReference?
     
-    @IBOutlet weak var tableView: UITableView!
-    
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
     var league: String!
-    var selectedCell: String!
     var alertTextField: String!
     var theSnapshot: DataSnapshot!
-    var deleteIndexPath: NSIndexPath? = nil
     var randNum: String!
-    var toDelete: String!
     
     @IBAction func addBtn(_ sender: Any) {
         
+        let myAlert = UIAlertController(title: "Add Division", message: "Enter the name for the division you wish to add.", preferredStyle: UIAlertControllerStyle.alert)
+        myAlert.addTextField()
+        
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            self.alertTextField = myAlert.textFields![0].text
+            
+            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                
+                self.tablePath.child(self.alertTextField).setValue("placeholder")
+            })
+            
+            self.tableView.reloadData()
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        self.present(myAlert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -41,14 +54,19 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+            self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
+            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
             self.dataObserver()
         })
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
+        longPressGesture.minimumPressDuration = 1.75
+        longPressGesture.delegate = self as? UIGestureRecognizerDelegate
+        self.tableView.addGestureRecognizer(longPressGesture)
+        
+        // will show edit button
+        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
     override func didReceiveMemoryWarning() {
@@ -60,7 +78,7 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
         
         self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
         
-        self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+        tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
@@ -71,77 +89,54 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
         })
     }
     
-    func confirmDelete(title: String) {
-        let alert = UIAlertController(title: "Delete Age", message: "Are you sure you want to permanently delete \(title)?", preferredStyle: .actionSheet)
-        
-        let DeleteAction = UIAlertAction(title: "Delete", style: .destructive, handler: handleDeletePlanet)
-        let CancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: cancelDeletePlanet)
-        
-        alert.addAction(DeleteAction)
-        alert.addAction(CancelAction)
-        
-        // Support display in iPad
-        alert.popoverPresentationController?.sourceView = self.view
-        alert.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.size.width / 2.0, y: self.view.bounds.size.height / 2.0, width: 1.0, height: 1.0)
-        
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-    func handleDeletePlanet(alertAction: UIAlertAction!) -> Void {
-        if let indexPath = deleteIndexPath {
-            tableView.beginUpdates()
-            
-            self.convertedArray.remove(at: indexPath.row)
-            
-            self.deleteFromDB()
-            
-            // Note that indexPath is wrapped in an array:  [indexPath]
-            tableView.deleteRows(at: [indexPath as IndexPath], with: .automatic)
-            
-            deleteIndexPath = nil
-            
-            tableView.endUpdates()
+    @objc func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.view)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                let myAlert = UIAlertController(title: "Rename Division", message: "Enter the name you want to change \(self.convertedArray[indexPath.row]) to.", preferredStyle: UIAlertControllerStyle.alert)
+                myAlert.addTextField()
+                
+                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                    self.alertTextField = myAlert.textFields![0].text
+                    
+                    self.ref?.child("LeagueStats").child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
+                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
+                    })
+                    
+                    self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+                        for child in snapshot.children {
+                            let snap = child as! DataSnapshot
+                            
+                            if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.convertedArray[indexPath.row] {
+                                self.ref?.child("UserData").child(snap.key).child("AgeGroup").setValue(self.alertTextField)
+                            }
+                        }
+                    })
+                    
+                    self.tableView.reloadData()
+                }
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                myAlert.addAction(okAction)
+                myAlert.addAction(cancelAction)
+                self.present(myAlert, animated: true, completion: nil)
+                
+            }
         }
     }
     
-    func deleteFromDB() {
-        
-        self.ref?.child("LeagueData").child(randNum).child("Info").child(self.toDelete).observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            var deletedAgeCoaches = [String]()
-            var ageTeams = [String]()
-            
-            for team in snapshot.children {
-                
-                ageTeams.append(team as! String)
-            }
-            
-            for uid in ageTeams {
-                deletedAgeCoaches.append(snapshot.childSnapshot(forPath: "Coaches").childSnapshot(forPath: uid).key)
-            }
-            
-            print(deletedAgeCoaches)
-        })
-        
-        self.ref?.child("LeagueStats").child(randNum).child(league).child(self.toDelete).removeValue()
-        self.ref?.child("LeagueData").child(randNum).child("Info").child(self.toDelete).removeValue()
-    }
-    
-    func cancelDeletePlanet(alertAction: UIAlertAction!) {
-        deleteIndexPath = nil
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         return convertedArray.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         cell.textLabel?.text = convertedArray[indexPath.row]
@@ -149,13 +144,25 @@ class AddRemoveAgeViewController: UIViewController, UITableViewDelegate, UITable
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            deleteIndexPath = indexPath as NSIndexPath
-            self.toDelete = convertedArray[indexPath.row]
-            confirmDelete(title: self.toDelete)
-        }
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let indexPath = tableView.indexPathForSelectedRow
+        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell!
+        
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "arvc") as! AddRemoveTeamTableViewController
+        vc.ageGroup = convertedArray[(indexPath?.row)!]
+        vc.randNum = randNum
+        vc.league = league
+        vc.tablePath = tablePath.child((currentCell?.textLabel?.text)!)
+        navigationController?.pushViewController(vc,animated: true)
     }
     
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.convertedArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
+        }
+    }
 }
-

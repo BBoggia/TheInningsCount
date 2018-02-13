@@ -11,22 +11,37 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class AddRemoveTeamTableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
     var ref : DatabaseReference?
     
-    @IBOutlet weak var tableView: UITableView!
-    
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
     var league: String!
+    var team: String!
     var ageGroup: String!
     var selectedCell: String!
     var alertTextField: String!
     var theSnapshot: DataSnapshot!
     var randNum: String!
+    @IBAction func addTeam(_ sender: Any) {
+        
+        let myAlert = UIAlertController(title: "Add Team", message: "Enter the name of the team you want to add to this division.", preferredStyle: UIAlertControllerStyle.alert)
+        myAlert.addTextField()
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            self.alertTextField = myAlert.textFields![0].text
+            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                self.tablePath.child(self.alertTextField).setValue("placeholder")
+            })
+            self.tableView.reloadData()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        self.present(myAlert, animated: true, completion: nil)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,11 +51,10 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
-            self.dataObserver()
-        })
+        let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
+        longPressGesture.minimumPressDuration = 1.75
+        longPressGesture.delegate = self as? UIGestureRecognizerDelegate
+        self.tableView.addGestureRecognizer(longPressGesture)
         
         tableView.delegate = self
         tableView.dataSource = self
@@ -53,8 +67,6 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
     
     func dataObserver() {
         
-        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
-        
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
@@ -66,17 +78,50 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
         })
     }
     
-    func numberOfSections(in tableView: UITableView) -> Int {
+    @objc func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
+        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
+            let touchPoint = longPressGestureRecognizer.location(in: self.view)
+            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
+                let myAlert = UIAlertController(title: "Rename Division", message: "Enter the name you want to change \(self.convertedArray[indexPath.row]) to.", preferredStyle: UIAlertControllerStyle.alert)
+                myAlert.addTextField()
+                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+                    self.alertTextField = myAlert.textFields![0].text
+                    
+                    self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
+                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]))
+                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.convertedArray[indexPath.row]).removeValue()
+                    })
+                    
+                    self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+                        for child in snapshot.children {
+                            let snap = child as! DataSnapshot
+                            
+                            if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.convertedArray[indexPath.row] && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.ageGroup {
+                                self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
+                            }
+                        }
+                    })
+                    self.tableView.reloadData()
+                }
+                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+                myAlert.addAction(okAction)
+                myAlert.addAction(cancelAction)
+                self.present(myAlert, animated: true, completion: nil)
+            }
+        }
+    }
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return convertedArray.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
         
         cell.textLabel?.text = convertedArray[indexPath.row]
@@ -84,17 +129,12 @@ class AddRemoveTeamViewController: UIViewController, UITableViewDelegate, UITabl
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = tableView.indexPathForSelectedRow
         let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell!
         
-        ageGroup = currentCell?.textLabel?.text
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "arvc2") as! AddRemoveTeamViewController2
-        vc.ageGroup = self.ageGroup
-        navigationController?.pushViewController(vc,animated: true)
+        selectedCell = currentCell?.textLabel?.text
     }
 }
 

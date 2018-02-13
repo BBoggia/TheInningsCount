@@ -16,10 +16,12 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     @IBOutlet weak var teamTableView: UITableView!
     
     var teamList = [String]()
-    var selectedTeam: String!
+    var team: String!
     var age: String!
-    var randomNum: String!
+    var leagueCode: String!
     var leagueName: String!
+    var usrEmail: String!
+    var usrPass: String!
     
     var ref : DatabaseReference?
     var ref2 : DatabaseReference?
@@ -34,15 +36,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         
         userUID = Auth.auth().currentUser?.uid
         
-        ref2?.child("\(userUID!)").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.randomNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
-            
-            self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            
-            self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
-            
-            self.populateView()
-        })
+        populateView()
         
         teamTableView.delegate = self
         teamTableView.dataSource = self
@@ -54,7 +48,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     }
     
     func populateView() {
-        ref?.child("LeagueStats").child(self.randomNum).child(self.leagueName).child(age).observeSingleEvent(of: .value, with: { (snapshot) in
+        ref?.child("LeagueStats").child(self.leagueCode).child(self.leagueName).child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.teamList.append(snap.key)
@@ -64,18 +58,11 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         })
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
+    func displayMyAlertMessage(title:String, message:String) {
+        let myAlert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) {
             action in
-            
-            self.saveUID()
-            
-            self.ref?.child("LeagueData").child(self.randomNum).child("Info").child(self.age).child(self.selectedTeam).child("Coaches").child(self.userUID!).setValue(self.user?.email)
-            self.ref2?.child(self.userUID!).child("status").setValue("coach")
-            
+            self.createAccount()
             let firebaseAuth = Auth.auth()
             do {
                 try firebaseAuth.signOut()
@@ -83,16 +70,13 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
                 print ("Error signing out: %@", signOutError)
             }
             
-            self.performSegue(withIdentifier: "toMain", sender: nil)
+            self.performSegue(withIdentifier: "coachToNav", sender: nil)
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
-        
         self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     func saveUID() {
@@ -100,7 +84,50 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2?.child("/\(userUID!)").child("Team").setValue(selectedTeam)
+        ref2?.child("/\(userUID!)").child("AgeGroup").setValue(age)
+        ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(leagueCode)
+        ref2?.child("/\(userUID!)").child("status").setValue("coach")
+        ref2?.child("/\(userUID!)").child("Team").setValue(team)
+        ref2?.child("/\(userUID!)").child("status").setValue("coach")
+    }
+    
+    func createAccount() {
+        
+        ref?.child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
+            if !(self.leagueCode.isEmpty) && snapshot.hasChild(self.leagueCode) {
+                if !(self.usrEmail.contains("@")) || !(self.usrEmail.contains(".")) {
+                    
+                    self.displayMyAlertMessage(title: "Oops!", message: "It seems your email is missing something.")
+                } else {
+                    
+                    Auth.auth().createUser(withEmail: self.usrEmail, password: self.usrPass, completion: { (user, error) in
+                        if error == nil {
+                            
+                            self.autoSignIn()
+                        } else {
+                            
+                            let alertController = UIAlertController(title: "Oops!", message: "That code doesn't match any available Leagues.", preferredStyle: .alert)
+                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+                            alertController.addAction(defaultAction)
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    })
+                }
+            } else {
+                self.displayMyAlertMessage(title: "Oops!", message: "The league code you entered is invalid!")
+            }
+        })
+    }
+    
+    func autoSignIn() {
+        Auth.auth().signIn(withEmail: self.usrEmail, password: self.usrPass, completion: {
+            (user, error) in
+            
+            if error == nil {
+                self.saveUID()
+            }
+        })
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -114,7 +141,6 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = teamTableView.dequeueReusableCell(withIdentifier: "cell")
-        
         cell?.textLabel?.text = teamList[indexPath.row]
         
         return cell!
@@ -124,9 +150,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         
         let indexPath = teamTableView.indexPathForSelectedRow
         let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        team = currentCell?.textLabel?.text
         
-        selectedTeam = currentCell?.textLabel?.text
-        
-        displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedTeam!), is this correct?")
+        displayMyAlertMessage(title: "Confirm", message: "Is this correct?\nDivision: \(self.age!)\nTeam: \(self.team!)")
     }
 }

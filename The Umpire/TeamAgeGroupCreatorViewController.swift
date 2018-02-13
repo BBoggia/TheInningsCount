@@ -127,7 +127,8 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
      
         let user = Auth.auth().currentUser
         let userUID = user?.uid
-     
+        
+        ref.child("UserData").child("/\(userUID!)").child("AgeGroup").setValue("League Administrator")
         ref.child("UserData").child("/\(userUID!)").child("Team").setValue("League Administrator")
         ref.child("UserData").child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
         ref.child("UserData").child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)

@@ -27,7 +27,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var leagueCodeField: UITextField!
     @IBOutlet var altCreateAccBtn: UIButton!
     @IBAction func createAccountButton(_ sender: Any) {
-        self.createAccount()
+        let myAlert = UIAlertController(title: "Confirm", message: "Is this correct?\nEmail: \(self.emailField.text!)\nLeague Code: \(self.leagueCodeField.text!)", preferredStyle: UIAlertControllerStyle.alert)
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            self.checkAccDetails()
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        self.present(myAlert, animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -62,7 +69,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         super.didReceiveMemoryWarning()
     }
     
-    func createAccount() {
+    func checkAccDetails() {
         
         ref?.child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
             if !(self.leagueCodeField.text!.isEmpty) && snapshot.hasChild(self.leagueCodeField.text!) {
@@ -70,55 +77,30 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
             
                     let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
-            
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
-            
                     self.present(alertController, animated: true, completion: nil)
                 } else if self.passwordField.text != self.reTypePasswordField.text {
-            
+                    
                     let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
-            
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
-            
                     self.present(alertController, animated: true, completion: nil)
-            
                 } else if !((self.emailField.text?.contains("@"))!) || !((self.emailField.text?.contains("."))!) {
                     
                     self.displayMyAlertMessage(title: "Oops!", userMessage: "It seems your email is missing something.")
-                    
                 } else {
-                    Auth.auth().createUser(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { (user, error) in
-                        if error == nil {
                     
-                            self.performSegue(withIdentifier: "toAgeSelect", sender: nil)
-                    
-                        } else {
-                    
-                            let alertController = UIAlertController(title: "Oops!", message: "That code doesn't match any available Leagues.", preferredStyle: .alert)
-                    
-                            let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                            alertController.addAction(defaultAction)
-                    
-                            self.present(alertController, animated: true, completion: nil)
-                        }
-                    })
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "toAgeSelect") as! SignupAgeTableViewController
+                    vc.leagueCode = self.leagueCodeField.text!
+                    vc.usrEmail = self.emailField.text!
+                    vc.usrPass = self.passwordField.text!
+                    self.navigationController?.pushViewController(vc,animated: true)
                 }
             } else {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered does not exist!")
-            }
-        })
-        
-        self.autoSignIn()
-    }
-    
-    func autoSignIn() {
-        Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
-            (user, error) in
-            
-            if error == nil {
                 
+                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered is invalid!")
             }
         })
     }
@@ -128,31 +110,15 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         return false;
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
+    func displayMyAlertMessage(title:String, userMessage:String) {
+        
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        
         myAlert.addAction(okAction)
-        
         self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     @objc func doneClicked() {
         self.view.endEditing(true)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == "toAgeSelect" {
-            
-            var vC: SignupAgeTableViewController
-            
-            vC = segue.destination as! SignupAgeTableViewController
-            
-            vC.randomNum = leagueCodeField.text!
-        }
-    }
-
 }
