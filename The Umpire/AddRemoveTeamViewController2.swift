@@ -5,7 +5,6 @@
 //  Created by Branson Boggia on 6/16/17.
 //  Copyright © 2017 PineTree Studios. All rights reserved.
 //
-
 import UIKit
 import Firebase
 import FirebaseAuth
@@ -113,7 +112,7 @@ class AddRemoveTeamViewController2: UIViewController, UITableViewDelegate, UITab
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 if snap.childSnapshot(forPath: "Team:").value as! String! == self.toDelete && snap.childSnapshot(forPath: "AgeGroup:").value as! String! == self.ageGroup {
-                    let uid = snap.key 
+                    let uid = snap.key
                     self.ref?.child("UserData").child(uid).child("Team:").setValue("removed")
                 }
             }
@@ -154,4 +153,3 @@ class AddRemoveTeamViewController2: UIViewController, UITableViewDelegate, UITab
     }
     
 }
-

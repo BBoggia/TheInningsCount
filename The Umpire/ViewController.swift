@@ -13,14 +13,11 @@ import FirebaseAuth
 class ViewController: UIViewController, UITextFieldDelegate {
     
     var ref : DatabaseReference?
-    
     var user: User?
     var userUID: String!
-    
     var effect: UIVisualEffect!
     
     @IBOutlet var popUpView: UIView!
-    
     @IBOutlet weak var viewInScroll: UIView!
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var visualEffectView: UIVisualEffectView!
@@ -30,14 +27,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var closeButton: UIButton!
     
-    @IBAction func helpButton(_ sender: Any) {
+    @IBAction func helpButton(_ sender: Any) { //Opens help button
         openPopUp()
     }
-    @IBAction func close(_ sender: UIButton) {
+    @IBAction func close(_ sender: UIButton) { //Closes help button
         closePopUp()
     }
-    @IBAction func logInButton(_ sender: Any) {
-        if self.emailField.text == "" || self.passwordField.text == "" {
+    @IBAction func logInButton(_ sender: Any) { //Login button
+        if self.emailField.text == "" || self.passwordField.text == "" { //Checks fields
             let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
             
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
@@ -45,7 +42,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             
             self.present(alertController, animated: true, completion: nil)
         } else {
-            Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: {
+            Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { //Authenticates user
                 (user, error) in
                 
                 if error == nil {
@@ -55,7 +52,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     defaults.setValue(user?.uid, forKey: "uid")
                     
                     self.userUID = user?.uid
-                    
                     self.emailField.text = ""
                     self.passwordField.text = ""
                     
@@ -63,7 +59,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     
                 } else {
                     
-                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, //Displayes error preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
@@ -88,6 +84,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         
+        //Help menu constraints
         popUpView.layer.cornerRadius = 5
         scrollView.layer.cornerRadius = 5
         viewInScroll.layer.cornerRadius = 5
@@ -96,12 +93,12 @@ class ViewController: UIViewController, UITextFieldDelegate {
         visualEffectView.layer.bounds.size.width = 0
         scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height - 370, 0)
         
-        initialLaunch()
+        initialLaunch() //Checks if is initial launch
         
         emailField.delegate = self
         passwordField.delegate = self
         
-        let firebaseAuth = Auth.auth()
+        let firebaseAuth = Auth.auth() //Verifys no user is logged in
         do {
             try firebaseAuth.signOut()
         } catch let signOutError as NSError {
@@ -133,16 +130,16 @@ class ViewController: UIViewController, UITextFieldDelegate {
         // Dispose of any resources that can be recreated.
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool { //Adds working return button
         self.view.endEditing(true)
         return false
     }
     
-    @objc func doneClicked() {
+    @objc func doneClicked() { //Adds done button to keyboard
         self.view.endEditing(true)
     }
     
-    func openPopUp() {
+    func openPopUp() { //Opens help menu
         self.view.addSubview(popUpView)
         popUpView.center = self.view.center
         
@@ -159,7 +156,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     
-    func closePopUp() {
+    func closePopUp() { //Closes help menu
         UIView.animate(withDuration: 0.3, animations: {
             self.popUpView.transform = CGAffineTransform.init(scaleX: 1.3, y: 1.3)
             self.popUpView.alpha = 0
@@ -173,23 +170,21 @@ class ViewController: UIViewController, UITextFieldDelegate {
         self.visualEffectView.layer.bounds.size.width = 0
     }
     
-    func initialLaunch() -> Bool {
+    func initialLaunch() { //Checks if is initial launch
         let defaults = UserDefaults.standard
         
         if let isAppAlreadyLaunchedOnce = defaults.string(forKey: "isFirstLaunch"){
             print("App already launched : \(isAppAlreadyLaunchedOnce)")
-            return true
         }else{
             defaults.set(true, forKey: "isFirstLaunch")
             print("App launched first time")
             self.openPopUp()
-            return false
         }
     }
 
 }
 
-enum UIUserInterfaceIdiom: Int {
+enum UIUserInterfaceIdiom: Int { //Checks device type
     case unspecified
     
     case phone // iPhone and iPod touch style UI

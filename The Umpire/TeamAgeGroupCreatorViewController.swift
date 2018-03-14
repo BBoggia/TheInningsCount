@@ -26,12 +26,12 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     @IBOutlet weak var ageTableView: UITableView!
     
     @IBAction func addAgeBtn(_ sender: Any) {
-        displayTextEntryField(title: "Age Group Name", userMessage: "Enter the name of an age group then press confirm.")
+        displayTextEntryField(title: "Division Name", userMessage: "Enter the name of an age group then press confirm.")
     }
     
     @IBAction func createGroups(_ sender: Any) {
         
-        let myAlert = UIAlertController(title: "Are you sure?", message: "Please verify that all of your divisions and teams are correct before continuing.", preferredStyle: UIAlertControllerStyle.alert)
+        let myAlert = UIAlertController(title: "Are you sure?", message: "Please verify that all of your divisions and their teams are correct before continuing.", preferredStyle: UIAlertControllerStyle.alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { action in
             
@@ -63,7 +63,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         
         toolBar.setItems([doneButton], animated: false)
         
-        displayMyAlertMessage(title: "Create a Division", userMessage: "Here you can add your league's divisions; e.g. Age9, Age10, ect.\n\nTo create a division use the + icon in the top right hand corner, follow the instructions, and select one from the list to add teams.")
+        displayMyAlertMessage(title: "Divisions", userMessage: "Here is where you can add divisions or age groups to your league; e.g. Age9, Age10, ect.\n\nTo create a division use the + icon in the top right hand corner, enter the name you want for it, then select it to start adding teams. If you only have one division in your league then just create one and add teams to it.")
     }
     
     override func didReceiveMemoryWarning() {
