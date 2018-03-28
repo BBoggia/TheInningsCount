@@ -276,7 +276,3 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         }
     }
 }
-
-struct divData {
-    var leagueList = [[String : [String]]]()
-}

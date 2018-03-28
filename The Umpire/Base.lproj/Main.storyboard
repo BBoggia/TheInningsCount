@@ -77,7 +77,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="15l-uA-VAH" kind="show" id="Pca-mN-WLE"/>
+                                    <segue destination="15l-uA-VAH" kind="show" identifier="toCoachCreate" id="Pca-mN-WLE"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="wordWrap" translatesAutoresizingMaskIntoConstraints="NO" id="SCc-0I-feI">
@@ -216,7 +216,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2e0-uY-J8a">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="945"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="IPC Help Page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="V7g-UH-zgS">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text=" The IC Help Page" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="V7g-UH-zgS">
                                             <rect key="frame" x="8" y="54" width="284" height="41"/>
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
@@ -941,7 +941,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <segue destination="uXM-0X-Yhr" kind="show" id="286-M5-30n"/>
+                                    <segue destination="uXM-0X-Yhr" kind="show" identifier="toAnnouncements" id="286-M5-30n"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Coaches Hub" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="h7S-yL-PyY">
@@ -1015,7 +1015,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6Ck-KF-fUR" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2088.8000000000002" y="897.30134932533736"/>
+            <point key="canvasLocation" x="2089" y="897"/>
         </scene>
         <!--Admin Hub View Controller-->
         <scene sceneID="NPb-6e-h7T">
@@ -1063,7 +1063,7 @@
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
-                                            <segue destination="E3P-Bq-Fs2" kind="show" id="cNH-cx-1pw"/>
+                                            <segue destination="E3P-Bq-Fs2" kind="show" identifier="toSendMessage" id="cNH-cx-1pw"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RwC-ss-Qed">
@@ -1154,7 +1154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J6W-OK-J2a" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2934" y="1595"/>
+            <point key="canvasLocation" x="2934" y="1644"/>
         </scene>
         <!--Admin Global Messaging View Controller-->
         <scene sceneID="wch-f9-fJj">
@@ -1318,7 +1318,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fZX-V7-sFf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3784.8000000000002" y="1593.5532233883059"/>
+            <point key="canvasLocation" x="3785" y="1644"/>
         </scene>
         <!--Admin Table View Controller-->
         <scene sceneID="icj-JP-7a8">
@@ -1346,7 +1346,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7xg-2B-fsq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3785" y="2367"/>
+            <point key="canvasLocation" x="3785" y="2398"/>
         </scene>
         <!--Add Remove Age Table View Controller-->
         <scene sceneID="h0k-8A-XvY">
@@ -1375,12 +1375,12 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="1sO-pd-bon"/>
                     </navigationItem>
                     <connections>
-                        <segue destination="DLP-Io-K7M" kind="show" id="2Pw-5C-Xny"/>
+                        <segue destination="DLP-Io-K7M" kind="show" identifier="toRemoveTeam" id="2Pw-5C-Xny"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4RH-uu-LtS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2934" y="2367"/>
+            <point key="canvasLocation" x="2934" y="2398"/>
         </scene>
         <!--Add Remove Team Table View Controller-->
         <scene sceneID="fX6-oL-eR6">
@@ -1415,7 +1415,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3fh-RA-7hL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2934" y="3103"/>
+            <point key="canvasLocation" x="2934" y="3141"/>
         </scene>
         <!--Rename Team1 Table View Controller-->
         <scene sceneID="bLL-AX-lrI">
@@ -1474,7 +1474,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WI6-C7-O4t" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4498" y="3141"/>
+            <point key="canvasLocation" x="4513" y="3141"/>
         </scene>
         <!--Team Roster View Controller-->
         <scene sceneID="o3S-bi-0ke">
@@ -1514,7 +1514,7 @@
                                 </userDefinedRuntimeAttributes>
                                 <connections>
                                     <action selector="roster:" destination="wE1-2y-T72" eventType="touchUpInside" id="SFC-RR-6yP"/>
-                                    <segue destination="sx5-t8-xqo" kind="show" id="As6-DW-i5B"/>
+                                    <segue destination="sx5-t8-xqo" kind="show" identifier="toAddPlayers" id="As6-DW-i5B"/>
                                 </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="40" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="jpv-mV-l1k">
@@ -1717,7 +1717,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1lK-nR-oTx">
-                                <rect key="frame" x="16" y="72" width="343" height="462"/>
+                                <rect key="frame" x="16" y="72" width="343" height="447"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
@@ -1730,7 +1730,7 @@
                                 </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYA-i1-xZb">
-                                <rect key="frame" x="16" y="542" width="343" height="105"/>
+                                <rect key="frame" x="16" y="527" width="343" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="lessThanOrEqual" constant="160" id="SEL-6Q-EbW"/>
@@ -1751,18 +1751,18 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ulg-5b-FLf">
-                                <rect key="frame" x="16" y="72" width="343" height="462"/>
+                                <rect key="frame" x="18.5" y="74.5" width="338" height="442"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OTC-z9-bmm">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="231"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="338" height="221"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Player Number" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="Lm4-Zt-Tgu">
-                                                <rect key="frame" x="0.0" y="0.0" width="171.5" height="231"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="169" height="221"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTi-eP-LAp">
-                                                <rect key="frame" x="171.5" y="0.0" width="171.5" height="231"/>
+                                                <rect key="frame" x="169" y="0.0" width="169" height="221"/>
                                             </pickerView>
                                         </subviews>
                                         <constraints>
@@ -1771,15 +1771,15 @@
                                         </constraints>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="11" translatesAutoresizingMaskIntoConstraints="NO" id="Qj1-bs-jnr">
-                                        <rect key="frame" x="0.0" y="231" width="343" height="231"/>
+                                        <rect key="frame" x="0.0" y="221" width="338" height="221"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Innings Pitched" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="4hW-Et-cjC">
-                                                <rect key="frame" x="0.0" y="0.0" width="166" height="231"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="163.5" height="221"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="30"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VQ-Jc-71A">
-                                                <rect key="frame" x="177" y="0.0" width="166" height="231"/>
+                                            <pickerView tag="1" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6VQ-Jc-71A">
+                                                <rect key="frame" x="174.5" y="0.0" width="163.5" height="221"/>
                                             </pickerView>
                                         </subviews>
                                         <constraints>
@@ -1791,35 +1791,34 @@
                                 <constraints>
                                     <constraint firstItem="6VQ-Jc-71A" firstAttribute="height" secondItem="hTi-eP-LAp" secondAttribute="height" id="KZT-Rs-Q2h"/>
                                     <constraint firstItem="4hW-Et-cjC" firstAttribute="height" secondItem="Lm4-Zt-Tgu" secondAttribute="height" id="bHD-LD-biD"/>
-                                    <constraint firstItem="Qj1-bs-jnr" firstAttribute="top" secondItem="ulg-5b-FLf" secondAttribute="top" constant="231" id="pX5-3m-XD2"/>
                                 </constraints>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstAttribute="trailing" secondItem="w51-Ef-zb8" secondAttribute="trailing" id="3uD-84-olW"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="leading" secondItem="1lK-nR-oTx" secondAttribute="leading" id="AmE-5H-76B"/>
+                            <constraint firstItem="ulg-5b-FLf" firstAttribute="centerX" secondItem="1lK-nR-oTx" secondAttribute="centerX" id="8c8-FR-aZ5"/>
+                            <constraint firstItem="ulg-5b-FLf" firstAttribute="width" secondItem="1lK-nR-oTx" secondAttribute="width" constant="-5" id="CLB-t4-nIk"/>
                             <constraint firstItem="1lK-nR-oTx" firstAttribute="top" secondItem="Pih-s5-PuR" secondAttribute="bottom" constant="8" id="D3e-at-qki"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="top" secondItem="1lK-nR-oTx" secondAttribute="top" id="GhU-7k-LdW"/>
                             <constraint firstItem="BYA-i1-xZb" firstAttribute="top" secondItem="1lK-nR-oTx" secondAttribute="bottom" constant="8" id="HFk-Ev-8TM"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="height" secondItem="1lK-nR-oTx" secondAttribute="height" id="HLx-X9-Xw3"/>
                             <constraint firstItem="BYA-i1-xZb" firstAttribute="trailing" secondItem="YHO-Iq-2ch" secondAttribute="trailingMargin" id="INs-gR-36u"/>
                             <constraint firstItem="w51-Ef-zb8" firstAttribute="leading" secondItem="YHO-Iq-2ch" secondAttribute="leading" id="NNs-hs-2eH"/>
                             <constraint firstItem="w51-Ef-zb8" firstAttribute="top" secondItem="YHO-Iq-2ch" secondAttribute="top" id="Pd4-f2-5BQ"/>
+                            <constraint firstItem="ulg-5b-FLf" firstAttribute="height" secondItem="1lK-nR-oTx" secondAttribute="height" constant="-5" id="RF0-qQ-Ntj"/>
                             <constraint firstItem="1lK-nR-oTx" firstAttribute="leading" secondItem="YHO-Iq-2ch" secondAttribute="leading" constant="16" id="Rfm-df-qND"/>
                             <constraint firstAttribute="trailing" secondItem="1lK-nR-oTx" secondAttribute="trailing" constant="16" id="VJ8-jm-2Lc"/>
                             <constraint firstItem="6pL-jX-BMk" firstAttribute="top" secondItem="w51-Ef-zb8" secondAttribute="bottom" id="cOE-h4-lqs"/>
                             <constraint firstItem="6pL-jX-BMk" firstAttribute="top" secondItem="BYA-i1-xZb" secondAttribute="bottom" constant="20" id="gJx-ox-YWC"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="trailing" secondItem="1lK-nR-oTx" secondAttribute="trailing" id="qFk-rL-fBM"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="bottom" secondItem="1lK-nR-oTx" secondAttribute="bottom" id="rm2-zU-n7z"/>
+                            <constraint firstItem="ulg-5b-FLf" firstAttribute="centerY" secondItem="1lK-nR-oTx" secondAttribute="centerY" id="j0a-G6-hbM"/>
                             <constraint firstItem="BYA-i1-xZb" firstAttribute="leading" secondItem="YHO-Iq-2ch" secondAttribute="leadingMargin" id="skj-cQ-Aca"/>
-                            <constraint firstItem="ulg-5b-FLf" firstAttribute="width" secondItem="1lK-nR-oTx" secondAttribute="width" id="vRq-Ci-hJP"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="M8W-4V-9l1">
                         <barButtonItem key="backBarButtonItem" title="Back" id="QNr-Es-S7b"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="numberPicker" destination="hTi-eP-LAp" id="nnJ-hg-Ewg"/>
+                        <outlet property="pitchPicker" destination="6VQ-Jc-71A" id="ckt-Ea-PYq"/>
                         <outlet property="whiteLbl" destination="1lK-nR-oTx" id="ieZ-QK-nDw"/>
                         <segue destination="fnL-Qv-ZAM" kind="show" identifier="toAdminAge" id="lEe-xV-crj"/>
                     </connections>
@@ -1888,7 +1887,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Bka-Aw-RT7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3786" y="124"/>
+            <point key="canvasLocation" x="3785" y="124"/>
         </scene>
         <!--Signup Age Table View Controller-->
         <scene sceneID="Y31-8J-CjI">
@@ -1962,7 +1961,7 @@
                     </view>
                     <connections>
                         <outlet property="teamTableView" destination="vLN-JK-Nwk" id="0sD-rF-TxK"/>
-                        <segue destination="D0j-yH-1an" kind="show" identifier="" id="tjh-IH-bwC"/>
+                        <segue destination="D0j-yH-1an" kind="show" identifier="toSelectTeamCheck" id="tjh-IH-bwC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YVk-Ut-8Hj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2063,7 +2062,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homePage" translatesAutoresizingMaskIntoConstraints="NO" id="Raj-Cd-tZy">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="League Announcements" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="30" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IcM-Rw-5Yz">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="League Announcements" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="30" translatesAutoresizingMaskIntoConstraints="NO" id="IcM-Rw-5Yz">
                                 <rect key="frame" x="16" y="64" width="343" height="95.5"/>
                                 <fontDescription key="fontDescription" type="system" weight="black" pointSize="40"/>
                                 <nil key="textColor"/>
@@ -2259,7 +2258,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="rzg-bJ-smH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2088.8000000000002" y="2367.1664167916042"/>
+            <point key="canvasLocation" x="2089" y="2398"/>
         </scene>
         <!--Player Stats-->
         <scene sceneID="ACj-3Q-ZCq">
@@ -2356,7 +2355,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vXN-1h-FCD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2088.8000000000002" y="3102.9985007496252"/>
+            <point key="canvasLocation" x="2089" y="3141"/>
         </scene>
     </scenes>
     <resources>
@@ -2364,6 +2363,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="V6L-jt-XJ1"/>
-        <segue reference="Z1i-lT-zQJ"/>
+        <segue reference="d4p-Kl-2Mh"/>
     </inferredMetricsTieBreakers>
 </document>

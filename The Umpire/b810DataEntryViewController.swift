@@ -11,7 +11,7 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
-class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
+class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var ref : DatabaseReference?
     var user: User!
@@ -27,12 +27,14 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     var age: String!
     var randNum: String!
     var isAdmin: Bool!
+    let playerNumberArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
+    let inningPitchArr = [0, 1, 2, 3, 4, 5, 6]
+    var playerNumberPicked: Int!
+    var inningNumberPicked: Int!
     
-    @IBOutlet weak var lblText: UILabel!
     @IBOutlet weak var whiteLbl: UILabel!
-    @IBOutlet weak var playerNumberTextField: UITextField!
-    @IBOutlet weak var pitchCountTextField: UITextField!
-    @IBOutlet weak var titleField: UILabel!
+    @IBOutlet weak var numberPicker: UIPickerView!
+    @IBOutlet weak var pitchPicker: UIPickerView!
     @IBOutlet weak var adminChoose: UIBarButtonItem!
     
     @IBAction func submit(_ sender: Any) {
@@ -45,11 +47,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
         user = Auth.auth().currentUser
-        
-        playerNumberTextField.delegate = self
-        pitchCountTextField.delegate = self
         
         whiteLbl.layer.cornerRadius = 10
         
@@ -62,8 +60,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
             teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
                 self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
                 self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
-                self.titleField.text = self.teamName
-                self.navigationController?.title = self.leagueName
+                self.navigationController?.title = self.teamName
             })
         }
         
@@ -71,6 +68,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         databaseDate = NSDate().datebaseSafeDate
         sortDate = ServerValue.timestamp()
         
+        /*
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
         
@@ -85,6 +83,12 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
             titleField.font = UIFont(name: titleField.font.fontName, size: 55)
             lblText.font = UIFont(name: lblText.font.fontName, size: 28)
         }
+        */
+        
+        numberPicker.delegate = self
+        numberPicker.dataSource = self
+        pitchPicker.delegate = self
+        pitchPicker.dataSource = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -93,17 +97,9 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     
     func sendData() {
         
-        if self.teamName != nil && !((self.playerNumberTextField.text?.isEmpty)!) || !((self.pitchCountTextField.text?.isEmpty)!)  {
-            
-            ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberTextField.text!) | Innings: \(pitchCountTextField.text!)" as NSString!, "Date" as NSString!:userDate as NSString!])
-            
-        } else {
-            
-            displayMyAlertMessage(title: "Oops!", userMessage: "Please select a team before submiting player stats.")
-            
-        }
+        ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)" as NSString!, "Date" as NSString!:userDate as NSString!])
     }
-    
+    /*
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
@@ -112,6 +108,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
     @objc func doneClicked() {
         view.endEditing(true)
     }
+ */
     
     @objc func adminChooseTeam() {
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -128,8 +125,7 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
                     self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
                     self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
                     self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
-                    self.titleField.text = self.teamName
-                    self.navigationController?.title = self.leagueName
+                    self.navigationController?.title = self.teamName
                     
                 })
             }
@@ -147,7 +143,34 @@ class b810DataEntryViewController: UIViewController, UITextFieldDelegate {
         self.present(myAlert, animated: true, completion: nil)
         
     }
-
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView.tag == 0 {
+            return playerNumberArr.count
+        } else {
+            return inningPitchArr.count
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView.tag == 0 {
+            return "\(playerNumberArr[row])"
+        } else {
+            return "\(inningPitchArr[row])"
+        }
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView.tag == 0 {
+            playerNumberPicked = self.playerNumberArr[row]
+        } else {
+            inningNumberPicked = self.inningPitchArr[row]
+        }
+    }
 }
 
 extension DateFormatter {

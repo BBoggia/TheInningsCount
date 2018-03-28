@@ -59,7 +59,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     
                 } else {
                     
-                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, //Displayes error preferredStyle: .alert)
+                    let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
                     
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
