@@ -30,8 +30,8 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         userUID = Auth.auth().currentUser?.uid
         
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
         })
         
@@ -75,7 +75,7 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = ageListTable.indexPathForSelectedRow
-        let currentCell = ageListTable.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = ageListTable.cellForRow(at: indexPath!) as UITableViewCell?
         
         ageToPass = currentCell?.textLabel?.text
         

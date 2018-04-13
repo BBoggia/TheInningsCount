@@ -21,6 +21,8 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     var leagueName: String!
     var usrEmail: String!
     var usrPass: String!
+    var firstName: String!
+    var lastName: String!
     
     var ref : DatabaseReference?
     var ref2 : DatabaseReference?
@@ -49,7 +51,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     
     func dataObserver() {
         ref?.child("LeagueData").child(self.leagueCode).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.leagueName = snapshot.value as! String!
+            self.leagueName = snapshot.value as! String?
             self.populateView()
         })
     }
@@ -79,6 +81,8 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
             vc.usrPass = self.usrPass
             vc.leagueCode = self.leagueCode
             vc.leagueName = self.leagueName
+            vc.firstName = self.firstName
+            vc.lastName = self.lastName
             self.navigationController?.pushViewController(vc,animated: true)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -108,7 +112,7 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = teamTableView.indexPathForSelectedRow
-        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell?
         selectedAge = currentCell?.textLabel?.text
         
         displayMyAlertMessage(title: "Confirm", userMessage: "You selected \(selectedAge!), is this correct?")

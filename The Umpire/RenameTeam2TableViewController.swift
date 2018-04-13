@@ -97,17 +97,17 @@ class RenameTeam2TableViewController: UITableViewController {
             
             self.alertTextField = myAlert.textFields?[0].text
             
-            self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
+            /*self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
                 self.ref?.child("LeagueData").child(self.randNum).child("Info").child(self.selectedCell).child(self.selectedCell).removeValue()
-            })
+            })*/
             
             self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.selectedCell).value)
                 self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.selectedCell).removeValue()
             })
             
-            self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+            /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
                 for child in snapshot.children {
                     let snap = child as! DataSnapshot
                     
@@ -115,7 +115,7 @@ class RenameTeam2TableViewController: UITableViewController {
                         self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
                     }
                 }
-            })
+            })*/
             
             self.tableView.reloadData()
         }

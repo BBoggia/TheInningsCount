@@ -22,6 +22,8 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var leagueName: String!
     var usrEmail: String!
     var usrPass: String!
+    var firstName: String!
+    var lastName: String!
     
     var ref : DatabaseReference?
     var ref2 : DatabaseReference?
@@ -71,6 +73,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
             }
             
             self.performSegue(withIdentifier: "coachToNav", sender: nil)
+            
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -87,9 +90,14 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         ref2?.child("/\(userUID!)").child("AgeGroup").setValue(age)
         ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
         ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(leagueCode)
-        ref2?.child("/\(userUID!)").child("status").setValue("coach")
+        ref2?.child("/\(userUID!)").child("IsAdmin").setValue(false)
         ref2?.child("/\(userUID!)").child("Team").setValue(team)
-        ref2?.child("/\(userUID!)").child("status").setValue("coach")
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Email").setValue(usrEmail)
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("FirstName").setValue(firstName)
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("LastName").setValue(lastName)
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Division").setValue(age)
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Team").setValue(team)
+        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("IsAdmin").setValue(false)
     }
     
     func createAccount() {
@@ -149,7 +157,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = teamTableView.indexPathForSelectedRow
-        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell?
         team = currentCell?.textLabel?.text
         
         displayMyAlertMessage(title: "Confirm", message: "Is this correct?\nDivision: \(self.age!)\nTeam: \(self.team!)")

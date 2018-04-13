@@ -25,19 +25,31 @@ class AddRemoveAgeTableViewController: UITableViewController {
     var randNum: String!
     
     @IBAction func addBtn(_ sender: Any) {
-        
-        let myAlert = UIAlertController(title: "Add Division", message: "Enter the name for the division you wish to add.", preferredStyle: UIAlertControllerStyle.alert)
+        let myAlert = UIAlertController(title: "Add Division", message: "Enter the name of the division you want to add.", preferredStyle: UIAlertControllerStyle.alert)
         myAlert.addTextField()
         
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-            self.alertTextField = myAlert.textFields![0].text
-            
-            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+            if myAlert.textFields![0].text?.rangeOfCharacter(from: charSet) != nil {
                 
-                self.tablePath.child(self.alertTextField).setValue("placeholder")
-            })
-            
-            self.tableView.reloadData()
+                self.displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters.\n'$'  '.'  '/'  '\\'  '#'  '['  ']'")
+            } else if (myAlert.textFields![0].text!.isEmpty) {
+                
+                self.displayAlert(title: "Oops!", message: "You cannot leave a teams name blank.")
+            } else if self.convertedArray.contains(myAlert.textFields![0].text!) {
+                
+                self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
+            } else {
+                
+                self.alertTextField = myAlert.textFields![0].text
+                self.convertedArray.append(self.alertTextField)
+                self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    self.tablePath.child(self.alertTextField).setValue("placeholder")
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+                    self.tableView.reloadData()
+                })
+            }
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
@@ -50,23 +62,20 @@ class AddRemoveAgeTableViewController: UITableViewController {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
         ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
+            self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
         })
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
-        longPressGesture.minimumPressDuration = 1.75
+        longPressGesture.minimumPressDuration = 1.25
         longPressGesture.delegate = self as? UIGestureRecognizerDelegate
         self.tableView.addGestureRecognizer(longPressGesture)
-        
-        // will show edit button
-        // self.navigationItem.rightBarButtonItem = self.editButtonItem()
+        displayAlert(title: "League Management", message: "Here you can add divisions by pressing the plus button, remove them by sliding left, and rename them by pressing and holding. To view a divisions teams just select one from the list.\n")
     }
     
     override func didReceiveMemoryWarning() {
@@ -97,14 +106,24 @@ class AddRemoveAgeTableViewController: UITableViewController {
                 myAlert.addTextField()
                 
                 let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-                    self.alertTextField = myAlert.textFields![0].text
-                    
-                    self.ref?.child("LeagueStats").child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
-                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
-                    })
-                    
-                    self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+                        if myAlert.textFields![0].text?.rangeOfCharacter(from: charSet) != nil {
+                            
+                            self.displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters.\n'$'  '.'  '/'  '\\'  '#'  '['  ']'")
+                        } else if (myAlert.textFields![0].text!.isEmpty) {
+                            
+                            self.displayAlert(title: "Oops!", message: "You cannot leave a teams name blank.")
+                        } else if self.convertedArray.contains(myAlert.textFields![0].text!) {
+                            
+                            self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
+                        } else {
+                            self.alertTextField = myAlert.textFields![0].text
+                            
+                            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
+                                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
+                                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
+                            })
+                        }
+                    /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
                         for child in snapshot.children {
                             let snap = child as! DataSnapshot
                             
@@ -112,8 +131,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
                                 self.ref?.child("UserData").child(snap.key).child("AgeGroup").setValue(self.alertTextField)
                             }
                         }
-                    })
-                    
+                    })*/
                     self.tableView.reloadData()
                 }
                 
@@ -147,7 +165,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell?
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "arvc") as! AddRemoveTeamTableViewController
@@ -160,9 +178,9 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
+            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
             self.convertedArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
         }
     }
 }

@@ -47,9 +47,9 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     @IBAction func confirm(_ sender: Any) {
         
-        if (leagueNameDisplay.text?.contains("$"))! || (leagueNameDisplay.text?.contains("."))! || (leagueNameDisplay.text?.contains("["))! || (leagueNameDisplay.text?.contains("]"))! || (leagueNameDisplay.text?.contains("#"))! || (leagueNameDisplay.text?.contains("/"))! || (leagueNameDisplay.text?.contains("\\"))!    {
+        if leagueNameDisplay.text?.rangeOfCharacter(from: charSet) != nil    {
             
-            displayMyAlertMessageAlternate(title: "Oops!", userMessage: "Your league name contains one of the following restricted characters!\n\n$, ., [, ], #, /, \\")
+            displayAlert(title: "Oops!", message: "Your league name contains one of the following restricted characters!\n\n$, ., [, ], #, /, \\")
             
         } else {
             randomString()
@@ -91,15 +91,13 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     
     func createAccount() {
-        
         Auth.auth().createUser(withEmail: emailDisplay.text!, password: passwordDisplay.text!, completion: { (user, error) in
             if error == nil {
                 self.autoSignIn()
                 self.saveUID()
-                    
                 for age in self.ageGroups {
                     for team in self.teams {
-                        self.ref?.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue(["Date" as NSString! : "Date" as NSString!, "Stat" as NSString! : "Player Number | Innings Pitched" as NSString!])
+                        self.ref?.child("LeagueStats").child(self.randomGenNum).child(self.leagueNameDisplay.text!).child(age).child(team).child("Long Date").setValue(["Date": "Date", "Stat":"Player Number | Innings Pitched"])
                         self.ref?.child("LeagueData").child(self.randomGenNum).child("Info").child(age).child(team).child("Coaches").child("UID").setValue("Email")
                     }
                 }
@@ -118,26 +116,24 @@ class CompleteLeagueCreationViewController: UIViewController {
                         print ("Error signing out: %@", signOutError)
                     }
                         
-                    self.performSegue(withIdentifier: "fromCL", sender: nil)
+                    self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
                 myAlert1.addAction(okAction)
                 self.present(myAlert1, animated: true, completion: nil)
             } else {
-                self.displayMyAlertMessageAlternate(title: "Oops!", userMessage: (error?.localizedDescription)!)
+                self.displayAlert(title: "Oops!", message: (error?.localizedDescription)!)
             }
         })
     }
     
     func saveUID() {
-        
         let user = Auth.auth().currentUser
         let userUID = user?.uid
-        
         ref2?.child("/\(userUID!)").child("AgeGroup").setValue("League Admin")
         ref2?.child("/\(userUID!)").child("Team").setValue("League Admin")
         ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueNameDisplay.text!)
         ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
-        ref2?.child("/\(userUID!)").child("status").setValue("admin")
+        ref2?.child("/\(userUID!)").child("IsAdmin").setValue(true)
         
         print(userUID!)
     }
@@ -151,18 +147,14 @@ class CompleteLeagueCreationViewController: UIViewController {
     }
     
     func randomString() {
-        
         let letters : NSString = "0123456789"
         let len = UInt32(letters.length)
-        
         var randomString = ""
-        
         for _ in 0 ..< 5 {
             let rand = arc4random_uniform(len)
             var nextChar = letters.character(at: Int(rand))
             randomString += NSString(characters: &nextChar, length: 1) as String
         }
-        
         self.randomGenNum = randomString
         self.checkRandomString()
     }
@@ -185,35 +177,16 @@ class CompleteLeagueCreationViewController: UIViewController {
         return false;
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel)
-    {
-        
+    func displayMyAlertMessage(title:String, userMessage:String, editedField:UILabel) {
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
         myAlert.addTextField()
-        
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
                 self.changedData = myAlert.textFields![0].text
                 editedField.text = self.changedData
-            }
-        
+        }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-        
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
-        
-        self.present(myAlert, animated: true, completion: nil)
-    }
-    
-    func displayMyAlertMessageAlternate(title:String, userMessage:String)
-    {
-        
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default, handler: nil)
-        
-        myAlert.addAction(okAction)
-        
         self.present(myAlert, animated: true, completion: nil)
     }
 }

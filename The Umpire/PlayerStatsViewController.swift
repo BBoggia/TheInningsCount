@@ -30,11 +30,11 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
         
         ref = Database.database().reference()
         
-        userUID = Auth.auth().currentUser?.uid as String!
+        userUID = Auth.auth().currentUser?.uid as String?
         
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
         })
         
@@ -52,8 +52,8 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
-                self.playerStatsList.append(snap.childSnapshot(forPath: "Stat").value as! String!)
-                self.dateList.append(snap.childSnapshot(forPath: "Date").value as! String!)
+                self.playerStatsList.append((snap.childSnapshot(forPath: "Stat").value as! String?)!)
+                self.dateList.append((snap.childSnapshot(forPath: "Date").value as! String?)!)
                 self.playerDataTable.reloadData()
             }
             self.playerStatsList.reverse()
@@ -77,5 +77,19 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
         cell.dateLbl.text = dateList[indexPath.row]
         
         return cell
+    }
+}
+
+class PlayerStatsTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var dateLbl: UILabel!
+    @IBOutlet weak var statLbl: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+        // Configure the view for the selected state
     }
 }

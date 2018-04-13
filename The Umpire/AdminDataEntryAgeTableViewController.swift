@@ -31,8 +31,8 @@ class AdminDataEntryAgeTableViewController: UITableViewController {
         userUID = Auth.auth().currentUser?.uid
         
         ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.leagueName = snapshot.childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
+            self.leagueName = snapshot.childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
         })
         
@@ -75,11 +75,11 @@ class AdminDataEntryAgeTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell?
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "adminTeamSelect") as! AdminDataEntryTeamTableViewController
-        vc.selectedAge = currentCell?.textLabel?.text as String!
+        vc.selectedAge = currentCell?.textLabel?.text as String?
         navigationController?.pushViewController(vc,animated: true)
     }
 

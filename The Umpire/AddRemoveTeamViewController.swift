@@ -31,11 +31,27 @@ class AddRemoveTeamTableViewController: UITableViewController {
         let myAlert = UIAlertController(title: "Add Team", message: "Enter the name of the team you want to add to this division.", preferredStyle: UIAlertControllerStyle.alert)
         myAlert.addTextField()
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-            self.alertTextField = myAlert.textFields![0].text
-            self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.tablePath.child(self.alertTextField).setValue("placeholder")
-            })
-            self.tableView.reloadData()
+            if myAlert.textFields![0].text?.rangeOfCharacter(from: charSet) != nil {
+                
+                self.displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters.\n'$'  '.'  '/'  '\\'  '#'  '['  ']'")
+            } else if (myAlert.textFields![0].text!.isEmpty) {
+                
+                self.displayAlert(title: "Oops!", message: "You cannot leave a teams name blank.")
+            } else if self.convertedArray.contains(myAlert.textFields![0].text!) {
+                
+                self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
+            } else {
+                
+                self.alertTextField = myAlert.textFields![0].text
+                self.convertedArray.append(self.alertTextField)
+                self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                    
+                    self.tablePath.child(self.alertTextField).setValue("placeholder")
+                })
+                DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(100), execute: {
+                    self.tableView.reloadData()
+                })
+            }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         myAlert.addAction(okAction)
@@ -47,17 +63,18 @@ class AddRemoveTeamTableViewController: UITableViewController {
         super.viewDidLoad()
         
         ref = Database.database().reference()
-        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
+        tablePath = ref?.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup)
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
-        longPressGesture.minimumPressDuration = 1.75
+        longPressGesture.minimumPressDuration = 1.25
         longPressGesture.delegate = self as? UIGestureRecognizerDelegate
         self.tableView.addGestureRecognizer(longPressGesture)
         
         tableView.delegate = self
         tableView.dataSource = self
+        dataObserver()
     }
     
     override func didReceiveMemoryWarning() {
@@ -66,7 +83,6 @@ class AddRemoveTeamTableViewController: UITableViewController {
     }
     
     func dataObserver() {
-        
         self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
@@ -78,37 +94,44 @@ class AddRemoveTeamTableViewController: UITableViewController {
         })
     }
     
-    @objc func longPress(_ longPressGestureRecognizer: UILongPressGestureRecognizer) {
-        if longPressGestureRecognizer.state == UIGestureRecognizerState.began {
-            let touchPoint = longPressGestureRecognizer.location(in: self.view)
-            if let indexPath = tableView.indexPathForRow(at: touchPoint) {
-                let myAlert = UIAlertController(title: "Rename Division", message: "Enter the name you want to change \(self.convertedArray[indexPath.row]) to.", preferredStyle: UIAlertControllerStyle.alert)
-                myAlert.addTextField()
-                let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-                    self.alertTextField = myAlert.textFields![0].text
-                    
-                    self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).observeSingleEvent(of: .value, with: { (snapshot) in
-                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]))
-                        self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.ageGroup).child(self.convertedArray[indexPath.row]).removeValue()
-                    })
-                    
-                    self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
-                        for child in snapshot.children {
-                            let snap = child as! DataSnapshot
-                            
-                            if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.convertedArray[indexPath.row] && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.ageGroup {
-                                self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
-                            }
-                        }
-                    })
-                    self.tableView.reloadData()
-                }
-                let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
-                myAlert.addAction(okAction)
-                myAlert.addAction(cancelAction)
-                self.present(myAlert, animated: true, completion: nil)
+    func renameTeam(row: Int) {
+        let myAlert = UIAlertController(title: "Rename Team", message: "Enter the name you want to change \(self.convertedArray[row]) to.", preferredStyle: UIAlertControllerStyle.alert)
+        myAlert.addTextField()
+        let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
+            
+            if myAlert.textFields![0].text?.rangeOfCharacter(from: charSet) != nil {
+                
+                self.displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters.\n'$'  '.'  '/'  '\\'  '#'  '['  ']'")
+            } else if (myAlert.textFields![0].text!.isEmpty) {
+                
+                self.displayAlert(title: "Oops!", message: "You cannot leave a teams name blank.")
+            } else if self.convertedArray.contains(myAlert.textFields![0].text!) {
+                
+                self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
+            } else {
+                
+                self.alertTextField = myAlert.textFields![0].text
+                
+                self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
+                    self.tablePath.child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[row]).value)
+                    self.tablePath.child(self.convertedArray[row]).removeValue()
+                })
             }
+            /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
+                for child in snapshot.children {
+                    let snap = child as! DataSnapshot
+                    
+                    if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.convertedArray[row] && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.ageGroup {
+                        self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
+                    }
+                }
+            })*/
+            self.tableView.reloadData()
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
+        myAlert.addAction(okAction)
+        myAlert.addAction(cancelAction)
+        self.present(myAlert, animated: true, completion: nil)
     }
     
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -132,9 +155,17 @@ class AddRemoveTeamTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell!
-        
+        let currentCell = tableView.cellForRow(at: indexPath!)
         selectedCell = currentCell?.textLabel?.text
+        self.renameTeam(row: (indexPath?.row)!)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup).child(self.convertedArray[indexPath.row]).removeValue()
+            self.convertedArray.remove(at: indexPath.row)
+            tableView.deleteRows(at: [indexPath], with: .fade)
+        }
     }
 }
 

@@ -16,10 +16,21 @@ class AdminHubViewController: UIViewController {
     
     var user: User!
     var userUID: String!
+    var leagueCode: String!
+    let defaults = UserDefaults.standard
     
-    @IBOutlet weak var descLbl: UILabel!
     @IBOutlet weak var titleLbl: UILabel!
-
+    @IBAction func coachManager(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "coachManager") as! CoachManagerTableViewController
+        vc.leagueCode = leagueCode
+        vc.user = user
+        self.navigationController?.pushViewController(vc,animated: true)
+    }
+    @IBAction func viewLeagueCode(_ sender: Any) {
+        anotherAlert()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -30,7 +41,10 @@ class AdminHubViewController: UIViewController {
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 32)
-            descLbl.font = UIFont(name: descLbl.font.fontName, size: 28)
+        }
+        
+        if defaults.bool(forKey: "showAdminHubPopup") == nil || defaults.bool(forKey: "showAdminHubPopup") == true {
+            popupAlert(title: "Admin Hub", message: "Here you can send global messages, view your league code, manage your coaches, and add, remove, and rename divisions and teams in your league.")
         }
     }
 
@@ -39,6 +53,27 @@ class AdminHubViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+    func anotherAlert() {
+        let alert = UIAlertController(title: "League Code", message: "Your league code is: \(leagueCode!)", preferredStyle: .alert)
+        let done = UIAlertAction(title: "Done", style: .default, handler: nil)
+        let copy = UIAlertAction(title: "Copy", style: .default) { (action) in
+            UIPasteboard.general.string = self.leagueCode
+        }
+        alert.addAction(done)
+        alert.addAction(copy)
+        self.present(alert, animated: true, completion: nil)
+    }
+
+    func popupAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let done = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        let dontShow = UIAlertAction(title: "Don't Show Again", style: .destructive) { (action) in
+            self.defaults.set(false, forKey: "showAdminHubPopup")
+        }
+        alert.addAction(done)
+        alert.addAction(dontShow)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
 
 extension UIView {

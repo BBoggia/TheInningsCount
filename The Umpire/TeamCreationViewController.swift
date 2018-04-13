@@ -67,14 +67,6 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
         
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String) {
-        
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        myAlert.addAction(okAction)
-        self.present(myAlert, animated: true, completion: nil)
-    }
-    
     func displayTextEntryField(title:String) {
         
         let myAlert = UIAlertController(title: title, message: nil, preferredStyle: UIAlertControllerStyle.alert)
@@ -89,11 +81,11 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
                 (myAlert.textFields![0].text!.contains("[")) ||
                 (myAlert.textFields![0].text!.contains("]")) ||
                 (myAlert.textFields![0].text!.contains(".")) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "Your team name cannot contain the following characters. \n '$' '.' '/' '\\' '#' '[' ']'")
+                self.displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters. \n '$' '.' '/' '\\' '#' '[' ']'")
             } else if (myAlert.textFields![0].text!.isEmpty) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "You cannot leave a teams name blank.")
+                self.displayAlert(title: "Oops!", message: "You cannot leave a teams name blank.")
             } else if self.teams.contains(myAlert.textFields![0].text!) {
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "One or more teams cannot share the same name.")
+                self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
             } else {
                 self.teams.append(myAlert.textFields![0].text!)
                 print(self.teams)
@@ -128,7 +120,7 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = teamTableView.indexPathForSelectedRow
-        let currentCell = teamTableView.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = teamTableView.cellForRow(at: indexPath!)
         
         selectedTeam = currentCell?.textLabel?.text
     }

@@ -25,7 +25,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     @IBAction func addTeam(_ sender: Any) {
         
         if (teamName.text?.contains("$"))! || (teamName.text?.contains("/"))! || (teamName.text?.contains("\\"))! || (teamName.text?.contains("#"))! || (teamName.text?.contains("["))! || (teamName.text?.contains("]"))! || (teamName.text?.contains("."))! {
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
+            displayAlert(title: "Oops!", message: "Your age group cannot contain the following characters \n '$' '.' '/' '\\' '#' '[' ']'")
         } else {
             textLabelTeams.append(teamName.text!)
             teamDisplay.text = textLabelTeams.joined(separator: ", ")
@@ -36,7 +36,7 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     @IBAction func removeTeam(_ sender: Any) {
         if textLabelTeams.count < 1 {
             
-            displayMyAlertMessage(title: "Oops!", userMessage: "There are no more teams in the list.")
+            displayAlert(title: "Oops!", message: "There are no more teams in the list.")
             
         } else {
             textLabelTeams.removeLast()
@@ -89,17 +89,4 @@ class TeamNameViewController: UIViewController, UITextFieldDelegate {
     @objc func doneClicked() {
         self.view.endEditing(true)
     }
-    
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        
-        myAlert.addAction(okAction)
-        
-        self.present(myAlert, animated: true, completion: nil)
-        
-    }
-    
 }

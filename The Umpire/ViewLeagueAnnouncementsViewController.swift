@@ -38,8 +38,8 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
         clientTable.dataSource = self
         
         ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String!
+            self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.msgRef = self.ref?.child("LeagueData").child(self.randNum).child("Messages")
             self.dataObserver()
         })
@@ -55,8 +55,8 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
             
             for child in snapshot.children {
                 let snap = child as? DataSnapshot
-                self.messages.append(snap?.childSnapshot(forPath: "Message").value as! String!)
-                self.dates.append(snap?.childSnapshot(forPath: "Date").value as! String!)
+                self.messages.append((snap?.childSnapshot(forPath: "Message").value as! String?)!)
+                self.dates.append((snap?.childSnapshot(forPath: "Date").value as! String?)!)
                 self.clientTable.reloadData()
             }
             self.messages.reverse()

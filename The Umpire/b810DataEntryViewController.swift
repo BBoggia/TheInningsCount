@@ -15,7 +15,7 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     var ref : DatabaseReference?
     var user: User!
-    var userUID = Auth.auth().currentUser?.uid as String!
+    var userUID = Auth.auth().currentUser?.uid as String?
     let dateFormatter = DateFormatter()
     var currentDate = Date()
     
@@ -39,8 +39,12 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     @IBAction func submit(_ sender: Any) {
         
-        sendData()
-        self.view.endEditing(true)
+        if playerNumberPicked == nil || inningNumberPicked == nil {
+            displayAlert(title: "Oops!", message: "An error has occured please try again.")
+        } else {
+            sendData()
+            //self.view.endEditing(true)
+        }
     }
     
     override func viewDidLoad() {
@@ -58,8 +62,8 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
         } else if isAdmin == true {
             let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
             teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-                self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+                self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
+                self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
                 self.navigationController?.title = self.teamName
             })
         }
@@ -96,52 +100,34 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     }
     
     func sendData() {
-        
-        ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat" as NSString!:"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)" as NSString!, "Date" as NSString!:userDate as NSString!])
+        if teamName == nil || age == nil {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
+            self.navigationController?.pushViewController(vc,animated: true)
+        } else {
+            ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat":"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)", "Date":userDate])
+            self.numberPicker.selectRow(0, inComponent: 0, animated: true)
+            self.pitchPicker.selectRow(0, inComponent: 0, animated: true)
+        }
     }
-    /*
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        self.view.endEditing(true);
-        return false;
-    }
-    
-    @objc func doneClicked() {
-        view.endEditing(true)
-    }
- */
     
     @objc func adminChooseTeam() {
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.childSnapshot(forPath: "status").value as! String! == "admin" {
-                
+            if snapshot.childSnapshot(forPath: "IsAdmin").value as! Bool? == true {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
                 self.navigationController?.pushViewController(vc,animated: true)
-                
             } else {
                 let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
                 teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
-                    self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String!
-                    self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-                    self.age = snapshot.childSnapshot(forPath: "AgeGroup").value as! String!
-                    self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+                    self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String?
+                    self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
+                    self.age = (snapshot.childSnapshot(forPath: "AgeGroup").value as! String?)!
+                    self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
                     self.navigationController?.title = self.teamName
-                    
                 })
             }
         })
-    }
-    
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        
-        myAlert.addAction(okAction)
-        
-        self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

@@ -17,12 +17,16 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var adminEmail: UITextField!
     @IBOutlet weak var password: UITextField!
     @IBOutlet weak var rePassword: UITextField!
-    @IBOutlet weak var descLabel: UILabel!
+    @IBOutlet weak var textFieldStack: UIStackView!
+    @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var firstName: UITextField!
+    @IBOutlet weak var lastName: UITextField!
+    @IBOutlet weak var confirm: UIButton!
     
     @IBAction func createAccount(_ sender: Any) {
         
-        if (leagueName.text?.contains("$"))! || (leagueName.text?.contains("/"))! || (leagueName.text?.contains("\\"))! || (leagueName.text?.contains("#"))! || (leagueName.text?.contains("["))! || (leagueName.text?.contains("]"))! || (leagueName.text?.contains("."))! {
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your league name cannot contain the following characters: \n '$' '.' '/' '\\' '#' '[' ']'")
+        if leagueName.text?.rangeOfCharacter(from: charSet) != nil {
+            displayAlert(title: "Oops!", message: "Your league name cannot contain the following characters: \n '$' '.' '/' '\\' '#' '[' ']'")
         } else {
             createAccount()
         }
@@ -42,7 +46,6 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         if ((defaults.array(forKey: "leagueData")) != nil) {
             
             defaults.mutableArrayValue(forKey: "leagueData").removeAllObjects()
-            
         }
         
         var placeHolderArr: [[String:[String]]] = []
@@ -53,8 +56,8 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         self.adminEmail.delegate = self
         self.password.delegate = self
         self.rePassword.delegate = self
-        
-        descLabel.text = "Please do not use the following symbols in your information.\n$ . [ ] # / \\ "
+        self.firstName.delegate = self
+        self.lastName.delegate = self
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()
@@ -68,6 +71,12 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
         password.inputAccessoryView = toolBar
         rePassword.inputAccessoryView = toolBar
         
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.frame = CGRect(x: 16, y: 16, width: view.frame.width - 32, height: textFieldStack.frame.minY)
+            titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 60)
+            confirm.titleLabel?.font = UIFont(name: (confirm.titleLabel?.font.fontName)!, size: 50)
+            textFieldStack.spacing += 18
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -76,22 +85,21 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
     
     func createAccount() {
         
-        if (self.leagueName.text?.isEmpty)! || (self.password.text?.isEmpty)! || (self.rePassword.text?.isEmpty)! || (self.adminEmail.text?.isEmpty)! {
+        if (self.leagueName.text?.isEmpty)! || (self.password.text?.isEmpty)! || (self.rePassword.text?.isEmpty)! || (self.adminEmail.text?.isEmpty)! || (self.firstName.text?.isEmpty)! || (self.lastName.text?.isEmpty)! {
             
-            displayMyAlertMessage(title: "Oops!", userMessage: "One or all of the text fields are empty!"
-            )
+            displayAlert(title: "Oops!", message: "One or all of the text fields are empty!")
         } else if self.password.text != self.rePassword.text {
             
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your passwords don't match!")
-            
+            displayAlert(title: "Oops!", message: "Your passwords don't match!")
         } else if (self.password.text?.count)! < 6 {
             
-            displayMyAlertMessage(title: "Oops!", userMessage: "Your password needs to contain atleast 6 characters.")
-            
+            displayAlert(title: "Oops!", message: "Your password needs to contain atleast 6 characters.")
         } else if !((self.adminEmail.text?.contains("@"))!) || !((self.adminEmail.text?.contains("."))!) {
             
-            displayMyAlertMessage(title: "Oops!", userMessage: "It seems your email is missing something.")
+            displayAlert(title: "Oops!", message: "It seems your email is missing something.")
+        } else if self.leagueName.text?.rangeOfCharacter(from: charSet) != nil  {
             
+            displayAlert(title: "Oops!", message: "Your team name cannot contain the following characters. \n '$' '.' '/' '\\' '#' '[' ']'")
         } else {
             
             leagueName1 = leagueName.text
@@ -103,20 +111,10 @@ class LeagueCreationViewController: UIViewController, UITextFieldDelegate {
             vc.leagueName = leagueName1 as String
             vc.email = email1 as String
             vc.password = password1 as String
+            vc.firstName = firstName.text
+            vc.lastName = lastName.text
             navigationController?.pushViewController(vc,animated: true)
         }
-    }
-    
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        
-        myAlert.addAction(okAction)
-        
-        self.present(myAlert, animated: true, completion: nil)
-        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

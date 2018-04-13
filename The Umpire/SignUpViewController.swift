@@ -24,6 +24,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var emailField: UITextField!
     @IBOutlet weak var passwordField: UITextField!
     @IBOutlet weak var reTypePasswordField: UITextField!
+    @IBOutlet weak var firstName: UITextField!
+    @IBOutlet weak var lastName: UITextField!
     @IBOutlet weak var leagueCodeField: UITextField!
     @IBOutlet var altCreateAccBtn: UIButton!
     @IBAction func createAccountButton(_ sender: Any) {
@@ -75,20 +77,14 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
             if !(self.leagueCodeField.text!.isEmpty) && snapshot.hasChild(self.leagueCodeField.text!) {
         
                 if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {
-            
-                    let alertController = UIAlertController(title: "Oops!", message: "One or all of the text fields is empty!", preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    
+                    self.displayAlert(title: "Oops!", message: "One or all of the text fields is empty!")
                 } else if self.passwordField.text != self.reTypePasswordField.text {
                     
-                    let alertController = UIAlertController(title: "Oops!", message: "Your passwords dont match!", preferredStyle: .alert)
-                    let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                    alertController.addAction(defaultAction)
-                    self.present(alertController, animated: true, completion: nil)
+                    self.displayAlert(title: "Oops!", message: "Your passwords dont match!")
                 } else if !((self.emailField.text?.contains("@"))!) || !((self.emailField.text?.contains("."))!) {
                     
-                    self.displayMyAlertMessage(title: "Oops!", userMessage: "It seems your email is missing something.")
+                    self.displayAlert(title: "Oops!", message: "It seems your email is missing something.")
                 } else {
                     
                     let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -96,11 +92,13 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                     vc.leagueCode = self.leagueCodeField.text!
                     vc.usrEmail = self.emailField.text!
                     vc.usrPass = self.passwordField.text!
+                    vc.firstName = self.firstName.text!
+                    vc.lastName = self.lastName.text!
                     self.navigationController?.pushViewController(vc,animated: true)
                 }
             } else {
                 
-                self.displayMyAlertMessage(title: "Oops!", userMessage: "The league code you entered is invalid!")
+                self.displayAlert(title: "Oops!", message: "The league code you entered is invalid!")
             }
         })
     }
@@ -108,14 +106,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
-    }
-    
-    func displayMyAlertMessage(title:String, userMessage:String) {
-        
-        let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
-        let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default, handler: nil)
-        myAlert.addAction(okAction)
-        self.present(myAlert, animated: true, completion: nil)
     }
     
     @objc func doneClicked() {

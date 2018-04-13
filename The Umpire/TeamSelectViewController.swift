@@ -27,11 +27,11 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
         
         ref = Database.database().reference()
         
-        userUID = Auth.auth().currentUser?.uid as String!
+        userUID = Auth.auth().currentUser?.uid as String?
         
         ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String!
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String!
+            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
+            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
         })
         
@@ -75,7 +75,7 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let indexPath = teamListTable.indexPathForSelectedRow
-        let currentCell = teamListTable.cellForRow(at: indexPath!) as UITableViewCell!
+        let currentCell = teamListTable.cellForRow(at: indexPath!)
         
         teamToPass = currentCell?.textLabel?.text
         

@@ -11,6 +11,8 @@ import Firebase
 import FirebaseAuth
 import FirebaseDatabase
 
+let charSet = CharacterSet(charactersIn: "$/\\#[].")
+
 struct UsrAcc {
     var UID: String!
     var Email: String!
@@ -23,4 +25,13 @@ struct Refs {
     let usrRef = Database.database().reference().child("UserData")
     let statRef = Database.database().reference().child("LeagueStats")
     let dataRef = Database.database().reference().child("LeagueData")
+}
+
+extension UIViewController {
+    func displayAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Ok", style: .default, handler: nil)
+        alert.addAction(okAction)
+        self.present(alert, animated: true, completion: nil)
+    }
 }

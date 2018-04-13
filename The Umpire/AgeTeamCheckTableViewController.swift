@@ -29,6 +29,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
         ref = Database.database().reference()
         tableArray = []
         checkProgress()
+        anotherAlert(title: "Oops!", message: "It looks like the division or team you were assigned to was renamed or removed. If you see yours in the list press continue and select it now, otherwise select wait and ask your league admin to add it back.")
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,8 +42,11 @@ class AgeTeamCheckTableViewController: UITableViewController {
             self.usrProgress = 0
             self.ageTeamSelection()
         } else if self.teamCheck == false {
-            self.teamSelection()
-            self.usrProgress = 1
+            ref?.child("UserData").child(self.usrUID).observeSingleEvent(of: .value, with: { (snapshot) in
+                self.ageSelected = snapshot.childSnapshot(forPath: "AgeGroup").value as! String
+                self.teamSelection()
+                self.usrProgress = 1
+            })
         } else if self.ageCheck && self.teamCheck == true {
             self.dismiss(animated: true, completion: nil)
         }
@@ -72,8 +76,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
         })
     }
     
-    func displayMyAlertMessage(title:String, userMessage:String)
-    {
+    func displayMyAlertMessage(title:String, userMessage:String) {
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
             self.ref?.child("UserData").child(self.usrUID).child("AgeGroup").setValue(self.ageSelected)
@@ -86,7 +89,20 @@ class AgeTeamCheckTableViewController: UITableViewController {
         myAlert.addAction(cancelAction)
         myAlert.addAction(okAction)
         self.present(myAlert, animated: true, completion: nil)
-        
+    }
+    
+    func anotherAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let ok = UIAlertAction(title: "Continue", style: .default, handler: nil)
+        let wait = UIAlertAction(title: "Cancel", style: .destructive) { (action) in
+            do {
+                try Auth.auth().signOut()
+            } catch _ as NSError {}
+            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        }
+        alert.addAction(ok)
+        alert.addAction(wait)
+        self.present(alert, animated: true, completion: nil)
     }
 
     override func numberOfSections(in tableView: UITableView) -> Int {
