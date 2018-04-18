@@ -14,14 +14,12 @@ import FirebaseDatabase
 class CoachManagerTableViewController: UITableViewController {
     
     var user: User!
-    var ref : DatabaseReference?
     var leagueCode: String!
     var coachList = [Coach?]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        ref = Database.database().reference().child("LeagueData").child(leagueCode).child("CoachInfo")
         tableView.allowsSelection = false
         dataObserver()
     }
@@ -33,7 +31,7 @@ class CoachManagerTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        ref?.observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().dataRef.child(leagueCode).child("CoachInfo").observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 var coach = Coach()

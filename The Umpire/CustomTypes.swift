@@ -14,11 +14,12 @@ import FirebaseDatabase
 let charSet = CharacterSet(charactersIn: "$/\\#[].")
 
 struct UsrAcc {
-    var UID: String!
-    var Email: String!
-    var Div: String!
-    var Team: String!
+    var user: User!
+    var uid, email, leagueName, div, team, firstName, lastName: String!
+    var isAdmin: Bool!
 }
+
+var userAcc = UsrAcc()
 
 struct Refs {
     let ref = Database.database().reference()

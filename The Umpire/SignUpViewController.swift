@@ -13,8 +13,6 @@ import FirebaseDatabase
 
 class SignUpViewController: UIViewController, UITextFieldDelegate {
     
-    var ref : DatabaseReference?
-    var ref2 : DatabaseReference?
     let loginRef = ViewController()
     
     var userCity: String!
@@ -41,9 +39,6 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = Database.database().reference()
-        ref2 = Database.database().reference().child("UserData")
 
         emailField.delegate = self
         passwordField.delegate = self
@@ -73,7 +68,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
     
     func checkAccDetails() {
         
-        ref?.child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if !(self.leagueCodeField.text!.isEmpty) && snapshot.hasChild(self.leagueCodeField.text!) {
         
                 if (self.emailField.text?.isEmpty)! || (self.passwordField.text?.isEmpty)! || (self.reTypePasswordField.text?.isEmpty)! || (self.leagueCodeField.text?.isEmpty)! {

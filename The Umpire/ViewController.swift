@@ -12,9 +12,6 @@ import FirebaseAuth
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
-    var ref : DatabaseReference?
-    var user: User?
-    var userUID: String!
     var effect: UIVisualEffect!
     var alertTextfield: String!
     
@@ -74,36 +71,31 @@ class ViewController: UIViewController, UITextFieldDelegate {
         }
     }
     @IBAction func logInButton(_ sender: Any) { //Login button
+        
         if self.emailField.text == "" || self.passwordField.text == "" { //Checks fields
             let alertController = UIAlertController(title: "Oops!", message: "One of the text fields is empty!", preferredStyle: .alert)
-            
             let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
             alertController.addAction(defaultAction)
-            
             self.present(alertController, animated: true, completion: nil)
         } else {
+            
             Auth.auth().signIn(withEmail: self.emailField.text!, password: self.passwordField.text!, completion: { //Authenticates user
                 (user, error) in
-                
                 if error == nil {
                     
                     let defaults = UserDefaults.standard
-                    
                     defaults.setValue(user?.uid, forKey: "uid")
                     
-                    self.userUID = user?.uid
+                    userAcc.uid = user?.uid
+                    userAcc.user = user
                     self.emailField.text = ""
                     self.passwordField.text = ""
-                    
                     self.performSegue(withIdentifier: "toMC", sender: nil)
-                    
                 } else {
                     
                     let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
-                    
                     let defaultAction = UIAlertAction(title: "OK", style: .cancel, handler: nil)
                     alertController.addAction(defaultAction)
-                    
                     self.present(alertController, animated: true, completion: nil)
                 }
                 
@@ -119,15 +111,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
-        user = Auth.auth().currentUser
-        userUID = Auth.auth().currentUser?.uid
-        
+        userAcc.user = Auth.auth().currentUser
+        userAcc.uid = Auth.auth().currentUser?.uid
         effect = visualEffectView.effect
         visualEffectView.effect = nil
         visualEffectView.isHidden = true
-        
         emailField.delegate = self
         passwordField.delegate = self
         

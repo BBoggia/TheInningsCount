@@ -22,7 +22,6 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     var ageGroups = [String]()
     var leagueList = [[String : [String]]]()
     let saveData = UserDefaults.standard
-    var ref = Database.database().reference()
     var randomGenNum = ""
     
     @IBOutlet weak var ageTableView: UITableView!
@@ -87,18 +86,18 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
                 
                 for team in dictValue {
                     
-                    self.ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueName).child(dictKey).child(team).child("Long Date").setValue(["Date":"Date", "Stat":"Player Number | Innings Pitched"])
+                    Refs().ref.child("LeagueStats").child(self.randomGenNum).child(self.leagueName).child(dictKey).child(team).child("Long Date").setValue(["Date":"Date", "Stat":"Player Number | Innings Pitched"])
                 }
             }
             let usrUID = Auth.auth().currentUser?.uid as String?
-            self.ref.child("LeagueData").child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
-            self.ref.child("LeagueData").child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administrator will be displayed here.", "Date":"Date of Post"])
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Email").setValue(self.email)
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("FirstName").setValue(self.firstName)
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("LastName").setValue(self.lastName)
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Division").setValue("admin")
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Team").setValue("admin")
-            self.ref.child("LeagueData").child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("IsAdmin").setValue(true)
+            Refs().dataRef.child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
+            Refs().dataRef.child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administrator will be displayed here.", "Date":"Date of Post"])
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Email").setValue(self.email)
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("FirstName").setValue(self.firstName)
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("LastName").setValue(self.lastName)
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Division").setValue("admin")
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Team").setValue("admin")
+            Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("IsAdmin").setValue(true)
      
             let myAlert1 = UIAlertController(title: "IMPORTANT!", message: "This 5 digit code is needed by your coaches when they create an account to be able to use the app. Write it down, it has also been copied to your clipboard. \n|\n\(self.randomGenNum)", preferredStyle: UIAlertControllerStyle.alert)
             let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
@@ -125,11 +124,11 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref.child("UserData").child("/\(userUID!)").child("AgeGroup").setValue("League Administrator")
-        ref.child("UserData").child("/\(userUID!)").child("Team").setValue("League Administrator")
-        ref.child("UserData").child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
-        ref.child("UserData").child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
-        ref.child("UserData").child("/\(userUID!)").child("IsAdmin").setValue(true)
+        Refs().usrRef.child("/\(userUID!)").child("AgeGroup").setValue("League Administrator")
+        Refs().usrRef.child("/\(userUID!)").child("Team").setValue("League Administrator")
+        Refs().usrRef.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        Refs().usrRef.child("/\(userUID!)").child("League").child("RandomNumber").setValue(randomGenNum)
+        Refs().usrRef.child("/\(userUID!)").child("IsAdmin").setValue(true)
      
         print(userUID!)
      }
@@ -161,7 +160,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
      }
      
      func checkRandomString() {
-        ref.observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().ref.observeSingleEvent(of: .value, with: { (snapshot) in
         for child in snapshot.children {
             let snap = child as! DataSnapshot
             if self.randomGenNum == snap.key {
