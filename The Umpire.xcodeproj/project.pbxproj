@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		01070DD11F563E1D00D454D7 /* AppConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01070DD01F563E1D00D454D7 /* AppConstants.swift */; };
+		011EB6B020AA83FA008C1C9F /* ReusablePopupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 011EB6AF20AA83FA008C1C9F /* ReusablePopupViewController.swift */; };
 		0184FAD42087BD91003A6AB7 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0184FAD32087BD91003A6AB7 /* HomeViewController.swift */; };
 		01C610B1207BA9C100CC2C8C /* CoachManagerTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C610B0207BA9C100CC2C8C /* CoachManagerTableViewController.swift */; };
 		01C70F85202A04160050777C /* AgeTeamCheckTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C70F84202A04160050777C /* AgeTeamCheckTableViewController.swift */; };
@@ -69,6 +70,7 @@
 
 /* Begin PBXFileReference section */
 		01070DD01F563E1D00D454D7 /* AppConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppConstants.swift; sourceTree = "<group>"; };
+		011EB6AF20AA83FA008C1C9F /* ReusablePopupViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusablePopupViewController.swift; sourceTree = "<group>"; };
 		0184FAD32087BD91003A6AB7 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		01C610B0207BA9C100CC2C8C /* CoachManagerTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoachManagerTableViewController.swift; sourceTree = "<group>"; };
 		01C70F84202A04160050777C /* AgeTeamCheckTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgeTeamCheckTableViewController.swift; sourceTree = "<group>"; };
@@ -230,6 +232,7 @@
 				5E2667151E70886E008D59AF /* TeamSelectViewController.swift */,
 				5E4439D01E71BEC20035287E /* PlayerStatsViewController.swift */,
 				DBEF39FC1EAED5D900ECCAB8 /* AdminMsgTableViewCell.swift */,
+				011EB6AF20AA83FA008C1C9F /* ReusablePopupViewController.swift */,
 				01DE62D020596CB2008B389C /* CustomTypes.swift */,
 				01070DD01F563E1D00D454D7 /* AppConstants.swift */,
 				DBEBF7971DF0BAC0003CF098 /* Main.storyboard */,
@@ -501,6 +504,7 @@
 			files = (
 				01C610B1207BA9C100CC2C8C /* CoachManagerTableViewController.swift in Sources */,
 				01DE62D120596CB2008B389C /* CustomTypes.swift in Sources */,
+				011EB6B020AA83FA008C1C9F /* ReusablePopupViewController.swift in Sources */,
 				5E459E631ECB664E00F2DC22 /* AddRemoveTeamAgeViewController.swift in Sources */,
 				5E4439D11E71BEC20035287E /* PlayerStatsViewController.swift in Sources */,
 				DBEBF7C41DF0D239003CF098 /* SignUpViewController.swift in Sources */,
