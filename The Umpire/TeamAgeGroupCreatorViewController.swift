@@ -91,7 +91,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
             }
             let usrUID = Auth.auth().currentUser?.uid as String?
             Refs().dataRef.child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
-            Refs().dataRef.child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Administrator will be displayed here.", "Date":"Date of Post"])
+            Refs().dataRef.child(self.randomGenNum).child("Messages").childByAutoId().setValue(["Message":"Important announcements from the league Admin will be displayed here.", "Date":" "])
             Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("Email").setValue(self.email)
             Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("FirstName").setValue(self.firstName)
             Refs().dataRef.child(self.randomGenNum).child("CoachInfo").child(usrUID!).child("LastName").setValue(self.lastName)

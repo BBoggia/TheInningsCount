@@ -15,7 +15,6 @@ class AddRemoveTeamTableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
-    var ref : DatabaseReference?
     
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
@@ -62,10 +61,9 @@ class AddRemoveTeamTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
-        tablePath = ref?.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup)
+        tablePath = Refs().statRef.child(self.randNum).child(self.league).child(ageGroup)
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
         longPressGesture.minimumPressDuration = 1.25
@@ -162,7 +160,7 @@ class AddRemoveTeamTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(ageGroup).child(self.convertedArray[indexPath.row]).removeValue()
+            Refs().statRef.child(self.randNum).child(self.league).child(ageGroup).child(self.convertedArray[indexPath.row]).removeValue()
             self.convertedArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

@@ -13,7 +13,6 @@ import FirebaseDatabase
 
 class mainHubViewController: UIViewController {
     
-    var ref : DatabaseReference?
     let user = Auth.auth().currentUser
     var userUID: String!
     var leagueNum = ""
@@ -48,12 +47,10 @@ class mainHubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
         
         userUID = Auth.auth().currentUser?.uid as String?
         
-        let teamNameRef = ref?.child("UserData").child(userUID!)
-        teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childSnapshot(forPath: "IsAdmin").value as! Bool? == true {
                 self.isAdmin = true
                 self.navBar.rightBarButtonItem = UIBarButtonItem(title: "Admin", style: .plain, target: self, action: #selector(self.adminSegue))
@@ -94,9 +91,8 @@ class mainHubViewController: UIViewController {
     
     func verifyAccDetails() {
         if self.isAdmin == false {
-            let teamNameRef = ref?.child("UserData").child(userUID!)
-            teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
-                self.ref?.child("LeagueStats").child(self.leagueNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snap) in
+            Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+                Refs().statRef.child(self.leagueNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snap) in
                     let divCount = snap.childrenCount
                     var teamCount: Int!
                     var divLoopCount = 0

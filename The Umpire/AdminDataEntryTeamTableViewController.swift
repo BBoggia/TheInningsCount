@@ -13,10 +13,8 @@ import FirebaseDatabase
 
 class AdminDataEntryTeamTableViewController: UITableViewController {
     
-    var ref : DatabaseReference?
     var user: User!
     var userUID: String!
-    
     var randNum: String!
     var leagueName: String!
     var selectedAge: String!
@@ -26,12 +24,10 @@ class AdminDataEntryTeamTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+       Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.childSnapshot(forPath: "Name").value as! String?
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
@@ -45,7 +41,7 @@ class AdminDataEntryTeamTableViewController: UITableViewController {
     }
     
     func dataObserver() {
-        ref?.child("LeagueStats").child(self.randNum).child(self.leagueName).child(self.selectedAge).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.randNum).child(self.leagueName).child(self.selectedAge).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot

@@ -13,7 +13,6 @@ import FirebaseDatabase
 
 class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
     
-    var ref : DatabaseReference?
     var user: User!
     var userUID = Auth.auth().currentUser?.uid as String?
     let dateFormatter = DateFormatter()
@@ -50,18 +49,14 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
         user = Auth.auth().currentUser
-        
         whiteLbl.layer.cornerRadius = 10
-        
         if isAdmin == nil {
         
             adminChooseTeam()
-            
         } else if isAdmin == true {
-            let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
-            teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
                 self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
                 self.navigationController?.title = self.teamName
@@ -105,21 +100,20 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
             let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
             self.navigationController?.pushViewController(vc,animated: true)
         } else {
-            ref?.child("LeagueStats").child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat":"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)", "Date":userDate])
+            Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat":"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)", "Date":userDate])
             self.numberPicker.selectRow(0, inComponent: 0, animated: true)
             self.pitchPicker.selectRow(0, inComponent: 0, animated: true)
         }
     }
     
     @objc func adminChooseTeam() {
-        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childSnapshot(forPath: "IsAdmin").value as! Bool? == true {
                 let storyboard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
                 self.navigationController?.pushViewController(vc,animated: true)
             } else {
-                let teamNameRef = self.ref?.child("UserData").child(self.userUID!)
-                teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+                Refs().usrRef.child(self.userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
                     self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String?
                     self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
                     self.age = (snapshot.childSnapshot(forPath: "AgeGroup").value as! String?)!

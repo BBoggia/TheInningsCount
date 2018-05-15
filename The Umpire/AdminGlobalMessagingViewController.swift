@@ -16,7 +16,6 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
 
     var user: User!
     var userUID: String!
-    var ref : DatabaseReference?
     
     var league: String!
     var randNum: String!
@@ -53,8 +52,6 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = Database.database().reference()
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
@@ -68,7 +65,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         tap.delegate = self
         view.addGestureRecognizer(tap)
         
-        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
@@ -137,7 +134,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     func dataObserver() {
         self.dateData.removeAll()
         self.msgData.removeAll()
-        self.ref?.child("LeagueData").child(self.randNum).child("Messages").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().dataRef.child(self.randNum).child("Messages").observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
@@ -157,7 +154,7 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         myAlert = UIAlertController(title: "Your Message", message: "\(self.inputTextField.text!)\n\nReady to send it?", preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "Send", style: UIAlertActionStyle.default) { action in
             
-            self.ref?.child("LeagueData").child(self.randNum).child("Messages").childByAutoId().setValue(["Message":self.inputTextField.text!, "Date":NSDate().userSafeDate, "Status":"Placeholder" as String?])
+            Refs().dataRef.child(self.randNum).child("Messages").childByAutoId().setValue(["Message":self.inputTextField.text!, "Date":NSDate().userSafeDate, "Status":"Placeholder" as String?])
             self.dataObserver()
             self.inputTextField.text?.removeAll()
             self.view.endEditing(true)

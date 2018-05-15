@@ -17,7 +17,6 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     
     var user: User!
     var userUID: String!
-    var ref : DatabaseReference?
     var msgRef: DatabaseReference!
     private var newMessageRefHandle: DatabaseHandle?
     
@@ -29,18 +28,16 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
 
         clientTable.delegate = self
         clientTable.dataSource = self
         
-        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
-            self.msgRef = self.ref?.child("LeagueData").child(self.randNum).child("Messages")
+            self.msgRef = Refs().dataRef.child(self.randNum).child("Messages")
             self.dataObserver()
         })
     }
@@ -51,7 +48,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     }
     
     func dataObserver() {
-        self.ref?.child("LeagueData").child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
+        Refs().dataRef.child(self.randNum).child("Messages").queryLimited(toLast: 15).observe(.value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as? DataSnapshot
@@ -66,7 +63,7 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
     
     deinit {
         if let refHandle = newMessageRefHandle  {
-            self.ref?.child("LeagueData").child(self.randNum).child("Messages").removeObserver(withHandle: refHandle)
+            Refs().dataRef.child(self.randNum).child("Messages").removeObserver(withHandle: refHandle)
         }
     }
     

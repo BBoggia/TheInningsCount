@@ -24,16 +24,11 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     var firstName: String!
     var lastName: String!
     
-    var ref : DatabaseReference?
-    var ref2 : DatabaseReference?
     var user: User!
     var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = Database.database().reference()
-        ref2 = Database.database().reference().child("UserData")
         
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
@@ -50,14 +45,14 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     }
     
     func dataObserver() {
-        ref?.child("LeagueData").child(self.leagueCode).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().dataRef.child(self.leagueCode).child("LeagueName").observeSingleEvent(of: .value, with: { (snapshot) in
             self.leagueName = snapshot.value as! String?
             self.populateView()
         })
     }
     
     func populateView() {
-        ref?.child("LeagueStats").child(self.leagueCode).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.leagueCode).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)

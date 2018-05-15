@@ -16,6 +16,8 @@ let charSet = CharacterSet(charactersIn: "$/\\#[].")
 struct UsrAcc {
     var user: User!
     var uid, email, leagueName, div, team, firstName, lastName: String!
+    var leagueNames, leagueNumbers, teamNames: [String]!
+    var adminList: [Bool]!
     var isAdmin: Bool!
 }
 

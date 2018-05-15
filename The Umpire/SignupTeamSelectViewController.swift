@@ -25,16 +25,11 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     var firstName: String!
     var lastName: String!
     
-    var ref : DatabaseReference?
-    var ref2 : DatabaseReference?
     let user = Auth.auth().currentUser
     var userUID: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        ref = Database.database().reference()
-        ref2 = Database.database().reference().child("UserData")
         
         userUID = Auth.auth().currentUser?.uid
         
@@ -50,7 +45,7 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
     }
     
     func populateView() {
-        ref?.child("LeagueStats").child(self.leagueCode).child(self.leagueName).child(age).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.leagueCode).child(self.leagueName).child(age).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.teamList.append(snap.key)
@@ -87,22 +82,22 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         let user = Auth.auth().currentUser
         let userUID = user?.uid
         
-        ref2?.child("/\(userUID!)").child("AgeGroup").setValue(age)
-        ref2?.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
-        ref2?.child("/\(userUID!)").child("League").child("RandomNumber").setValue(leagueCode)
-        ref2?.child("/\(userUID!)").child("IsAdmin").setValue(false)
-        ref2?.child("/\(userUID!)").child("Team").setValue(team)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Email").setValue(usrEmail)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("FirstName").setValue(firstName)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("LastName").setValue(lastName)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Division").setValue(age)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Team").setValue(team)
-        ref?.child("LeagueData").child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("IsAdmin").setValue(false)
+        Refs().usrRef.child("/\(userUID!)").child("AgeGroup").setValue(age)
+        Refs().usrRef.child("/\(userUID!)").child("League").child("Name").setValue(leagueName)
+        Refs().usrRef.child("/\(userUID!)").child("League").child("RandomNumber").setValue(leagueCode)
+        Refs().usrRef.child("/\(userUID!)").child("IsAdmin").setValue(false)
+        Refs().usrRef.child("/\(userUID!)").child("Team").setValue(team)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Email").setValue(usrEmail)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("FirstName").setValue(firstName)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("LastName").setValue(lastName)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Division").setValue(age)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("Team").setValue(team)
+        Refs().dataRef.child(leagueCode).child("CoachInfo").child("/\(userUID!)").child("IsAdmin").setValue(false)
     }
     
     func createAccount() {
         
-        ref?.child("LeagueData").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
             if !(self.leagueCode.isEmpty) && snapshot.hasChild(self.leagueCode) {
                 if !(self.usrEmail.contains("@")) || !(self.usrEmail.contains(".")) {
                     

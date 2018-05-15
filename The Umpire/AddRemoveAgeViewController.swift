@@ -15,7 +15,6 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     var user: User!
     var userUID: String!
-    var ref : DatabaseReference?
     
     var tablePath: DatabaseReference!
     var convertedArray = [String]()
@@ -61,11 +60,10 @@ class AddRemoveAgeTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
         
-        ref?.child("UserData").child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
             self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
@@ -85,7 +83,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     func dataObserver() {
         
-        self.tablePath = self.ref?.child("LeagueStats").child(self.randNum).child(self.league)
+        self.tablePath = Refs().statRef.child(self.randNum).child(self.league)
         
         tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
             
@@ -118,9 +116,9 @@ class AddRemoveAgeTableViewController: UITableViewController {
                         } else {
                             self.alertTextField = myAlert.textFields![0].text
                             
-                            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-                                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
-                                self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
+                            Refs().statRef.child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
+                                Refs().statRef.child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
+                                Refs().statRef.child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
                             })
                         }
                     /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
@@ -178,7 +176,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            self.ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
+            Refs().statRef.child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
             self.convertedArray.remove(at: indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }

@@ -14,7 +14,6 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @IBOutlet weak var teamListTable: UITableView!
     
-    var ref : DatabaseReference?
     var userUID: String!
     var teamList = [String]()
     var teamToPass: String!
@@ -25,11 +24,9 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
         userUID = Auth.auth().currentUser?.uid as String?
         
-        ref?.child("UserData").child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
             self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
             self.dataObserver()
@@ -44,7 +41,7 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func dataObserver() {
-        ref?.child("LeagueStats").child(self.randNum).child(self.league).child(self.age).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.randNum).child(self.league).child(self.age).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot

@@ -22,11 +22,9 @@ class AgeTeamCheckTableViewController: UITableViewController {
     var usrUID: String!
     var usrProgress: Int!
     var tableArray: Array<String>!
-    var ref : DatabaseReference?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
         tableArray = []
         checkProgress()
         anotherAlert(title: "Oops!", message: "It looks like the division or team you were assigned to was renamed or removed. If you see yours in the list press continue and select it now, otherwise select wait and ask your league admin to add it back.")
@@ -42,7 +40,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
             self.usrProgress = 0
             self.ageTeamSelection()
         } else if self.teamCheck == false {
-            ref?.child("UserData").child(self.usrUID).observeSingleEvent(of: .value, with: { (snapshot) in
+            Refs().dataRef.child(self.usrUID).observeSingleEvent(of: .value, with: { (snapshot) in
                 self.ageSelected = snapshot.childSnapshot(forPath: "AgeGroup").value as! String
                 self.teamSelection()
                 self.usrProgress = 1
@@ -54,7 +52,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
 
     func ageTeamSelection() {
         tableArray.removeAll()
-        ref?.child("LeagueStats").child(self.leagueNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.leagueNum).child(self.leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.tableArray.append(snap.key)
@@ -67,7 +65,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
         if self.tableArray != nil {
             self.tableArray.removeAll()
         }
-        ref?.child("LeagueStats").child(self.leagueNum).child(self.leagueName).child(ageSelected).observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().statRef.child(self.leagueNum).child(self.leagueName).child(ageSelected).observeSingleEvent(of: .value, with: { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.tableArray.append(snap.key)
@@ -79,8 +77,8 @@ class AgeTeamCheckTableViewController: UITableViewController {
     func displayMyAlertMessage(title:String, userMessage:String) {
         let myAlert = UIAlertController(title: title, message: userMessage, preferredStyle: UIAlertControllerStyle.alert)
         let okAction = UIAlertAction(title: "Confirm", style: UIAlertActionStyle.default) { action in
-            self.ref?.child("UserData").child(self.usrUID).child("AgeGroup").setValue(self.ageSelected)
-            self.ref?.child("UserData").child(self.usrUID).child("Team").setValue(self.teamSelected)
+            Refs().usrRef.child(self.usrUID).child("AgeGroup").setValue(self.ageSelected)
+            Refs().usrRef.child(self.usrUID).child("Team").setValue(self.teamSelected)
             self.dismiss(animated: true, completion: nil)
         }
         let cancelAction = UIAlertAction(title: "Restart", style: UIAlertActionStyle.cancel) { action in

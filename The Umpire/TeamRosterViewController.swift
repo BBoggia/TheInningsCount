@@ -13,8 +13,6 @@ import FirebaseDatabase
 
 class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
-    var ref : DatabaseReference?
-    
     var teamName: String!
     var leagueName: String!
     var rosterList = [String]()
@@ -27,12 +25,9 @@ class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        ref = Database.database().reference()
-        
         userUID = Auth.auth().currentUser?.uid as String?
         
-        let teamNameRef = ref?.child("UserData").child(userUID!)
-        teamNameRef?.observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
             self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String?
             self.leagueName = snapshot.childSnapshot(forPath: "League").value as! String?
             self.navBar.title = self.leagueName
@@ -47,7 +42,7 @@ class TeamRosterViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     func populateArray() {
-        self.ref?.child("LeagueTeamLists").child(leagueName).child(teamName).child("Roster").observeSingleEvent(of: .value, with: { (snapshot) in
+        Refs().ref.child("LeagueTeamLists").child(leagueName).child(teamName).child("Roster").observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childrenCount > 1 {
                 
                 for child in snapshot.children {
