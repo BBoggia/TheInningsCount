@@ -47,7 +47,6 @@ class mainHubViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         userUID = Auth.auth().currentUser?.uid as String?
         
         Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -65,6 +64,11 @@ class mainHubViewController: UIViewController {
             self.leagueNum = (snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?)!
             self.verifyAccDetails()
         })
+        
+        UserDefaults.standard.setValue(leagueName, forKey: "lastLeagueName")
+        UserDefaults.standard.setValue(leagueNum, forKey: "lastLeagueNumber")
+        UserDefaults.standard.setValue(Division, forKey: "lastLeagueDivision")
+        UserDefaults.standard.setValue(team, forKey: "lastLeagueTeam")
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             inningsBtn.heightAnchor.constraint(equalToConstant: 180).isActive = true

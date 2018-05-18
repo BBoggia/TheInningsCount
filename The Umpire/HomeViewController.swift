@@ -13,18 +13,54 @@ import FirebaseDatabase
 
 class HomeViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
+    let defaults = UserDefaults.standard
+    
     @IBOutlet weak var tableView: UITableView!
     @IBAction func lastLeague(_ sender: Any) {
+        if let leagueName = defaults.string(forKey: "lastLeagueName") {
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "mainHub") as! mainHubViewController
+            vc.leagueName = leagueName
+            vc.leagueNum = defaults.string(forKey: "lastLeagueNumber")!
+            vc.Division = defaults.string(forKey: "lastLeagueDivision")!
+            vc.team = defaults.string(forKey: "lastLeagueTeam")
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
+            displayAlert(title: "Oops!", message: "It looks like you haven't joined a league yet.")
+        }
     }
     @IBAction func yourLeagues(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "dynamicPopup") as! ReusablePopupViewController
+        vc.sender = "YourLeagues"
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func joinLeague(_ sender: Any) {
+        let alert = UIAlertController(title: "Join a League", message: "Enter the 5 digit pin number for the league you would like to request to join.", preferredStyle: .alert)
+        alert.addTextField()
+        
+        let send = UIAlertAction(title: "Send", style: .default) { action in
+            Refs().dataRef.child("Requests").child(alert.textFields![0].text!).child(userAcc.uid).setValue(["DateRequested":NSDate().userSafeDate, "DateAccepted" : "", "Name" : userAcc.firstName + userAcc.lastName, "Email" : userAcc.email, "Status" : false])
+            Refs().usrRef.child(userAcc.uid).child("Requests").child(Refs().dataRef.child(alert.textFields![0].text!).value(forKey: "LeagueName") as! String).setValue(["DateRequested" : NSDate().userSafeDate, "DateAccepted" : "", "LeagueNumber" : alert.textFields![0].text!, "Status" : false])
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
+        alert.addAction(cancel)
+        alert.addAction(send)
     }
     @IBAction func createLeague(_ sender: Any) {
+        
     }
     @IBAction func leagueAnnouncements(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "dynamicPopup") as! ReusablePopupViewController
+        vc.sender = "LeagueAnnouncements"
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     @IBAction func settings(_ sender: UIBarButtonItem) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "dynamicPopup") as! ReusablePopupViewController
+        vc.sender = "Settings"
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     var leagueMsgs = [[String:String]]()

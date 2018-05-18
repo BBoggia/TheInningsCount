@@ -13,14 +13,18 @@ import FirebaseDatabase
 
 class ReusablePopupViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
+    @IBOutlet weak var popupView: UIView!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var settingsBackgroundLbl: UILabel!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var settingsTableView: UITableView!
     @IBAction func exitBtn(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     
     var sender: String!
-    var leagueList = [String]()
+    var leagueList = [[String:String]]()
+    var settingsList = ["Change Email", "Change Password", "Report a Bug", "Contact Us"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,21 +35,42 @@ class ReusablePopupViewController: UIViewController, UITableViewDelegate, UITabl
             titleLbl.text = "Your Leagues"
             setupTable()
         case "Settings":
+            settingsTableView.delegate = self
+            settingsTableView.dataSource = self
             titleLbl.text = "Settings"
+        case "LeagueAnnouncements":
+            tableView.delegate = self
+            tableView.dataSource = self
+            titleLbl.text = "League Announcements"
+            setupTable()
         default:
             break
         }
+        //Auth.auth().currentUser?.
     }
     
     func setupTable() {
         Refs().usrRef.child((Auth.auth().currentUser?.uid as String?)!).child("Leagues").observeSingleEvent(of: .value) { (snapshot) in
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
-                self.leagueList.append(snap.childSnapshot(forPath: "LeagueName").value as! String)
+                self.leagueList.append(["LeagueName" : snap.childSnapshot(forPath: "LeagueName").value as! String, "LeagueNumber" : snap.key, "Team" : snap.childSnapshot(forPath: "Team").value as! String, "Division" : snap.childSnapshot(forPath: "Division").value as! String])
             }
         }
-        tableView.isHidden = false
-        tableView.reloadData()
+        switch sender {
+        case "Settings":
+            if settingsList.count == 0 {
+                settingsList.append("Oops! It looks like you haven't joined any leagues yet.")
+                popupView.layer.bounds.size.height = titleLbl.bounds.height + 66
+            } else if settingsList.count <= 6 {
+                popupView.layer.bounds.size.height = CGFloat(Int(titleLbl.bounds.height) + (settingsList.count * 50) + 16)
+            }
+            settingsTableView.isHidden = false
+            settingsBackgroundLbl.isHidden = false
+            settingsTableView.reloadData()
+        default:
+            tableView.isHidden = false
+            tableView.reloadData()
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -58,23 +83,52 @@ class ReusablePopupViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return leagueList.count
+        switch sender {
+        case "Settings":
+            return settingsList.count
+        default:
+            return leagueList.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        cell?.textLabel?.text = leagueList[indexPath.row]
+        switch sender {
+        case "Settings":
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell1")
+            cell?.textLabel?.text = settingsList[indexPath.row]
+            return cell!
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "cell")
+            cell?.textLabel?.text = leagueList[indexPath.row]["LeagueName"]
+            return cell!
+        }
         
-        return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let indexPath = tableView.indexPathForSelectedRow
-        let currentCell = tableView.cellForRow(at: indexPath!) as UITableViewCell?
         
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "mainHub") as! mainHubViewController
-        //Add data to send to next vc
-        navigationController?.pushViewController(vc,animated: true)
+        switch sender {
+        case "YourLeagues":
+            let indexPath = tableView.indexPathForSelectedRow
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "mainHub") as! mainHubViewController
+            vc.leagueName = leagueList[(indexPath?.row)!]["LeagueName"]
+            vc.leagueNum = leagueList[(indexPath?.row)!]["LeagueNumber"]!
+            vc.team = leagueList[(indexPath?.row)!]["Team"]
+            vc.Division = leagueList[(indexPath?.row)!]["Division"]
+            navigationController?.pushViewController(vc,animated: true)
+        case "LeagueAnnouncements":
+            let indexPath = tableView.indexPathForSelectedRow
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyboard.instantiateViewController(withIdentifier: "") as! ViewLeagueAnnouncementsViewController
+            vc.league = leagueList[(indexPath?.row)!]["LeagueName"]
+            vc.randNum = leagueList[(indexPath?.row)!]["LeagueNumber"]!
+            navigationController?.pushViewController(vc,animated: true)
+        case "Settings":
+            let indexPath = settingsTableView.indexPathForSelectedRow
+            
+        default:
+            break
+        }
     }
 }
