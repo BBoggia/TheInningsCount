@@ -34,12 +34,8 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
         clientTable.delegate = self
         clientTable.dataSource = self
         
-        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
-            self.msgRef = Refs().dataRef.child(self.randNum).child("Messages")
-            self.dataObserver()
-        })
+        self.msgRef = Refs().dataRef.child(self.randNum).child("Messages")
+        self.dataObserver()
     }
 
     override func didReceiveMemoryWarning() {

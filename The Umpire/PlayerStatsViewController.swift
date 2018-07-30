@@ -16,25 +16,20 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     @IBOutlet weak var playerDataTable: UITableView!
     
     var userUID: String!
-    var playerStatsList = [String]()
-    var dateList = [String]()
+    var stats: [Stats]! = []
     var age: String!
     var league: String!
     var team: String!
     var randNum: String!
+    var adminStatus: Bool!
+    var coachDiv, coachTeam: String!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         userUID = Auth.auth().currentUser?.uid as String?
-        
-        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
-        
+        dataObserver()
         self.playerDataTable.delegate = self
         self.playerDataTable.dataSource = self
     }
@@ -44,17 +39,23 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func dataObserver() {
-       
         Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).observeSingleEvent(of: .value, with: { (snapshot) in
             
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
-                self.playerStatsList.append((snap.childSnapshot(forPath: "Stat").value as! String?)!)
-                self.dateList.append((snap.childSnapshot(forPath: "Date").value as! String?)!)
+                var tmp = Stats()
+                tmp.player = (snap.childSnapshot(forPath: "Player").value as! String?)!
+                tmp.inning = (snap.childSnapshot(forPath: "Innings").value as! String?)!
+                tmp.date = (snap.childSnapshot(forPath: "Date").value as! String?)!
+                tmp.coach = (snap.childSnapshot(forPath: "Coach").value as! String?)!
+                self.stats.append(tmp)
                 self.playerDataTable.reloadData()
             }
-            self.playerStatsList.reverse()
-            self.dateList.reverse()
+            self.stats.reverse()
+            if !(self.stats.count <= 1) {
+                self.stats.removeFirst()
+            }
+            self.playerDataTable.reloadData()
         })
     }
     
@@ -63,17 +64,45 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return playerStatsList.count
+        return stats.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = playerDataTable.dequeueReusableCell(withIdentifier: "cell") as! PlayerStatsTableViewCell
         
-        cell.statLbl.text = playerStatsList[indexPath.row]
-        cell.dateLbl.text = dateList[indexPath.row]
+        cell.statLbl.text = stats[indexPath.row].player + " | " + stats[indexPath.row].inning
+        cell.coach.text = stats[indexPath.row].coach
+        cell.dateLbl.text = stats[indexPath.row].date
         
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if adminStatus == true || coachDiv == age && coachTeam == team {
+            var tmpList = stats
+            tmpList?.reverse()
+            if stats.count == 1 {
+                displayAlert(title: "Oops!", message: "You cannot remove the last item from the list.")
+            } else {
+                if editingStyle == .delete {
+                    Refs().statRef.child(randNum).child(league).child(age).child(team).observeSingleEvent(of: .value) { (snapshot) in
+                        for child in snapshot.children {
+                            let snap = child as! DataSnapshot
+                            if snap.childSnapshot(forPath: "Player").value as! String == tmpList![indexPath.row].player && snap.childSnapshot(forPath: "Innings").value as! String == tmpList![indexPath.row].inning && snap.childSnapshot(forPath: "Date").value as! String == tmpList![indexPath.row].coach {
+                                Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).child(snap.key).removeValue()
+                                self.stats.reverse()
+                                self.stats.remove(at: indexPath.row)
+                                self.stats.reverse()
+                                self.playerDataTable.reloadData()
+                            }
+                        }
+                    }
+                }
+            }
+        } else {
+            displayAlert(title: "Oops!", message: "Only admins and coaches of this team can remove entries.")
+        }
     }
 }
 
@@ -81,6 +110,7 @@ class PlayerStatsTableViewCell: UITableViewCell {
     
     @IBOutlet weak var dateLbl: UILabel!
     @IBOutlet weak var statLbl: UILabel!
+    @IBOutlet weak var coach: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

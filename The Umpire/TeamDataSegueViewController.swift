@@ -19,19 +19,14 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
     var ageToPass: String!
     var league:String!
     var randNum: String!
-    
+    var adminStatus: Bool!
+    var coachDiv, coachTeam: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         userUID = Auth.auth().currentUser?.uid
-        
-        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
-        
+        dataObserver()
         self.ageListTable.delegate = self
         self.ageListTable.dataSource = self
     }
@@ -42,7 +37,6 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
 
     func dataObserver() {
         Refs().statRef.child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
-            
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.ageList.append(snap.key)
@@ -79,6 +73,11 @@ class TeamDataSegueViewController: UIViewController, UITableViewDelegate, UITabl
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "teamSelect") as! TeamSelectViewController
         vc.age = ageToPass
+        vc.league = league
+        vc.randNum = randNum
+        vc.adminStatus = adminStatus
+        vc.coachDiv = coachDiv
+        vc.coachTeam = coachTeam
         navigationController?.pushViewController(vc,animated: true)
     }
 

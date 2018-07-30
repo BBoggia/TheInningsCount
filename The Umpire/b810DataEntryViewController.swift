@@ -28,8 +28,9 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     var isAdmin: Bool!
     let playerNumberArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
     let inningPitchArr = [0, 1, 2, 3, 4, 5, 6]
-    var playerNumberPicked: Int!
-    var inningNumberPicked: Int!
+    var playerNumberPicked: Int! = 0
+    var inningNumberPicked: Int! = 0
+    var fromAdminList = false
     
     @IBOutlet weak var whiteLbl: UILabel!
     @IBOutlet weak var numberPicker: UIPickerView!
@@ -42,7 +43,6 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
             displayAlert(title: "Oops!", message: "An error has occured please try again.")
         } else {
             sendData()
-            //self.view.endEditing(true)
         }
     }
     
@@ -51,39 +51,12 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
         
         user = Auth.auth().currentUser
         whiteLbl.layer.cornerRadius = 10
-        if isAdmin == nil {
-        
+        if isAdmin == true && fromAdminList == false {
             adminChooseTeam()
-        } else if isAdmin == true {
-            
-            Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-                self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
-                self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
-                self.navigationController?.title = self.teamName
-            })
         }
-        
         userDate = NSDate().userSafeDate
         databaseDate = NSDate().datebaseSafeDate
         sortDate = ServerValue.timestamp()
-        
-        /*
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        
-        let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
-        
-        toolBar.setItems([doneButton], animated: false)
-        
-        playerNumberTextField.inputAccessoryView = toolBar
-        pitchCountTextField.inputAccessoryView = toolBar
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            titleField.font = UIFont(name: titleField.font.fontName, size: 55)
-            lblText.font = UIFont(name: lblText.font.fontName, size: 28)
-        }
-        */
-        
         numberPicker.delegate = self
         numberPicker.dataSource = self
         pitchPicker.delegate = self
@@ -96,32 +69,20 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     
     func sendData() {
         if teamName == nil || age == nil {
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
-            self.navigationController?.pushViewController(vc,animated: true)
+            displayAlert(title: "Oops!", message: "Something went wrong, relog to try to fix the issue!")
         } else {
-            Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Stat":"Player#: \(playerNumberPicked!) | Innings: \(inningNumberPicked!)", "Date":userDate])
+            Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Player":"Player#: \(playerNumberPicked!)", "Innings" : "Innings: \(inningNumberPicked!)", "Date":userDate, "Coach":"Coach \(userAcc.lastName)"])
             self.numberPicker.selectRow(0, inComponent: 0, animated: true)
             self.pitchPicker.selectRow(0, inComponent: 0, animated: true)
         }
     }
     
-    @objc func adminChooseTeam() {
-        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            if snapshot.childSnapshot(forPath: "IsAdmin").value as! Bool? == true {
-                let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
-                self.navigationController?.pushViewController(vc,animated: true)
-            } else {
-                Refs().usrRef.child(self.userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-                    self.teamName = snapshot.childSnapshot(forPath: "Team").value as! String?
-                    self.leagueName = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
-                    self.age = (snapshot.childSnapshot(forPath: "AgeGroup").value as! String?)!
-                    self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
-                    self.navigationController?.title = self.teamName
-                })
-            }
-        })
+    func adminChooseTeam() {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "adminAgeSelect") as! AdminDataEntryAgeTableViewController
+        vc.leagueName = leagueName
+        vc.randNum = randNum
+        self.navigationController?.pushViewController(vc,animated: true)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

@@ -16,15 +16,30 @@ class AdminHubViewController: UIViewController {
     
     var user: User!
     var userUID: String!
+    var leagueName: String!
     var leagueCode: String!
     let defaults = UserDefaults.standard
     
     @IBOutlet weak var titleLbl: UILabel!
+    @IBAction func sendGlobalMessage(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "adminGlobalMessage") as! AdminGlobalMessagingViewController
+        vc.league = self.leagueName
+        vc.randNum = self.leagueCode
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
     @IBAction func coachManager(_ sender: Any) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "coachManager") as! CoachManagerTableViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "temp") as! CoachManagerViewController
+        vc.leagueName = leagueName
         vc.leagueCode = leagueCode
-        vc.user = user
+        self.navigationController?.pushViewController(vc,animated: true)
+    }
+    @IBAction func leagueManagement(_ sender: UIButton) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "AddRemove") as! AddRemoveAgeTableViewController
+        vc.league = self.leagueName
+        vc.randNum = self.leagueCode
         self.navigationController?.pushViewController(vc,animated: true)
     }
     @IBAction func viewLeagueCode(_ sender: Any) {
@@ -43,7 +58,7 @@ class AdminHubViewController: UIViewController {
             titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 32)
         }
         
-        if defaults.bool(forKey: "showAdminHubPopup") == nil || defaults.bool(forKey: "showAdminHubPopup") == true {
+        if defaults.bool(forKey: "showAdminHubPopup") != false {
             popupAlert(title: "Admin Hub", message: "Here you can send global messages, view your league code, manage your coaches, and add, remove, and rename divisions and teams in your league.")
         }
     }
@@ -73,20 +88,5 @@ class AdminHubViewController: UIViewController {
         alert.addAction(done)
         alert.addAction(dontShow)
         self.present(alert, animated: true, completion: nil)
-    }
-}
-
-extension UIView {
-    func gradientOfView(withColors: UIColor...) {
-        
-        var cgColors = [CGColor]()
-        
-        for color in withColors {
-            cgColors.append(color.cgColor)
-        }
-        let grad = CAGradientLayer()
-        grad.frame = self.bounds
-        grad.colors = cgColors
-        self.layer.insertSublayer(grad, at: 0)
     }
 }

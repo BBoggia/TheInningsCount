@@ -20,18 +20,14 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
     var age: String!
     var league: String!
     var randNum: String!
+    var adminStatus: Bool!
+    var coachDiv, coachTeam: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         userUID = Auth.auth().currentUser?.uid as String?
-        
-        Refs().usrRef.child(userUID!).observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "League").childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
-        
+        self.dataObserver()
         self.teamListTable.delegate = self
         self.teamListTable.dataSource = self
     }
@@ -80,6 +76,11 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
         let vc = storyboard.instantiateViewController(withIdentifier: "playerStats") as! PlayerStatsViewController
         vc.age = age
         vc.team = teamToPass
+        vc.league = league
+        vc.randNum = randNum
+        vc.adminStatus = adminStatus
+        vc.coachDiv = coachDiv
+        vc.coachTeam = coachTeam
         navigationController?.pushViewController(vc,animated: true)
     }
 }

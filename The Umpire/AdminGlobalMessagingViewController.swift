@@ -65,11 +65,8 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         tap.delegate = self
         view.addGestureRecognizer(tap)
         
-        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
+        
+        dataObserver()
             
         self.view.gradientOfView(withColors: UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0), UIColor(red:0.74, green:0.76, blue:0.78, alpha:1.0))
         setupInputComponents()
@@ -96,7 +93,6 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
     }
     
     @objc func send (sender: UIButton) {
-        
         displayMyAlertMessage()
     }
     
@@ -135,7 +131,6 @@ class AdminGlobalMessagingViewController: UIViewController, UITextFieldDelegate,
         self.dateData.removeAll()
         self.msgData.removeAll()
         Refs().dataRef.child(self.randNum).child("Messages").observeSingleEvent(of: .value, with: { (snapshot) in
-            
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.msgData.append((snap.childSnapshot(forPath: "Message").value as! String?)!)

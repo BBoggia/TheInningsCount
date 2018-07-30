@@ -62,12 +62,7 @@ class AddRemoveAgeTableViewController: UITableViewController {
         
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
-        
-        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.league = snapshot.childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
+        dataObserver()
         
         let longPressGesture:UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(AddRemoveAgeTableViewController.longPress(_:)))
         longPressGesture.minimumPressDuration = 1.25
@@ -82,11 +77,8 @@ class AddRemoveAgeTableViewController: UITableViewController {
     }
     
     func dataObserver() {
-        
         self.tablePath = Refs().statRef.child(self.randNum).child(self.league)
-        
         tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
-            
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.convertedArray.append(snap.key)
@@ -121,15 +113,6 @@ class AddRemoveAgeTableViewController: UITableViewController {
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
                             })
                         }
-                    /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
-                        for child in snapshot.children {
-                            let snap = child as! DataSnapshot
-                            
-                            if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.convertedArray[indexPath.row] {
-                                self.ref?.child("UserData").child(snap.key).child("AgeGroup").setValue(self.alertTextField)
-                            }
-                        }
-                    })*/
                     self.tableView.reloadData()
                 }
                 

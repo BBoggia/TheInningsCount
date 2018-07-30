@@ -115,15 +115,6 @@ class AddRemoveTeamTableViewController: UITableViewController {
                     self.tablePath.child(self.convertedArray[row]).removeValue()
                 })
             }
-            /*self.ref?.child("UserData").observeSingleEvent(of: .value, with: { (snapshot) in
-                for child in snapshot.children {
-                    let snap = child as! DataSnapshot
-                    
-                    if snap.childSnapshot(forPath: "League").childSnapshot(forPath: "Name").value as! String! == self.league && snap.childSnapshot(forPath: "Team").value as! String! == self.convertedArray[row] && snap.childSnapshot(forPath: "AgeGroup").value as! String! == self.ageGroup {
-                        self.ref?.child("UserData").child(snap.key).child("Team").setValue(self.alertTextField)
-                    }
-                }
-            })*/
             self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)

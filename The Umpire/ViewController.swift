@@ -12,6 +12,35 @@ import FirebaseAuth
 
 class ViewController: UIViewController, UITextFieldDelegate {
     
+    @IBOutlet weak var testLoginView: UIView!
+    @IBAction func testLogin(_ sender: Any) {
+        if testLoginView.isHidden == true {testLoginView.isHidden = false}
+            else {testLoginView.isHidden = true}
+    }
+    @IBAction func adminLogin(_ sender: Any) {
+        testAuth(email: "admin@test.com")
+    }
+    @IBAction func coachLogin(_ sender: Any) {
+        testAuth(email: "coach@test.com")
+    }
+    @IBAction func Login1(_ sender: Any) {
+        testAuth(email: "1@1.com")
+    }
+    @IBAction func Login2(_ sender: Any) {
+        testAuth(email: "2@2.com")
+    }
+    
+    func testAuth(email: String) {
+        Auth.auth().signIn(withEmail: email, password: "111111", completion: { (user, error) in
+            let defaults = UserDefaults.standard
+            defaults.setValue(user?.uid, forKey: "uid")
+            
+            userAcc.uid = user?.uid
+            userAcc.user = user
+            self.performSegue(withIdentifier: "toHome", sender: nil)
+        })
+    }
+    
     var effect: UIVisualEffect!
     var alertTextfield: String!
     
@@ -65,6 +94,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if viewInScroll.isHidden == false {
             viewInScroll.isHidden = true
             toggleTitle()
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
         } else {
             closePopUp()
             visualEffectView.isHidden = true
@@ -90,7 +120,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
                     userAcc.user = user
                     self.emailField.text = ""
                     self.passwordField.text = ""
-                    self.performSegue(withIdentifier: "toMC", sender: nil)
+                    self.performSegue(withIdentifier: "toHome", sender: nil)
                 } else {
                     
                     let alertController = UIAlertController(title: "Oops!", message: error?.localizedDescription, preferredStyle: .alert)
@@ -143,7 +173,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
             appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
             popUpView.layer.bounds.size.height = 600
             popUpView.layer.bounds.size.width = 450
-            scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height, 0)
+            scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
             popUpMainTitle.font = UIFont.systemFont(ofSize: 30)
             popUpTitle.font = UIFont.systemFont(ofSize: 30)
             helpDesc.font = UIFont.systemFont(ofSize: 25)
@@ -164,28 +194,30 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     func createLeaguePopup() {
         popUpTitle.text = "Creating a league"
-        helpDesc.text = "1. First select 'Create a League' from the login page and enter the requested info.\n\n2. Then add each your leagues' divisions. (ex. Boys9-10, Boys 11-12)\n\n3. Next go through and select each division from the list and enter the teams for each.\n\n4. Finally press confirm and save the 5 digit code given at the end, coaches will need it to join your league."
+        helpDesc.text = "1. Create an account and log in.\n\n2. Press the \"Create League\" button on the home page and enter the name of your league you want to create.\n\n3. Add each of the divisions in your league.(ex. Boys9-10, Boys11-12)\n\n4. Select each division in the list to add the various teams.\n\n5. Finally press done and write down the league code given to you. That league code is what your coaches will use to join your league."
         helpDesc.sizeToFit()
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, 15, 0)
         viewInScroll.isHidden = false
     }
     
     func coachSignupPopup() {
         popUpTitle.text = "Signing up as a coach"
-        helpDesc.text = "1. First contact the league admin for the 5 digit code if you dont have it already.\n\n2. Next press 'Coach Signup', enter the requested info, and select 'Create Account'.\n\n3. Finally select the division and team you coach for and you're done!"
+        helpDesc.text = "1. Create an account.\n\n2. Contact the league administrator for the 5 digit league code if you haven't done so already.\n\n3. Login and press \"Join League\".\n\n4. Enter the league code provided to you, which you could also have done durring the signup process.\n\n5. Select your division and team, then press done\n\n6. Finally let the the league administrator know that you have sent a join request and wait for it to be accepted."
         helpDesc.sizeToFit()
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, 44, 0)
         viewInScroll.isHidden = false
     }
     
     func submitStatsPopup() {
         popUpTitle.text = "Submitting Stats"
-        helpDesc.text = "1. First login using your email and password you created before.\n\n2. Next select the 'Enter Innings' button.\n\n3. Then enter the players information and hit submit."
+        helpDesc.text = "1. Login.\n\n2. Press the \"Your Leagues\" button and select the league you want to enter stats for.\n\n3. Finally press the \"Enter Innings\" button and enter the players stats, then press submit"
         helpDesc.sizeToFit()
         viewInScroll.isHidden = false
     }
     
     func viewStatsPopup() {
         popUpTitle.text = "Viewing Stats"
-        helpDesc.text = "1. First login using your email and password you created before.\n\n2. Next select the 'View League Stats' button.\n\n3. Then finally select the division and team you would like to view the stats for and they will be right there."
+        helpDesc.text = "1. Login.\n\n2. Press the \"Your Leagues\" button and find the league you want to view the stats of.\n\n3. Finally press the \"View League Stats\" button and select the division and team you want to view."
         helpDesc.sizeToFit()
         viewInScroll.isHidden = false
     }
@@ -216,7 +248,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         closeButton.layer.cornerRadius = 5
         visualEffectView.layer.bounds.size.height = 0
         visualEffectView.layer.bounds.size.width = 0
-        scrollView.contentInset = UIEdgeInsetsMake(0, 0, viewInScroll.layer.bounds.height, 0)
+        scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)
     }
     
     func openPopUp() { //Opens help menu

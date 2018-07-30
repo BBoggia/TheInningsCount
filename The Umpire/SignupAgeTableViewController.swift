@@ -23,6 +23,8 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
     var usrPass: String!
     var firstName: String!
     var lastName: String!
+    var uid: String!
+    var alreadyHaveAccCheck = false
     
     var user: User!
     var userUID: String!
@@ -69,16 +71,28 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) {
             action in
             
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "coachTeamSelect") as! SignupTeamSelectViewController
-            vc.age = self.selectedAge
-            vc.usrEmail = self.usrEmail
-            vc.usrPass = self.usrPass
-            vc.leagueCode = self.leagueCode
-            vc.leagueName = self.leagueName
-            vc.firstName = self.firstName
-            vc.lastName = self.lastName
-            self.navigationController?.pushViewController(vc,animated: true)
+            if self.alreadyHaveAccCheck == true {
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "coachTeamSelect") as! SignupTeamSelectViewController
+                vc.division = self.selectedAge
+                vc.leagueCode = self.leagueCode
+                vc.leagueName = self.leagueName
+                vc.alreadyHaveAccCheck = true
+                self.navigationController?.pushViewController(vc,animated: true)
+                
+            } else {
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewController(withIdentifier: "coachTeamSelect") as! SignupTeamSelectViewController
+                vc.division = self.selectedAge
+                vc.usrEmail = self.usrEmail
+                vc.usrPass = self.usrPass
+                vc.leagueCode = self.leagueCode
+                vc.leagueName = self.leagueName
+                vc.firstName = self.firstName
+                vc.lastName = self.lastName
+                self.navigationController?.pushViewController(vc,animated: true)
+            }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         myAlert.addAction(okAction)

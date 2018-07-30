@@ -24,13 +24,7 @@ class AdminDataEntryAgeTableViewController: UITableViewController {
         
         user = Auth.auth().currentUser
         userUID = Auth.auth().currentUser?.uid
-        
-        Refs().usrRef.child(userUID!).child("League").observeSingleEvent(of: .value, with: { (snapshot) in
-            self.leagueName = snapshot.childSnapshot(forPath: "Name").value as! String?
-            self.randNum = snapshot.childSnapshot(forPath: "RandomNumber").value as! String?
-            self.dataObserver()
-        })
-        
+        self.dataObserver()
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,7 +34,6 @@ class AdminDataEntryAgeTableViewController: UITableViewController {
     
     func dataObserver() {
         Refs().statRef.child(self.randNum).child(leagueName).observeSingleEvent(of: .value, with: { (snapshot) in
-            
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 self.tableList.append(snap.key)
@@ -75,6 +68,8 @@ class AdminDataEntryAgeTableViewController: UITableViewController {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "adminTeamSelect") as! AdminDataEntryTeamTableViewController
         vc.selectedAge = currentCell?.textLabel?.text as String?
+        vc.leagueName = leagueName
+        vc.randNum = randNum
         navigationController?.pushViewController(vc,animated: true)
     }
 
