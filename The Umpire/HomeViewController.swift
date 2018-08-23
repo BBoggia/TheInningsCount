@@ -104,6 +104,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.performSegue(withIdentifier: "signoutFromHome", sender: nil)
     }
     
+    @IBOutlet var popUpView: UIView!
     var leagueMsgs = [[String:String]]()
     
     override func viewDidLoad() {

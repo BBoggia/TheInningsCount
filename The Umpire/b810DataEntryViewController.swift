@@ -28,9 +28,10 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     var isAdmin: Bool!
     let playerNumberArr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99]
     let inningPitchArr = [0, 1, 2, 3, 4, 5, 6]
-    var playerNumberPicked: Int! = 0
+    var playerNumberPicked: Int! = 1
     var inningNumberPicked: Int! = 0
     var fromAdminList = false
+    var ID: String!
     
     @IBOutlet weak var whiteLbl: UILabel!
     @IBOutlet weak var numberPicker: UIPickerView!
@@ -61,6 +62,7 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
         numberPicker.dataSource = self
         pitchPicker.delegate = self
         pitchPicker.dataSource = self
+        dataID()
     }
 
     override func didReceiveMemoryWarning() {
@@ -68,12 +70,20 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
     }
     
     func sendData() {
+        self.dataID()
         if teamName == nil || age == nil {
             displayAlert(title: "Oops!", message: "Something went wrong, relog to try to fix the issue!")
         } else {
-            Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Player":"Player#: \(playerNumberPicked!)", "Innings" : "Innings: \(inningNumberPicked!)", "Date":userDate, "Coach":"Coach \(userAcc.lastName)"])
+            self.randomID()
+            Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).childByAutoId().setValue(["Player":"Player#: \(playerNumberPicked!)", "Innings" : "Innings: \(inningNumberPicked!)", "Date":userDate, "Coach":"Coach \(userAcc.lastName!)", "ID":self.ID])
             self.numberPicker.selectRow(0, inComponent: 0, animated: true)
             self.pitchPicker.selectRow(0, inComponent: 0, animated: true)
+        }
+    }
+    
+    func dataID() {
+        Refs().statRef.child(randNum).child(leagueName).child(age).child(teamName).observeSingleEvent(of: .value) { (snapshot) in
+            self.ID = "\(snapshot.childrenCount + 1)"
         }
     }
     
@@ -83,6 +93,17 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
         vc.leagueName = leagueName
         vc.randNum = randNum
         self.navigationController?.pushViewController(vc,animated: true)
+    }
+    
+    func randomID() {
+        let pool: NSString = "abcdefghijklmnopqrstuvwxyz1234567890"
+        let length = pool.length
+        var randomString = ""
+        for _ in 0 ..< 9 {
+            let rand = arc4random_uniform(UInt32(length))
+            var nextChar = pool.character(at: Int(rand))
+            randomString += NSString(characters: &nextChar, length: 1) as String
+        }
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {

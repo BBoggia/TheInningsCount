@@ -47,7 +47,7 @@ struct JoinRequest {
 }
 
 struct Stats {
-    var player, inning, date, coach: String!
+    var player, inning, date, coach, id: String!
 }
 
 extension UIViewController {
@@ -63,6 +63,12 @@ extension UIViewController {
         gradientLayer.colors = [UIColor.blue, UIColor.red]
         gradientLayer.frame = view.bounds
         view.layer.insertSublayer(gradientLayer, at: 0)
+    }
+    
+    func delay(seconds: Double, completion: @escaping () -> ()) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            completion()
+        }
     }
 }
 

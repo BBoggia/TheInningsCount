@@ -33,7 +33,6 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { action in
             self.savePath.removeValue(forKey: "placeHolder")
             self.randomString()
-            self.createLeague()
         }
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
@@ -77,7 +76,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         for i in league.keys.reversed() {
             let leagueTeams = league[i]
             for j in leagueTeams! {
-                Refs().statRef.child(self.randomGenNum).child(self.leagueName).child(i).child(j).child("Long Date").setValue(["Date":"Date", "Player":"Player Number", "Innings":"Innings Pitched", "Coach":"Coach"])
+                Refs().statRef.child(self.randomGenNum).child(self.leagueName).child(i).child(j).child("Long Date").setValue(["Date":"Date", "Player":"Player Number", "Innings":"Innings Pitched", "Coach":"Coach", "ID":"ID"])
             }
         }
         Refs().dataRef.child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
@@ -98,22 +97,28 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         let letters : NSString = "0123456789"
         let len = UInt32(letters.length)
         var randomString = ""
-        for _ in 0 ..< 5 {
+        for _ in 0 ... 4 {
             let rand = arc4random_uniform(len)
             var nextChar = letters.character(at: Int(rand))
             randomString += NSString(characters: &nextChar, length: 1) as String
         }
-        self.randomGenNum = randomString
-        self.checkRandomString()
+        self.checkRandomString(x: randomString)
      }
      
-     func checkRandomString() {
+    func checkRandomString(x: String) {
         Refs().ref.observeSingleEvent(of: .value, with: { (snapshot) in
-            for child in snapshot.children {
-                let snap = child as! DataSnapshot
-                if self.randomGenNum == snap.key {
+            if snapshot.hasChild("LeagueStats") {
+                print("HasLeagueStats")
+                if snapshot.childSnapshot(forPath: "LeagueStats").hasChild(self.randomGenNum) {
                     self.randomString()
+                } else {
+                    self.randomGenNum = x
+                    self.createLeague()
                 }
+            } else {
+                print("NoLeagueStats")
+                self.randomGenNum = x
+                self.createLeague()
             }
         })
      }

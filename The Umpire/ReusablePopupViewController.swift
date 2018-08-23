@@ -77,7 +77,12 @@ class ReusablePopupViewController: UIViewController, UITableViewDelegate, UITabl
         self.present(alert, animated: true, completion: nil)
     }
     @IBAction func exitBtn(_ sender: Any) {
-        self.view.removeFromSuperview()
+        UIView.animate(withDuration: 0.4) {
+            self.popupView.frame = CGRect(x: self.view.frame.width, y: self.popupView.frame.minY, width: self.popupView.frame.width, height: self.popupView.frame.height)
+        }
+        delay(seconds: 0.4) {
+            self.view.removeFromSuperview()
+        }
     }
     
     var sender: String!
@@ -112,6 +117,10 @@ class ReusablePopupViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         if shouldDissapear == true {
             self.view.removeFromSuperview()
+        }
+        self.popupView.frame = CGRect(x: 0 - self.popupView.frame.width, y: self.popupView.frame.minY, width: self.popupView.frame.width, height: self.popupView.frame.height)
+        UIView.animate(withDuration: 0.4) {
+            self.popupView.center = self.view.center
         }
     }
     

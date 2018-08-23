@@ -48,6 +48,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                 tmp.inning = (snap.childSnapshot(forPath: "Innings").value as! String?)!
                 tmp.date = (snap.childSnapshot(forPath: "Date").value as! String?)!
                 tmp.coach = (snap.childSnapshot(forPath: "Coach").value as! String?)!
+                tmp.id = (snap.childSnapshot(forPath: "ID").value as! String?)!
                 self.stats.append(tmp)
                 self.playerDataTable.reloadData()
             }
@@ -89,12 +90,13 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                     Refs().statRef.child(randNum).child(league).child(age).child(team).observeSingleEvent(of: .value) { (snapshot) in
                         for child in snapshot.children {
                             let snap = child as! DataSnapshot
-                            if snap.childSnapshot(forPath: "Player").value as! String == tmpList![indexPath.row].player && snap.childSnapshot(forPath: "Innings").value as! String == tmpList![indexPath.row].inning && snap.childSnapshot(forPath: "Date").value as! String == tmpList![indexPath.row].coach {
+                            if snap.childSnapshot(forPath: "ID").value as! String == tmpList![indexPath.row].id  {
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).child(snap.key).removeValue()
                                 self.stats.reverse()
                                 self.stats.remove(at: indexPath.row)
                                 self.stats.reverse()
                                 self.playerDataTable.reloadData()
+                                break
                             }
                         }
                     }
