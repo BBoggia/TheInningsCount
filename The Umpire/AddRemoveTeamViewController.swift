@@ -109,13 +109,14 @@ class AddRemoveTeamTableViewController: UITableViewController {
             } else {
                 
                 self.alertTextField = myAlert.textFields![0].text
+                self.convertedArray[row] = self.alertTextField
                 
                 self.tablePath.observeSingleEvent(of: .value, with: { (snapshot) in
                     self.tablePath.child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[row]).value)
                     self.tablePath.child(self.convertedArray[row]).removeValue()
                 })
+                self.tableView.reloadData()
             }
-            self.tableView.reloadData()
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         myAlert.addAction(okAction)

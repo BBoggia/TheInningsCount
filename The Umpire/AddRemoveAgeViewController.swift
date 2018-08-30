@@ -107,13 +107,14 @@ class AddRemoveAgeTableViewController: UITableViewController {
                             self.displayAlert(title: "Oops!", message: "One or more teams cannot share the same name.")
                         } else {
                             self.alertTextField = myAlert.textFields![0].text
+                            self.convertedArray[indexPath.row] = self.alertTextField
                             
                             Refs().statRef.child(self.randNum).child(self.league).observeSingleEvent(of: .value, with: { (snapshot) in
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.alertTextField).setValue(snapshot.childSnapshot(forPath: self.convertedArray[indexPath.row]).value)
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.convertedArray[indexPath.row]).removeValue()
                             })
+                            self.tableView.reloadData()
                         }
-                    self.tableView.reloadData()
                 }
                 
                 let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)

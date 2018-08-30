@@ -35,6 +35,9 @@ class CoachManagerViewController: UIViewController, UITableViewDelegate, UITable
         
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
         dataObserver()
     }
     

@@ -82,8 +82,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if adminStatus == true || coachDiv == age && coachTeam == team {
             var tmpList = stats
-            tmpList?.reverse()
-            if stats.count == 1 {
+            if stats.count == 1 && stats[0].id == "0" {
                 displayAlert(title: "Oops!", message: "You cannot remove the last item from the list.")
             } else {
                 if editingStyle == .delete {
@@ -92,9 +91,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                             let snap = child as! DataSnapshot
                             if snap.childSnapshot(forPath: "ID").value as! String == tmpList![indexPath.row].id  {
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).child(snap.key).removeValue()
-                                self.stats.reverse()
                                 self.stats.remove(at: indexPath.row)
-                                self.stats.reverse()
                                 self.playerDataTable.reloadData()
                                 break
                             }

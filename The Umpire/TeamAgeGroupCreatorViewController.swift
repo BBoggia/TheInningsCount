@@ -76,7 +76,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         for i in league.keys.reversed() {
             let leagueTeams = league[i]
             for j in leagueTeams! {
-                Refs().statRef.child(self.randomGenNum).child(self.leagueName).child(i).child(j).child("Long Date").setValue(["Date":"Date", "Player":"Player Number", "Innings":"Innings Pitched", "Coach":"Coach", "ID":"ID"])
+                Refs().statRef.child(self.randomGenNum).child(self.leagueName).child(i).child(j).child("Long Date").setValue(["Date":"Date", "Player":"Player Number", "Innings":"Innings Pitched", "Coach":"Coach", "ID":"0"])
             }
         }
         Refs().dataRef.child(self.randomGenNum).child("LeagueName").setValue(self.leagueName)
