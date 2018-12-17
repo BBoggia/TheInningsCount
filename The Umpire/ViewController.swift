@@ -14,7 +14,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var testLoginView: UIView!
     @IBAction func testLogin(_ sender: Any) {
-        if testLoginView.isHidden == true {testLoginView.isHidden = false}
+        if testLoginView.isHidden == true {testLoginView.isHidden = false; view.bringSubview(toFront: testLoginView)}
             else {testLoginView.isHidden = true}
     }
     @IBAction func adminLogin(_ sender: Any) {

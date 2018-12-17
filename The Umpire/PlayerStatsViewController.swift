@@ -89,7 +89,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                     Refs().statRef.child(randNum).child(league).child(age).child(team).observeSingleEvent(of: .value) { (snapshot) in
                         for child in snapshot.children {
                             let snap = child as! DataSnapshot
-                            if snap.childSnapshot(forPath: "ID").value as! String == tmpList![indexPath.row].id  {
+                            if snap.childSnapshot(forPath: "ID").value as? String == tmpList![indexPath.row].id  {
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).child(snap.key).removeValue()
                                 self.stats.remove(at: indexPath.row)
                                 self.playerDataTable.reloadData()

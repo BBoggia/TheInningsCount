@@ -139,7 +139,7 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
                 self.autoSignIn()
             } else {
                 self.displayAlert(title: "Oops!", message: "Error creating account: " + (error?.localizedDescription)!)
-                print("Error creating account:", error?.localizedDescription as! String)
+                print("Error creating account:", error?.localizedDescription ?? "Error messgae unavailable")
             }
         })
     }

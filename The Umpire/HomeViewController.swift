@@ -20,10 +20,10 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         if let lastLeague = defaults.dictionary(forKey: userAcc.uid) {
             let storyboard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyboard.instantiateViewController(withIdentifier: "mainHub") as! mainHubViewController
-            vc.leagueName = lastLeague["league"] as! String
+            vc.leagueName = lastLeague["league"] as? String
             vc.leagueNum = lastLeague["number"] as! String
-            vc.Division = lastLeague["division"] as! String
-            vc.team = lastLeague["team"] as! String
+            vc.Division = lastLeague["division"] as? String
+            vc.team = lastLeague["team"] as? String
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             displayAlert(title: "Oops!", message: "It looks like you haven't viewed a league yet on this device.")
@@ -42,12 +42,23 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         let alert = UIAlertController(title: "Join a League", message: "Enter the 5 digit pin number for the league you would like to request to join.", preferredStyle: .alert)
         alert.addTextField()
         let send = UIAlertAction(title: "Send", style: .default) { action in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyboard.instantiateViewController(withIdentifier: "toAgeSelect") as! SignupAgeTableViewController
-            vc.leagueCode = alert.textFields![0].text!
-            vc.uid = userAcc.uid
-            vc.alreadyHaveAccCheck = true
-            self.navigationController?.pushViewController(vc,animated: true)
+            Refs().dataRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if snapshot.childSnapshot(forPath: alert.textFields![0].text!).exists() {
+                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                    let vc = storyboard.instantiateViewController(withIdentifier: "toAgeSelect") as! SignupAgeTableViewController
+                    vc.leagueCode = alert.textFields![0].text!
+                    vc.uid = userAcc.uid
+                    vc.alreadyHaveAccCheck = true
+                    self.navigationController?.pushViewController(vc,animated: true)
+                } else {
+                    self.displayAlert(title: "Oops!", message: "The league code you entered does not exist.")
+                }
+            })
+            for i in userAcc.leagues {
+                if i.leagueNumber == alert.textFields![0].text {
+                    self.displayAlert(title: "Oops!", message: "You already are a member of that league!")
+                }
+            }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .default, handler: nil)
         alert.addAction(cancel)
@@ -126,21 +137,14 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     func retriveStats() {
-        userAcc.user = Auth.auth().currentUser
-        userAcc.email = Auth.auth().currentUser?.email
-        userAcc.uid = Auth.auth().currentUser?.uid
+        userAcc = UsrAcc(user: Auth.auth().currentUser, uid: Auth.auth().currentUser?.uid, email: Auth.auth().currentUser?.email, firstName: "", lastName: "", leagues: [leagueInfo()])
         Refs().usrRef.child(userAcc.uid).observeSingleEvent(of: .value) { (snapshot) in
             userAcc.firstName = snapshot.childSnapshot(forPath: "FirstName").value as! String?
             userAcc.lastName = snapshot.childSnapshot(forPath: "LastName").value as! String?
             if snapshot.childSnapshot(forPath: "Leagues").hasChildren() {
                 for child in snapshot.childSnapshot(forPath: "Leagues").children {
                     let snap = child as? DataSnapshot
-                    var league = leagueInfo()
-                    league.leagueNumber = snap?.key
-                    league.leagueName = (snap?.childSnapshot(forPath: "LeagueName").value as! String?)!
-                    league.division = (snap?.childSnapshot(forPath: "Division").value as! String?)!
-                    league.team = (snap?.childSnapshot(forPath: "Team").value as! String?)!
-                    league.isAdmin = (snap?.childSnapshot(forPath: "AdminStatus").value as! Bool?)!
+                    let league = leagueInfo(leagueName: (snap?.childSnapshot(forPath: "LeagueName").value as! String?)!, leagueNumber: snap?.key, division: (snap?.childSnapshot(forPath: "Division").value as! String?)!, team: (snap?.childSnapshot(forPath: "Team").value as! String?)!, isAdmin: (snap?.childSnapshot(forPath: "AdminStatus").value as! Bool?)!)
                     userAcc.leagues.append(league)
                 }
             } else {
@@ -162,9 +166,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
                     }
                     msgArray.reverse()
                     do {
-                        try msgArray.removeSubrange(5...)
-                    } catch let err as NSError {
-                        print("Not enough values: %@", err)
+                        msgArray.removeSubrange(5...)
                     }
                     for index in 0...4 {
                         self.leagueMsgs.append(["name":snapshot.childSnapshot(forPath: "LeagueName").value as! String, "date": snapshot.childSnapshot(forPath: msgArray[index]).childSnapshot(forPath: "Date").value as! String, "message":snapshot.childSnapshot(forPath: msgArray[index]).childSnapshot(forPath: "Message").value as! String])

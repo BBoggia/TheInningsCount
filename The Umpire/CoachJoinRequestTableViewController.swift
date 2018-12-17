@@ -29,12 +29,12 @@ class CoachJoinRequestTableViewController: UITableViewController {
                 let snap = child as! DataSnapshot
                 var request = JoinRequest()
                 request.dateAccepted = ""
-                request.dateRequested = snap.childSnapshot(forPath: "DateRequested").value as! String
-                request.div = snap.childSnapshot(forPath: "Division").value as! String
-                request.email = snap.childSnapshot(forPath: "Email").value as! String
-                request.name = snap.childSnapshot(forPath: "Name").value as! String
-                request.requestStatus = snap.childSnapshot(forPath: "RequestStatus").value as! Bool
-                request.team = snap.childSnapshot(forPath: "Team").value as! String
+                request.dateRequested = snap.childSnapshot(forPath: "DateRequested").value as? String
+                request.div = snap.childSnapshot(forPath: "Division").value as? String
+                request.email = snap.childSnapshot(forPath: "Email").value as? String
+                request.name = snap.childSnapshot(forPath: "Name").value as? String
+                request.requestStatus = snap.childSnapshot(forPath: "RequestStatus").value as? Bool
+                request.team = snap.childSnapshot(forPath: "Team").value as? String
                 request.uid = snap.key
                 self.tableList.append(request)
                 self.tableView.reloadData()

@@ -41,7 +41,7 @@ class AgeTeamCheckTableViewController: UITableViewController {
             self.ageTeamSelection()
         } else if self.teamCheck == false {
             Refs().dataRef.child(self.usrUID).observeSingleEvent(of: .value, with: { (snapshot) in
-                self.ageSelected = snapshot.childSnapshot(forPath: "AgeGroup").value as! String
+                self.ageSelected = snapshot.childSnapshot(forPath: "AgeGroup").value as? String
                 self.teamSelection()
                 self.usrProgress = 1
             })

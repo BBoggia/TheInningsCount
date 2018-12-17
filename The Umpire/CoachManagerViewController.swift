@@ -52,10 +52,10 @@ class CoachManagerViewController: UIViewController, UITableViewDelegate, UITable
             for child in snapshot.children {
                 let snap = child as! DataSnapshot
                 var coach = Coach()
-                coach.div = snap.childSnapshot(forPath: "Division").value as! String
-                coach.team = snap.childSnapshot(forPath: "Team").value as! String
-                coach.email = snap.childSnapshot(forPath: "Email").value as! String
-                coach.name = snap.childSnapshot(forPath: "Name").value as! String
+                coach.div = snap.childSnapshot(forPath: "Division").value as? String
+                coach.team = snap.childSnapshot(forPath: "Team").value as? String
+                coach.email = snap.childSnapshot(forPath: "Email").value as? String
+                coach.name = snap.childSnapshot(forPath: "Name").value as? String
                 if let adminStatus: Bool = snap.childSnapshot(forPath: "AdminStatus").value as? Bool {
                     coach.isAdmin = adminStatus
                 } else {

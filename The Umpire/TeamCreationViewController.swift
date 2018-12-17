@@ -89,6 +89,8 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
                 self.teamTableView.reloadData()
                 self.changesMade = true
             }
+            
+            
         }
         
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
