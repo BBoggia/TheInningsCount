@@ -1,9 +1,9 @@
 //
-//  PlayerStatsViewController.swift
+//  PlayerStatsTableViewController.swift
 //  The Umpire
 //
-//  Created by Branson Boggia on 3/9/17.
-//  Copyright © 2017 PineTree Studios. All rights reserved.
+//  Created by Branson Boggia on 1/4/19.
+//  Copyright © 2019 PineTree Studios. All rights reserved.
 //
 
 import UIKit
@@ -11,9 +11,7 @@ import Firebase
 import FirebaseDatabase
 import FirebaseAuth
 
-class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    @IBOutlet weak var playerDataTable: UITableView!
+class PlayerStatsTableViewController: UITableViewController {
     
     var userUID: String!
     var stats: [Stats]! = []
@@ -23,19 +21,14 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
     var randNum: String!
     var adminStatus: Bool!
     var coachDiv, coachTeam: String!
-    
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         userUID = Auth.auth().currentUser?.uid as String?
         dataObserver()
-        self.playerDataTable.delegate = self
-        self.playerDataTable.dataSource = self
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
     }
     
     func dataObserver() {
@@ -50,27 +43,27 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                 tmp.coach = (snap.childSnapshot(forPath: "Coach").value as! String?)!
                 tmp.id = (snap.childSnapshot(forPath: "ID").value as! String?)!
                 self.stats.append(tmp)
-                self.playerDataTable.reloadData()
+                self.tableView.reloadData()
             }
             self.stats.reverse()
             if !(self.stats.count <= 1) {
                 self.stats.removeFirst()
             }
-            self.playerDataTable.reloadData()
+            self.tableView.reloadData()
         })
     }
-    
+
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return stats.count
     }
     
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = playerDataTable.dequeueReusableCell(withIdentifier: "cell") as! PlayerStatsTableViewCell
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") as! PlayerStatsTableViewCell
         
         cell.statLbl.text = stats[indexPath.row].player + " | " + stats[indexPath.row].inning
         cell.coach.text = stats[indexPath.row].coach
@@ -79,7 +72,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
         return cell
     }
     
-    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         if adminStatus == true || coachDiv == age && coachTeam == team {
             var tmpList = stats
             if stats.count == 1 && stats[0].id == "0" {
@@ -92,7 +85,7 @@ class PlayerStatsViewController: UIViewController, UITableViewDelegate, UITableV
                             if snap.childSnapshot(forPath: "ID").value as? String == tmpList![indexPath.row].id  {
                                 Refs().statRef.child(self.randNum).child(self.league).child(self.age).child(self.team).child(snap.key).removeValue()
                                 self.stats.remove(at: indexPath.row)
-                                self.playerDataTable.reloadData()
+                                self.tableView.reloadData()
                                 break
                             }
                         }
