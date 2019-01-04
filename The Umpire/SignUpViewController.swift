@@ -63,8 +63,8 @@ class SignUpViewController: UIViewController, UITextFieldDelegate {
         lastName.delegate = self
         
         backgroundLabel.frame.size.height = 230
-        backgroundLabel.layer.cornerRadius = 10
         backgroundLabel.layer.masksToBounds = true
+        backgroundLabel.layer.cornerRadius = 10
         
         let toolBar = UIToolbar()
         toolBar.sizeToFit()

@@ -1310,7 +1310,12 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="createLeagueOutlet" destination="kI9-ne-cUV" id="xSR-gh-3FR"/>
+                        <outlet property="joinLeagueOutlet" destination="9yd-nC-60Y" id="b6m-eI-bBG"/>
+                        <outlet property="lastLeagueOutlet" destination="Eam-za-3bn" id="7Cu-Qx-RC6"/>
+                        <outlet property="leagueAnnouncementsOutlet" destination="UDO-ZF-XFA" id="T9R-VT-NBQ"/>
                         <outlet property="tableView" destination="4kr-Sm-iCP" id="HQU-pn-dhB"/>
+                        <outlet property="yourLeagueOutlet" destination="9VU-Wo-kHr" id="eY9-60-adX"/>
                         <segue destination="wE1-2y-T72" kind="show" identifier="toLeagueHub" id="UQX-VF-96b"/>
                         <segue destination="z0H-sr-OaL" kind="show" id="Jef-lw-dcr"/>
                         <segue destination="fIo-55-5tH" kind="presentation" identifier="homeToPopup" id="4Op-cM-8F8"/>
@@ -2408,12 +2413,6 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="masksToBounds" value="YES"/>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BYA-i1-xZb">
                                 <rect key="frame" x="16" y="527" width="343" height="120"/>
@@ -3220,8 +3219,8 @@
         <image name="settings" width="32" height="32"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="q1V-Qz-tzx"/>
-        <segue reference="AlN-4V-ZBv"/>
-        <segue reference="d4p-Kl-2Mh"/>
+        <segue reference="lEe-xV-crj"/>
+        <segue reference="Ybz-b7-KAr"/>
+        <segue reference="Z1i-lT-zQJ"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -73,7 +73,7 @@ class TeamSelectViewController: UIViewController, UITableViewDelegate, UITableVi
         teamToPass = currentCell?.textLabel?.text
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "playerStats") as! PlayerStatsViewController
+        let vc = storyboard.instantiateViewController(withIdentifier: "playerStats") as! PlayerStatsTableViewController
         vc.age = age
         vc.team = teamToPass
         vc.league = league

@@ -115,13 +115,27 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
         self.performSegue(withIdentifier: "signoutFromHome", sender: nil)
     }
     
+    @IBOutlet weak var yourLeagueOutlet: UIButton!
+    @IBOutlet weak var lastLeagueOutlet: UIButton!
+    @IBOutlet weak var joinLeagueOutlet: UIButton!
+    @IBOutlet weak var createLeagueOutlet: UIButton!
+    @IBOutlet weak var leagueAnnouncementsOutlet: UIButton!
     @IBOutlet var popUpView: UIView!
+    
     var leagueMsgs = [[String:String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.delegate = self
         tableView.dataSource = self
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            self.yourLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            self.lastLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            self.joinLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            self.createLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            self.leagueAnnouncementsOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

@@ -72,7 +72,6 @@ class mainHubViewController: UIViewController {
         super.viewDidLoad()
         
         userUID = Auth.auth().currentUser?.uid as String?
-        
         Refs().usrRef.child(userUID!).child("Leagues").child(leagueNum).observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.childSnapshot(forPath: "AdminStatus").value as! Bool? == true {
                 self.isAdmin = true
@@ -106,6 +105,12 @@ class mainHubViewController: UIViewController {
                 }
             }
             self.verifyAccDetails()
+            
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                self.inputBtn.titleLabel?.font = .boldSystemFont(ofSize: 38)
+                self.announcements.titleLabel?.font = .boldSystemFont(ofSize: 38)
+                self.dataBtn.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            }
         })
         
         UserDefaults.standard.set(["league":leagueName, "number":leagueNum, "division":Division, "team":team], forKey: userAcc.uid)

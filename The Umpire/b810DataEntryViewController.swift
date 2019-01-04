@@ -51,6 +51,7 @@ class b810DataEntryViewController: UIViewController, UIPickerViewDelegate, UIPic
         super.viewDidLoad()
         
         user = Auth.auth().currentUser
+        whiteLbl.layer.masksToBounds = true
         whiteLbl.layer.cornerRadius = 10
         if isAdmin == true && fromAdminList == false {
             adminChooseTeam()
