@@ -23,13 +23,11 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     var didRemove: Bool!
     
     @IBAction func addTeam(_ sender: Any) {
-        
         displayTextEntryField()
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.teamTableView.delegate = self
         self.teamTableView.dataSource = self
         navBar.title = divSelection!
@@ -49,7 +47,9 @@ class TeamCreationViewController: UIViewController, UITextFieldDelegate, UITable
     
     override func viewWillDisappear(_ animated : Bool) {
         super.viewWillDisappear(animated)
-        
+        if teams.count == 0 {
+            
+        }
         var tmp = savePath
         if changesMade == true {
             var snap = defaults.dictionary(forKey: "leagueData") as! [String:[String]]

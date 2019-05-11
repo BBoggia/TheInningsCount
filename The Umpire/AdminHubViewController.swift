@@ -20,7 +20,12 @@ class AdminHubViewController: UIViewController {
     var leagueCode: String!
     let defaults = UserDefaults.standard
     
+    @IBOutlet weak var sendMsg: UIButton!
     @IBOutlet weak var titleLbl: UILabel!
+    @IBOutlet weak var viewCode: UIButton!
+    @IBOutlet weak var leagueMgmt: UIButton!
+    @IBOutlet weak var coachMgmt: UIButton!
+    
     @IBAction func sendGlobalMessage(_ sender: UIButton) {
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let vc = storyboard.instantiateViewController(withIdentifier: "adminGlobalMessage") as! AdminGlobalMessagingViewController
@@ -55,7 +60,11 @@ class AdminHubViewController: UIViewController {
         self.view.gradientOfView(withColors: UIColor(red:0.17, green:0.24, blue:0.31, alpha:1.0), UIColor(red:0.74, green:0.76, blue:0.78, alpha:1.0))
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 32)
+            titleLbl.font = UIFont(name: titleLbl.font.fontName, size: 64)
+            viewCode.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            sendMsg.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            leagueMgmt.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            coachMgmt.titleLabel?.font = .boldSystemFont(ofSize: 38)
         }
         
         if defaults.bool(forKey: "showAdminHubPopup") != false {

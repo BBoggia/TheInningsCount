@@ -120,6 +120,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
     @IBOutlet weak var joinLeagueOutlet: UIButton!
     @IBOutlet weak var createLeagueOutlet: UIButton!
     @IBOutlet weak var leagueAnnouncementsOutlet: UIButton!
+    @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet var popUpView: UIView!
     
     var leagueMsgs = [[String:String]]()
@@ -135,6 +136,7 @@ class HomeViewController: UIViewController, UITableViewDelegate, UITableViewData
             self.joinLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
             self.createLeagueOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
             self.leagueAnnouncementsOutlet.titleLabel?.font = .boldSystemFont(ofSize: 38)
+            self.titleLbl.font = .boldSystemFont(ofSize: 64)
         }
     }
     

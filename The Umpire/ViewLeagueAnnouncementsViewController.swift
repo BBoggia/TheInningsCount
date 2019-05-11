@@ -14,6 +14,7 @@ import FirebaseDatabase
 class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
     @IBOutlet weak var clientTable: UITableView!
+    @IBOutlet weak var titleLbl: UILabel!
     
     var user: User!
     var userUID: String!
@@ -36,6 +37,9 @@ class ViewLeagueAnnouncementsViewController: UIViewController, UITableViewDelega
         
         self.msgRef = Refs().dataRef.child(self.randNum).child("Messages")
         self.dataObserver()
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.font = .boldSystemFont(ofSize: 64)        }
     }
 
     override func didReceiveMemoryWarning() {

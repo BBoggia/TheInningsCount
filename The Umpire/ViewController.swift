@@ -13,6 +13,7 @@ import FirebaseAuth
 class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak var testLoginView: UIView!
+    @IBOutlet weak var testLoginOutlet: UIBarButtonItem!
     @IBAction func testLogin(_ sender: Any) {
         if testLoginView.isHidden == true {testLoginView.isHidden = false; view.bringSubview(toFront: testLoginView)}
             else {testLoginView.isHidden = true}
@@ -170,7 +171,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         popUpMainDesc.text = "If the below options aren't able to help you feel free to email me at bboggia912@gmail.com!"
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            appTitle.font = UIFont(name: appTitle.font.fontName, size: 55)
+            appTitle.font = UIFont(name: appTitle.font.fontName, size: 64)
             popUpView.layer.bounds.size.height = 600
             popUpView.layer.bounds.size.width = 450
             scrollView.contentInset = UIEdgeInsetsMake(0, 0, 0, 0)

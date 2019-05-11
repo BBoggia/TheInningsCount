@@ -14,6 +14,7 @@ import FirebaseAuth
 class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var teamTableView: UITableView!
+    @IBOutlet weak var titleLbl: UILabel!
     
     var teamList = [String]()
     var team: String!
@@ -33,6 +34,11 @@ class SignupTeamSelectViewController: UIViewController, UITableViewDataSource, U
         populateView()
         teamTableView.delegate = self
         teamTableView.dataSource = self
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.font = UIFont.boldSystemFont(ofSize: 66)
+            titleLbl.frame = CGRect(x: titleLbl.frame.minX, y: titleLbl.frame.minY, width: titleLbl.frame.width, height: titleLbl.frame.height * 2)
+        }
     }
 
     override func didReceiveMemoryWarning() {

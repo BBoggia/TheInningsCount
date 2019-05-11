@@ -324,7 +324,7 @@
                                 <action selector="helpButton:" destination="BYZ-38-t0r" id="Vo5-Nb-exI"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" title="Test Login" id="Fhx-7F-jqm">
+                        <barButtonItem key="rightBarButtonItem" enabled="NO" id="Fhx-7F-jqm">
                             <connections>
                                 <action selector="testLogin:" destination="BYZ-38-t0r" id="r8h-qA-BmF"/>
                             </connections>
@@ -346,6 +346,7 @@
                         <outlet property="scrollView" destination="Ptd-17-3As" id="wPV-E5-u7v"/>
                         <outlet property="signUpButton" destination="eWq-KR-dbN" id="Owf-hi-q19"/>
                         <outlet property="submitStatsHelp" destination="NbU-an-yKP" id="Qcr-mb-O9A"/>
+                        <outlet property="testLoginOutlet" destination="Fhx-7F-jqm" id="lLw-Hf-ETp"/>
                         <outlet property="testLoginView" destination="TOV-r5-Qr9" id="Fof-zN-Iqr"/>
                         <outlet property="viewInScroll" destination="2e0-uY-J8a" id="rXz-Vx-LdM"/>
                         <outlet property="viewStatsHelp" destination="nhz-JW-DIH" id="xSZ-gZ-6Lg"/>
@@ -649,6 +650,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="ageTableView" destination="EPg-Pg-xcx" id="3Xc-4c-5AW"/>
+                        <outlet property="titleLbl" destination="uw1-9z-jVA" id="a5T-DW-TEV"/>
                         <segue destination="jve-S9-ehp" kind="show" identifier="toAddTeams" id="zVf-z7-Y2Y"/>
                         <segue destination="1RF-VC-iQ3" kind="showDetail" identifier="createdLeague" id="Hmg-y0-L7h"/>
                     </connections>
@@ -1315,6 +1317,7 @@
                         <outlet property="lastLeagueOutlet" destination="Eam-za-3bn" id="7Cu-Qx-RC6"/>
                         <outlet property="leagueAnnouncementsOutlet" destination="UDO-ZF-XFA" id="T9R-VT-NBQ"/>
                         <outlet property="tableView" destination="4kr-Sm-iCP" id="HQU-pn-dhB"/>
+                        <outlet property="titleLbl" destination="UER-0L-D9P" id="zCt-HT-ZF3"/>
                         <outlet property="yourLeagueOutlet" destination="9VU-Wo-kHr" id="eY9-60-adX"/>
                         <segue destination="wE1-2y-T72" kind="show" identifier="toLeagueHub" id="UQX-VF-96b"/>
                         <segue destination="z0H-sr-OaL" kind="show" id="Jef-lw-dcr"/>
@@ -1370,6 +1373,13 @@
                                             <view contentMode="scaleToFill" verticalCompressionResistancePriority="250" translatesAutoresizingMaskIntoConstraints="NO" id="Qbt-Uj-zw3">
                                                 <rect key="frame" x="16" y="0.0" width="343" height="150.5"/>
                                                 <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="axc-eN-r08">
+                                                        <rect key="frame" x="0.0" y="0.0" width="343" height="150.5"/>
+                                                        <color key="backgroundColor" red="0.99989169840000003" green="1" blue="0.99988096950000005" alpha="0.70168022259999996" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="SIM-gc-FmL">
                                                         <rect key="frame" x="4" y="4" width="335" height="142.5"/>
                                                         <subviews>
@@ -1445,12 +1455,15 @@
                                                         </constraints>
                                                     </stackView>
                                                 </subviews>
-                                                <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="0.70168022260273977" colorSpace="custom" customColorSpace="sRGB"/>
                                                 <constraints>
+                                                    <constraint firstItem="axc-eN-r08" firstAttribute="leading" secondItem="Qbt-Uj-zw3" secondAttribute="leading" id="3Zw-dE-IVy"/>
+                                                    <constraint firstItem="axc-eN-r08" firstAttribute="top" secondItem="Qbt-Uj-zw3" secondAttribute="top" id="9mR-hm-iNi"/>
                                                     <constraint firstAttribute="bottom" secondItem="SIM-gc-FmL" secondAttribute="bottom" constant="4" id="BYc-A9-ZoK"/>
+                                                    <constraint firstAttribute="bottom" secondItem="axc-eN-r08" secondAttribute="bottom" id="SXv-nv-ljU"/>
                                                     <constraint firstItem="SIM-gc-FmL" firstAttribute="leading" secondItem="Qbt-Uj-zw3" secondAttribute="leading" constant="4" id="V8e-hB-vtD"/>
                                                     <constraint firstItem="SIM-gc-FmL" firstAttribute="top" secondItem="Qbt-Uj-zw3" secondAttribute="top" constant="4" id="fYF-gV-kkT"/>
                                                     <constraint firstAttribute="trailing" secondItem="SIM-gc-FmL" secondAttribute="trailing" constant="4" id="lan-nc-xkD"/>
+                                                    <constraint firstAttribute="trailing" secondItem="axc-eN-r08" secondAttribute="trailing" id="yfd-o6-aaM"/>
                                                 </constraints>
                                             </view>
                                         </subviews>
@@ -1609,7 +1622,7 @@
                     <navigationItem key="navigationItem" id="hzn-iI-QrH"/>
                     <connections>
                         <outlet property="announcements" destination="RCg-37-YA0" id="LLG-Tf-7hp"/>
-                        <outlet property="coachHublbl" destination="h7S-yL-PyY" id="J0x-9Q-Y9q"/>
+                        <outlet property="backgroundLbl" destination="axc-eN-r08" id="oyG-ij-lUt"/>
                         <outlet property="coachesHub" destination="h7S-yL-PyY" id="Fcb-Vp-oBf"/>
                         <outlet property="dataBtn" destination="vwY-xU-kta" id="lHT-eC-52C"/>
                         <outlet property="holderView" destination="Qbt-Uj-zw3" id="bzu-uC-VRP"/>
@@ -1750,7 +1763,11 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="coachMgmt" destination="Mtc-eo-HIx" id="2Fj-xW-QcZ"/>
+                        <outlet property="leagueMgmt" destination="rFC-3I-yZg" id="ch8-Ug-tjm"/>
+                        <outlet property="sendMsg" destination="Rsy-Mv-b3O" id="nif-b8-6V4"/>
                         <outlet property="titleLbl" destination="Kr8-Ki-u5C" id="cte-D5-2ib"/>
+                        <outlet property="viewCode" destination="RwC-ss-Qed" id="hrb-N4-wvn"/>
                         <segue destination="E3P-Bq-Fs2" kind="show" id="mMM-hJ-dLG"/>
                         <segue destination="ou2-rI-ygG" kind="show" id="L82-mm-AcD"/>
                         <segue destination="VOv-WL-KDx" kind="show" id="t74-eT-b1N"/>
@@ -2648,6 +2665,7 @@
                     </view>
                     <connections>
                         <outlet property="teamTableView" destination="vLN-JK-Nwk" id="0sD-rF-TxK"/>
+                        <outlet property="titleLbl" destination="bRa-uq-gIB" id="Scp-vn-60A"/>
                         <segue destination="D0j-yH-1an" kind="show" identifier="toSelectTeamCheck" id="tjh-IH-bwC"/>
                     </connections>
                 </viewController>
@@ -2729,6 +2747,7 @@
                     </view>
                     <connections>
                         <outlet property="teamTableView" destination="QEY-tP-H92" id="zEz-zq-L4C"/>
+                        <outlet property="titleLbl" destination="urs-gV-z2d" id="X1q-24-X50"/>
                         <segue destination="yNW-wi-KkC" kind="showDetail" identifier="coachToNav" id="d4p-Kl-2Mh"/>
                         <segue destination="1RF-VC-iQ3" kind="showDetail" identifier="fromJoinRequest" id="AlN-4V-ZBv"/>
                     </connections>
@@ -3002,6 +3021,7 @@
                     </view>
                     <connections>
                         <outlet property="clientTable" destination="Jm2-gJ-2ym" id="qaK-jt-FEJ"/>
+                        <outlet property="titleLbl" destination="IcM-Rw-5Yz" id="nQE-da-6Xb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="esa-24-1vF" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3129,16 +3149,16 @@
             </objects>
             <point key="canvasLocation" x="2089" y="2398"/>
         </scene>
-        <!--Table View Controller-->
+        <!--Player Stats Table View Controller-->
         <scene sceneID="ZGp-95-uHO">
             <objects>
-                <tableViewController id="Yi3-8H-xhx" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="playerStats" id="Yi3-8H-xhx" customClass="PlayerStatsTableViewController" customModule="The_Umpire" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Ko7-cm-BXi">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="LkP-wG-9l4">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="cell" id="LkP-wG-9l4" customClass="PlayerStatsTableViewCell" customModule="The_Umpire" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LkP-wG-9l4" id="bnf-CV-zEc">
@@ -3200,6 +3220,11 @@
                                         <constraint firstItem="GkU-jy-Yax" firstAttribute="leading" secondItem="bnf-CV-zEc" secondAttribute="leading" constant="8" id="oRf-1V-Abk"/>
                                     </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="coach" destination="Sln-lm-9HQ" id="f9r-17-Q70"/>
+                                    <outlet property="dateLbl" destination="9TC-pq-4ZY" id="EgF-LZ-DS7"/>
+                                    <outlet property="statLbl" destination="Lz6-8A-7eb" id="93e-cw-f9F"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -3221,6 +3246,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="lEe-xV-crj"/>
         <segue reference="Ybz-b7-KAr"/>
-        <segue reference="Z1i-lT-zQJ"/>
+        <segue reference="3E3-r6-vsW"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -21,18 +21,24 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     var randomGenNum = ""
     
     @IBOutlet weak var ageTableView: UITableView!
+    @IBOutlet weak var titleLbl: UILabel!
     
     @IBAction func addAgeBtn(_ sender: Any) {
         displayTextEntryField(title: "Division Name", userMessage: "Enter the name of your age group or division then press confirm.")
     }
     
     @IBAction func createGroups(_ sender: Any) {
-        
         let myAlert = UIAlertController(title: "Are you sure?", message: "Please verify that all of your divisions and their teams are correct before continuing.", preferredStyle: UIAlertControllerStyle.alert)
         let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel, handler: nil)
         let okAction = UIAlertAction(title: "Ok", style: UIAlertActionStyle.default) { action in
-            self.savePath.removeValue(forKey: "placeHolder")
-            self.randomString()
+            if !(self.divisions.count > 0) {
+                self.displayAlert(title: "Oops!", message: "You need to have at least one division to create a league.")
+            } else if self.teamEmptyCheck() {
+                self.displayAlert(title: "Oops!", message: "One of your leagues doesn't have any teams.")
+            } else {
+                self.savePath.removeValue(forKey: "placeHolder")
+                self.createLeague()
+            }
         }
         myAlert.addAction(okAction)
         myAlert.addAction(cancelAction)
@@ -51,6 +57,11 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         let doneButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.done, target: self, action: #selector(self.doneClicked))
         toolBar.setItems([doneButton], animated: false)
         displayAlert(title: "Divisions", message: "Here is where you can add divisions or age groups to your league; e.g. Age9 Boys, Age10 Girls, ect.")
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.font = UIFont.boldSystemFont(ofSize: 66)
+            titleLbl.frame = CGRect(x: titleLbl.frame.minX, y: titleLbl.frame.minY, width: titleLbl.frame.width, height: titleLbl.frame.height * 2)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -69,10 +80,12 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
     }
     
      func createLeague() {
+        print("CREATELEAGUE")
         var league = UserDefaults.standard.dictionary(forKey: "leagueData") as! [String:[String]]
         if league["placeHolder"] != nil {
             league.removeValue(forKey: "placeHolder")
         }
+        randomGenNum = randomString()
         for i in league.keys.reversed() {
             let leagueTeams = league[i]
             for j in leagueTeams! {
@@ -93,7 +106,7 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
         self.present(myAlert1, animated: true, completion: nil)
      }
      
-     func randomString() {
+     func randomString() -> String {
         let letters : NSString = "0123456789"
         let len = UInt32(letters.length)
         var randomString = ""
@@ -102,31 +115,56 @@ class TeamAgeGroupCreatorViewController: UIViewController, UITextFieldDelegate, 
             var nextChar = letters.character(at: Int(rand))
             randomString += NSString(characters: &nextChar, length: 1) as String
         }
-        self.checkRandomString(x: randomString)
+        if checkRandomString(x: randomString) {
+            randomString = self.randomString()
+        }
+        return randomString
      }
      
-    func checkRandomString(x: String) {
+    func checkRandomString(x: String) -> Bool {
+        var check = false
         Refs().ref.observeSingleEvent(of: .value, with: { (snapshot) in
             if snapshot.hasChild("LeagueStats") {
-                print("HasLeagueStats")
-                if snapshot.childSnapshot(forPath: "LeagueStats").hasChild(self.randomGenNum) {
-                    self.randomString()
+                print(self.randomGenNum)
+                if snapshot.childSnapshot(forPath: "LeagueStats").hasChild(x) {
+                    //self.randomString()
+                    check = true
                 } else {
-                    self.randomGenNum = x
-                    self.createLeague()
+                    //self.randomGenNum = x
+                    //self.createLeague()
                 }
             } else {
                 print("NoLeagueStats")
-                self.randomGenNum = x
-                self.createLeague()
+                //self.randomGenNum = x
+                //self.createLeague()
             }
         })
+        if check == true {
+            return true
+        }
+        return false
      }
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true);
         return false;
+    }
+    
+    func teamEmptyCheck() -> Bool {
+        var league = UserDefaults.standard.dictionary(forKey: "leagueData") as! [String:[String]]
+        if league["placeHolder"] != nil {
+            league.removeValue(forKey: "placeHolder")
+        }
+        if league.count != divisions.count {
+            return true
+        }
+        for i in league.values {
+            if i.count < 1 || i == [""] {
+               return true
+            }
+        }
+        return false
     }
     
     @objc func doneClicked() {

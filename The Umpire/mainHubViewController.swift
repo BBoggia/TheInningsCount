@@ -61,9 +61,9 @@ class mainHubViewController: UIViewController {
     @IBOutlet var dataBtn: UIButton!
     @IBOutlet weak var coachesHub: UILabel!
     @IBOutlet weak var navBar: UINavigationItem!
+    @IBOutlet weak var backgroundLbl: UILabel!
     
     //For iPad size changes
-    @IBOutlet weak var coachHublbl: UILabel!
     @IBOutlet weak var holderView: UIView!
     @IBOutlet var displayLbls: [UILabel]!
     @IBOutlet var buttons: [UIButton]!
@@ -105,20 +105,22 @@ class mainHubViewController: UIViewController {
                 }
             }
             self.verifyAccDetails()
-            
-            if UIDevice.current.userInterfaceIdiom == .pad {
+            /*if UIDevice.current.userInterfaceIdiom == .pad {
                 self.inputBtn.titleLabel?.font = .boldSystemFont(ofSize: 38)
                 self.announcements.titleLabel?.font = .boldSystemFont(ofSize: 38)
                 self.dataBtn.titleLabel?.font = .boldSystemFont(ofSize: 38)
-            }
+            }*/
         })
+        
+        backgroundLbl.layer.masksToBounds = true
+        backgroundLbl.layer.cornerRadius = 10
         
         UserDefaults.standard.set(["league":leagueName, "number":leagueNum, "division":Division, "team":team], forKey: userAcc.uid)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             inputBtn.heightAnchor.constraint(equalToConstant: 140).isActive = true
-            coachesHub.font = UIFont(name: coachesHub.font.fontName, size: 62)
-            coachHublbl.heightAnchor.constraint(equalToConstant: 160).isActive = true
+            coachesHub.font = UIFont(name: coachesHub.font.fontName, size: 64)
+            coachesHub.heightAnchor.constraint(equalToConstant: 160).isActive = true
             holderView.heightAnchor.constraint(equalToConstant: 305).isActive = true
             for i in displayLbls {
                 if i.tag == 0 || i.tag == 2 || i.tag == 4 {
@@ -128,7 +130,7 @@ class mainHubViewController: UIViewController {
                 }
             }
             for i in buttons {
-                i.titleLabel?.font = UIFont(name: (i.titleLabel?.font.fontName)!, size: 34)
+                i.titleLabel?.font = UIFont(name: (i.titleLabel?.font.fontName)!, size: 38)
             }
         }
     }

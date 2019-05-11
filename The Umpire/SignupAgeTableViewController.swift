@@ -14,6 +14,7 @@ import FirebaseDatabase
 class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     @IBOutlet weak var teamTableView: UITableView!
+    @IBOutlet weak var titleLbl: UILabel!
     
     var ageList = [String]()
     var selectedAge: String!
@@ -39,6 +40,11 @@ class SignupAgeTableViewController: UIViewController, UITableViewDataSource, UIT
         
         teamTableView.delegate = self
         teamTableView.dataSource = self
+        
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            titleLbl.font = UIFont.boldSystemFont(ofSize: 66)
+            titleLbl.frame = CGRect(x: titleLbl.frame.minX, y: titleLbl.frame.minY, width: titleLbl.frame.width, height: titleLbl.frame.height * 2)
+        }
     }
     
     override func didReceiveMemoryWarning() {
